@@ -65,40 +65,35 @@ body {
     display: flex;
     align-items: center;
   }
-  .toolbar__button {
-    margin-left: 10px;
+  .button {
+    margin: 0 5px;
     padding: 8px 15px;
     border: none;
     cursor: pointer;
     border-radius: 4px;
     font-size: 14px;
     color: white;
+    background-color: #ff8c42;
     transition: background-color 0.3s, box-shadow 0.3s;
   }
-  .toolbar__button--apply {
-    background-color: #4caf50;
-    margin-left: 0;
-  }
-  .toolbar__button--apply:hover {
-    background-color: #388e3c;
-  }
-  .toolbar__button--clear {
-    background-color: #e74c3c;
-  }
-  .toolbar__button--clear:hover {
-    background-color: #c0392b;
-  }
-  .toolbar__button--save {
-    background-color: #ff8c42;
-  }
-  .toolbar__button--save:hover {
+  .button:hover {
     background-color: #e67e37;
   }
-  .toolbar__button--copy {
-    background-color: #555;
+  .button--small {
+    margin: 0 3px;
+    padding: 5px 10px;
   }
-  .toolbar__button--copy:hover {
-    background-color: #444;
+  .button--green {
+    background-color: #4caf50;
+  }
+  .button--green:hover {
+    background-color: #388e3c;
+  }
+  .button--red {
+    background-color: #e74c3c;
+  }
+  .button--red:hover {
+    background-color: #c0392b;
   }
   .editor {
     display: flex;
@@ -119,23 +114,10 @@ body {
     border: 1px solid #555;
     border-radius: 4px;
     overflow: auto;
-    /* color: white; */
   }
-  .editor__pane__copy-button {
+  .editor__button-container {
     display: flex;
     justify-content: flex-end;
-  }
-  .editor__pane__copy-button button {
-    background-color: #555;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    cursor: pointer;
-    border-radius: 4px;
-    transition: background-color 0.3s, box-shadow 0.3s;
-  }
-  .editor__pane__copy-button button:hover {
-    background-color: #444;
   }
   .key-value-generator {
     display: flex;
@@ -161,28 +143,6 @@ body {
     background-color: #444;
     color: white;
     width: 100px;
-  }
-  .key-value-generator__button {
-    padding: 5px 10px;
-    border: none;
-    cursor: pointer;
-    border-radius: 4px;
-    background-color: #ff8c42;
-    color: white;
-    transition: background-color 0.3s, box-shadow 0.3s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-left: 5px;
-  }
-  .key-value-generator__button:hover {
-    background-color: #e67e37;
-  }
-  .key-value-generator__delete-button {
-    background-color: #e74c3c;
-  }
-  .key-value-generator__delete-button:hover {
-    background-color: #c0392b;
   }
   .key-value-generator__nested {
     margin-left: 20px;
@@ -220,12 +180,9 @@ body {
     max-width: 400px;
     border-radius: 4px;
   }
-  .modal__content__buttons {
+  .modal__buttons {
     display: flex;
     justify-content: flex-end;
-  }
-  .modal__content__buttons button {
-    margin-left: 10px;
   }
   .notification {
     display: none;
