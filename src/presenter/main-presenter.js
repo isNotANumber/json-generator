@@ -17,18 +17,13 @@ export default class MainPresenter {
     init() {
         const mainContainer = new MainContainerView();
         const mainContent = new MainContentView();
-        const toolbar = new ToolbarView();
-        const sidebar = new SidebarView();
-        const editor = new EditorView();
-        const modal = new ModalView();
-        const notification = new NotificationView();
 
         render(mainContainer, this.#container);
-        render(sidebar, mainContainer.element);
+        render(new SidebarView(), mainContainer.element);
         render(mainContent, mainContainer.element);
-        render(toolbar, mainContent.element);
-        render(editor, mainContent.element);
-        render(modal, this.#container);
-        render(notification, this.#container);
+        render(new ToolbarView(), mainContent.element);
+        render(new EditorView(), mainContent.element);
+        render(new ModalView(), this.#container);
+        render(new NotificationView(), this.#container);
     }
 }
