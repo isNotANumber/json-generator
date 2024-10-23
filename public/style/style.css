@@ -14,7 +14,7 @@ body {
     font-size: 20px;
     font-weight: bold;
   }
-  .container {
+  .main-container {
     display: flex;
     flex-direction: column;
     height: calc(100vh - 45px);
@@ -239,7 +239,7 @@ body {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
   }
   @media (min-width: 768px) {
-    .container {
+    .main-container {
       flex-direction: row;
     }
     .sidebar {
