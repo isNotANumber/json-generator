@@ -1,5 +1,5 @@
 import "../public/style/style.css";
-import HeaderView from "./view/header-view";
+import HeaderView from "./view/header/header-view";
 import { render, RenderPosition } from "./framework/render";
 
 const appElement = document.querySelector('#app');
