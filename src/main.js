@@ -3,7 +3,6 @@ import HeaderView from "./view/header/header-view";
 import { render, RenderPosition } from "./framework/render";
 
 const appElement = document.querySelector('#app');
-console.log(appElement)
 const header = new HeaderView();
 
 render(header, appElement, RenderPosition.AFTERBEGIN);

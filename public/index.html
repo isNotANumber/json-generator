@@ -4,64 +4,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
   </head>
   <body id="app">
-    <div class="main-container">
-      <div class="sidebar">
-        <div class="sidebar__title">Templates</div>
-        <ul class="sidebar__menu">
-          <li class="sidebar__menu-item"><a href="#">JSON</a></li>
-          <li class="sidebar__menu-item"><a href="#">HTML</a></li>
-        </ul>
-      </div>
-      <div class="main-content">
-        <div class="toolbar">
-          <div class="toolbar__left">
-            <button class="toolbar__button toolbar__button--apply">Apply</button>
-            <button class="toolbar__button toolbar__button--clear">Clear</button>
-          </div>
-          <div class="toolbar__right">
-            <button class="toolbar__button toolbar__button--save">Save</button>
-            <button class="toolbar__button toolbar__button--copy">Copy</button>
-          </div>
-        </div>
-        <div class="editor">
-          <div class="editor__pane">
-            <h2>Propopties (key:value)</h2>
-            <ul id="key-value-list">
-              <li>
-                <div class="key-value-generator">
-                  <input type="text" class="key-value-generator__input" id="key1" placeholder="Key"/>
-                  <input type="text" class="key-value-generator__input" id="value1" placeholder="Value"/>
-                  <button class="key-value-generator__button">
-                    <i class="fas fa-plus"></i>
-                  </button>
-                  <button class="key-value-generator__button key-value-generator__delete-button">
-                    <i class="fas fa-trash"></i>
-                  </button>
-                </div>
-                <ul class="key-value-generator__nested"></ul>
-              </li>
-            </ul>
-          </div>
-          <div class="editor__pane">
-            <h2>JSON</h2>
-            <pre id="json-output">{}</pre>
-            <div class="editor__pane__copy-button">
-              <button>Copy</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div id="modal" class="modal">
-      <div class="modal__content">
-        <h2>Warning</h2>
-        <p id="modal-message">Are you sure you want to perform this action?</p>
-        <div class="modal__content__buttons">
-          <button class="toolbar__button toolbar__button--clear">Yes</button>
-          <button class="toolbar__button toolbar__button--apply">No</button>
-        </div>
-      </div>
-    </div>
-    <div id="notification" class="notification">JSON copied to clipboard</div>
+    
   </body>
 </html>
