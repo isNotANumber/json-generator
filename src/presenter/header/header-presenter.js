@@ -1,5 +1,5 @@
-import { render } from "../framework/render";
-import HeaderView from "../view/header/header-view.js";
+import { render } from "../../framework/render.js";
+import HeaderView from "../../view/header/header-view.js";
 
 export default class HeaderPresenter {
     #container = null;

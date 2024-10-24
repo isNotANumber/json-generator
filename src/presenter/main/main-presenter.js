@@ -1,11 +1,11 @@
-import { render } from "../framework/render";
-import MainContainerView from "../view/main/main-container-view.js";
-import SidebarView from "../view/sidebar/sidebar-view.js";
-import MainContentView from "../view/main/main-content-view.js";
-import EditorView from "../view/editor/editor-view.js";
-import ModalView from "../view/modal/modal-view.js";
-import NotificationView from "../view/notification/notification-view.js"
-import ToolbarPresenter from "./toolbar/toolbar-presenter.js";
+import { render } from "../../framework/render.js";
+import MainContainerView from "../../view/main/main-container-view.js";
+import SidebarView from "../../view/sidebar/sidebar-view.js";
+import MainContentView from "../../view/main/main-content-view.js";
+import EditorView from "../../view/editor/editor-view.js";
+import ModalView from "../../view/modal/modal-view.js";
+import NotificationView from "../../view/notification/notification-view.js"
+import ToolbarPresenter from "../toolbar/toolbar-presenter.js";
 
 export default class MainPresenter {
     #container = null;
