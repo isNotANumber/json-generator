@@ -6,8 +6,6 @@ function createSidebarTemplate() {
         <div class="sidebar">
             <div class="sidebar__title">Templates</div>
             <ul class="sidebar__menu">
-                <li class="sidebar__menu-item"><a href="#">JSON</a></li>
-                <li class="sidebar__menu-item"><a href="#">HTML</a></li>
             </ul>
         </div>
         `
