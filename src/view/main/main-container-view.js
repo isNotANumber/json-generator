@@ -1,9 +1,21 @@
 import AbstractView from "../../framework/view/abstract-view";
 
-function createMainContainerTemplate() {
+function createMainContentTemplate() {
     return (
         `
-        <div class="main-container"></div>
+        <div class="main-content"></div>
+        `
+    );
+}
+
+function createMainContainerTemplate() {
+    const mainContent = createMainContentTemplate();
+
+    return (
+        `
+        <div class="main-container">
+            ${mainContent}
+        </div>
         `
     );
 }

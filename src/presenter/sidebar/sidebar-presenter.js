@@ -1,4 +1,4 @@
-import { render } from "../../framework/render.js";
+import { render, RenderPosition } from "../../framework/render.js";
 import SidebarView from "../../view/sidebar/sidebar-view.js";
 import SidebarElementView from "../../view/sidebar/sidebar-element-view.js";
 import { SIDEBAR_ELEMENTS } from "./sidebar-elements-description.js";
@@ -13,7 +13,7 @@ export default class SidebarPresenter {
     init() {
         const sidebar = new SidebarView();
 
-        render(sidebar, this.#container)
+        render(sidebar, this.#container, RenderPosition.AFTERBEGIN);
         this.#renderSidebarElements(sidebar, SIDEBAR_ELEMENTS);
     }
 

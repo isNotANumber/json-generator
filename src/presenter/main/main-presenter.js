@@ -1,6 +1,5 @@
 import { render } from "../../framework/render.js";
 import MainContainerView from "../../view/main/main-container-view.js";
-import MainContentView from "../../view/main/main-content-view.js";
 import ModalView from "../../view/modal/modal-view.js";
 import NotificationView from "../../view/notification/notification-view.js"
 import ToolbarPresenter from "../toolbar/toolbar-presenter.js";
@@ -16,15 +15,14 @@ export default class MainPresenter {
 
     init() {
         const mainContainer = new MainContainerView();
-        const mainContent = new MainContentView();
-        const toolbarPresenter = new ToolbarPresenter({container: mainContent.element});
         const sidebarPresenter = new SidebarPresenter({container: mainContainer.element})
-        const editorPresenter = new EditorPresenter({container: mainContent.element})
+
+        const mainContentElement = mainContainer.element.querySelector('.main-content');
+        const toolbarPresenter = new ToolbarPresenter({container: mainContentElement});
+        const editorPresenter = new EditorPresenter({container: mainContentElement})
 
         render(mainContainer, this.#container);
         sidebarPresenter.init();
-        render(mainContent, mainContainer.element);
-
         toolbarPresenter.init();
         editorPresenter.init();
         render(new ModalView(), this.#container);
