@@ -10,10 +10,10 @@ function createEditorInputTemplate() {
                 <div class="key-value-generator">
                     <input type="text" class="key-value-generator__input" id="key1" placeholder="Key"/>
                     <input type="text" class="key-value-generator__input" id="value1" placeholder="Value"/>
-                    <button class="key-value-generator__button">
+                    <button class="button button--small">
                     <i class="fas fa-plus"></i>
                     </button>
-                    <button class="key-value-generator__button key-value-generator__delete-button">
+                    <button class="button button--small button--red">
                     <i class="fas fa-trash"></i>
                     </button>
                 </div>
