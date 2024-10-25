@@ -1,6 +1,12 @@
 import AbstractView from "../../framework/view/abstract-view";
+import ButtonView from "../button/button-view.js";
 
 function createModalTemplate() {
+    const buttonsTemplate = [
+        new ButtonView({modifiers: ['button--red'], buttonText: 'Yes'}).template,
+        new ButtonView({modifiers: [], buttonText: 'No'}).template
+    ]
+
     return (
         `
         <div id="modal" class="modal">
@@ -8,8 +14,7 @@ function createModalTemplate() {
                 <h2>Warning</h2>
                 <p id="modal-message">Are you sure you want to perform this action?</p>
                 <div class="modal__content__buttons">
-                    <button class="toolbar__button toolbar__button--clear">Yes</button>
-                    <button class="toolbar__button toolbar__button--apply">No</button>
+                    ${buttonsTemplate.join(' ')}
                 </div>
             </div>
         </div>
