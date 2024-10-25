@@ -1,6 +1,6 @@
 import AbstractView from "../../framework/view/abstract-view";
 
-function creatEditorPaneTemplate() {
+function createEditorInputTemplate() {
     return (
         `
         <div class="editor__pane">
@@ -20,28 +20,22 @@ function creatEditorPaneTemplate() {
                 <ul class="key-value-generator__nested"></ul>
                 </li>
             </ul>
-            </div>
-        <div class="editor__pane">
-            <h2>JSON</h2>
-            <pre id="json-output">{}</pre>
-            <div class="editor__pane__copy-button">
-                <button>Copy</button>
         </div>
         `
     );
 }
 
 /**
- * Editor pane view class.
+ * Editor input pane view class.
  */
-export default class EditorPaneView extends AbstractView {
+export default class EditorInputView extends AbstractView {
 
     /**
-     * Getter for pane editor template.
+     * Getter for input pane editor template.
      * @abstract
-     * @returns {string} Editor pane template as a string.
+     * @returns {string} Editor input pane template as a string.
      */
     get template() {
-        return creatEditorPaneTemplate();
+        return createEditorInputTemplate();
     }
 }
