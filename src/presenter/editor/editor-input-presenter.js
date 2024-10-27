@@ -1,6 +1,5 @@
 import { render } from '../../framework/render';
 import EditorInputView from '../../view/editor/editor-input-view';
-import KeyValueListView from '../../view/key-value-generator/key-value-list-view.js';
 import KeyValueGeneratorView from '../../view/key-value-generator/key-value-generator-view.js';
 import ButtonView from '../../view/button/button-view.js';
 
@@ -17,20 +16,13 @@ export default class EditorInputPresenter {
 
   init() {
     this.#renderEditorInput(this.#container);
-    this.#renderGeneratorList(this.#editorInput.element);
-    this.#renderKeyValueGenerator(this.#generatorList.element);
+    this.#renderKeyValueGenerator(this.#editorInput.element);
   }
 
   #renderEditorInput(container) {
     this.#editorInput = new EditorInputView();
 
     render(this.#editorInput, container);
-  }
-
-  #renderGeneratorList(container) {
-    this.#generatorList = new KeyValueListView();
-
-    render(this.#generatorList, container);
   }
 
   #renderKeyValueGenerator(container) {
@@ -57,7 +49,7 @@ export default class EditorInputPresenter {
   }
 
   #handleGeneratorAppendClick = (evt) => {
-    const childContainer = evt.target.closest('li').querySelector('.key-value-generator__nested');
+    const childContainer = evt.target.closest('li').querySelector('.key-value-list--nested');
 
     this.#renderKeyValueGenerator(childContainer);
   }

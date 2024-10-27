@@ -148,18 +148,6 @@ body {
     color: white;
     width: 100px;
   }
-  .key-value-generator__nested {
-    margin-left: 20px;
-  }
-  .key-value-generator__nested::before {
-    content: '';
-    position: absolute;
-    left: -10px;
-    top: 0;
-    bottom: 0;
-    width: 2px;
-    background-color: #ff8c42;
-  }
   ul {
     list-style-type: none;
     padding-left: 20px;
