@@ -6,8 +6,7 @@ function createEditorOutputTemplate() {
         <div class="editor__pane">
             <h2>JSON</h2>
             <pre id="json-output">{}</pre>
-            <div class="editor__pane__copy-button">
-              <button>Copy</button>
+            <div class="editor__output-button-container">
             </div>
           </div>
         `
