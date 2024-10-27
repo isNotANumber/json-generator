@@ -124,7 +124,11 @@ body {
     align-items: center;
     margin-top: 10px;
     padding-left: 10px;
+    min-width: fit-content;
     position: relative;
+  }
+  .generator__buttons-container {
+    min-width: fit-content;
   }
   .key-value-generator::before {
     content: '';

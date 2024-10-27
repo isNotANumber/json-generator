@@ -3,10 +3,14 @@ import AbstractView from "../../framework/view/abstract-view.js";
 function createKeyValueGeneratorTemplate() {
     return (
         `
-        <div class="key-value-generator">
-            <input type="text" class="key-value-generator__input" id="key1" placeholder="Key"/>
-            <input type="text" class="key-value-generator__input" id="value1" placeholder="Value"/>
-        </div>
+        <li>
+            <div class="key-value-generator">
+                <input type="text" class="key-value-generator__input" placeholder="Key"/>
+                <input type="text" class="key-value-generator__input" placeholder="Value"/>
+                <div class="generator__buttons-container"></div>
+            </div>
+            <ul class="key-value-generator__nested"></ul>
+        </li>
         `
     );
 }

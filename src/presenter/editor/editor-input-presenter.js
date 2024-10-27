@@ -37,7 +37,7 @@ export default class EditorInputPresenter {
     this.#keyValueGenerator = new KeyValueGeneratorView();
 
     render(this.#keyValueGenerator, container);
-    this.#renderButtons(this.#keyValueGenerator.element);
+    this.#renderButtons(this.#keyValueGenerator.element.querySelector('.generator__buttons-container'));
   }
 
   #renderButtons(container) {
@@ -56,11 +56,13 @@ export default class EditorInputPresenter {
     render(deleteButton, container);
   }
 
-  #handleGeneratorAppendClick() {
-    console.log('Append button clicked!');
+  #handleGeneratorAppendClick = (evt) => {
+    const childContainer = evt.target.closest('li').querySelector('.key-value-generator__nested');
+
+    this.#renderKeyValueGenerator(childContainer);
   }
 
-  #handleGeneratorCancelClick() {
+  #handleGeneratorCancelClick = () => {
     console.log('Cancel button clicked!');
   }
 }
