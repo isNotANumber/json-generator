@@ -54,7 +54,10 @@ export default class EditorInputPresenter {
     this.#renderKeyValueGenerator(childContainer);
   }
 
-  #handleGeneratorCancelClick = () => {
+  #handleGeneratorCancelClick = (evt) => {
     console.log('Cancel button clicked!');
+
+    const targetToRemove = evt.target.closest('li');
+    removeTarget.targetToRemove();
   }
 }
