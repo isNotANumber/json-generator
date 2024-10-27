@@ -3,8 +3,8 @@ import ButtonView from "../button/button-view.js";
 
 function createModalTemplate() {
     const buttonsTemplate = [
-        new ButtonView({modifiers: ['button--red'], buttonText: 'Yes'}).template,
-        new ButtonView({modifiers: [], buttonText: 'No'}).template
+        new ButtonView({modifiers: ['button--red'], buttonContent: 'Yes'}).template,
+        new ButtonView({modifiers: [], buttonContent: 'No'}).template
     ]
 
     return (

@@ -4,11 +4,11 @@ const TOOLBAR_DESCRIPTION = {
         buttons: {
             applyButton: {
             modifiers: ['button--green'],
-            buttonText: 'Apply'
+            buttonContent: 'Apply'
         },
         clearButton: {
             modifiers: ['button--red'],
-            buttonText: 'Clear'
+            buttonContent: 'Clear'
         },
         }
     },
@@ -17,11 +17,11 @@ const TOOLBAR_DESCRIPTION = {
         buttons: {
             copyButton: {
                 modifiers: [],
-                buttonText: 'Copy'
+                buttonContent: 'Copy'
             },
             saveButton: {
                 modifiers: [],
-                buttonText: 'Save'
+                buttonContent: 'Save'
             },
         }
     },

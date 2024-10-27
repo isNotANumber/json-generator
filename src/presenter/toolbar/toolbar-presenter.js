@@ -26,7 +26,7 @@ export default class ToolbarPresenter {
             const buttonsContainer = toolbar.element.querySelector(side.selector);
 
             for (const button of Object.values(side.buttons)) {
-                const currentButton = new ButtonView({modifiers: button.modifiers, buttonText: button.buttonText});
+                const currentButton = new ButtonView({modifiers: button.modifiers, buttonContent: button.buttonContent});
                 this.#renderButton(currentButton, buttonsContainer);
             }
         }

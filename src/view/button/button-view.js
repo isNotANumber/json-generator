@@ -1,9 +1,9 @@
 import AbstractView from "../../framework/view/abstract-view";
 
-function createButtonTemplate({modifiers = [], buttonText}) {
+function createButtonTemplate({modifiers = [], buttonContent}) {
     return (
         `
-        <button class="button ${modifiers.join(' ')}">${buttonText}</button>
+        <button class="button ${modifiers.join(' ')}">${buttonContent}</button>
         `
     );
 }
@@ -11,15 +11,15 @@ function createButtonTemplate({modifiers = [], buttonText}) {
 /**
  * Button view class.
  * @param {Array} modifiers - button class modifiers.
- * @param {String} buttonText - button text.
+ * @param {String} buttonContent - button content.
  */
 export default class ButtonView extends AbstractView {
-    #buttonText = null;
+    #buttonContent = null;
     #modifiers = null;
 
-    constructor({modifiers, buttonText}) {
+    constructor({modifiers, buttonContent}) {
         super();
-        this.#buttonText = buttonText;
+        this.#buttonContent = buttonContent;
         this.#modifiers = modifiers;
     }
 
@@ -29,6 +29,6 @@ export default class ButtonView extends AbstractView {
      * @returns {string} Button template as a string.
      */
     get template() {
-        return createButtonTemplate({modifiers: this.#modifiers, buttonText: this.#buttonText});
+        return createButtonTemplate({modifiers: this.#modifiers, buttonContent: this.#buttonContent});
     }
 }

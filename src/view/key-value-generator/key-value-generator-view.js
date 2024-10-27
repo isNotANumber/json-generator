@@ -1,17 +1,18 @@
-import AbstractView from "../../framework/view/abstract-view";
+import AbstractView from "../../framework/view/abstract-view.js";
+import ButtonView from "../button/button-view.js";
 
 function createKeyValueGeneratorTemplate() {
+    const buttonsTemplate = [
+        new ButtonView({modifiers: ['button--small'], buttonContent: '<i class="fas fa-plus"></i>'}).template,
+        new ButtonView({modifiers: ['button--small', 'button--red'], buttonContent: '<i class="fas fa-minus"></i>'}).template
+    ]
+
     return (
         `
         <div class="key-value-generator">
             <input type="text" class="key-value-generator__input" id="key1" placeholder="Key"/>
             <input type="text" class="key-value-generator__input" id="value1" placeholder="Value"/>
-            <button class="button button--small">
-                <i class="fas fa-plus"></i>
-            </button>
-            <button class="button button--small button--red">
-                <i class="fas fa-trash"></i>
-            </button>
+            ${buttonsTemplate.join(' ')}
         </div>
         `
     );
