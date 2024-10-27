@@ -18,7 +18,11 @@ export default class ModalPresenter {
   }
 
   init() {
-    render(this.#modal, this.#container);
+    this.#renderModal(this.#container);
+  }
+
+  #renderModal(container) {
+    render(this.#modal, container);
 
     this.#renderButtons(this.#modal.element.querySelector('.modal__content__buttons'));
   }
