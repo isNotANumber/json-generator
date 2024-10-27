@@ -2,12 +2,13 @@ import { render } from '../../framework/render';
 import EditorInputView from '../../view/editor/editor-input-view';
 import KeyValueGeneratorView from '../../view/key-value-generator/key-value-generator-view.js';
 import ButtonView from '../../view/button/button-view.js';
+import GeneratorInputListView from '../../view/key-value-generator/generator-input-list-view.js';
 
 export default class EditorInputPresenter {
   #container = null;
 
   #editorInput = null;
-  #generatorList = null;
+  #generatorInputList = null;
   #keyValueGenerator = null;
 
   constructor({ container }) {
@@ -16,13 +17,20 @@ export default class EditorInputPresenter {
 
   init() {
     this.#renderEditorInput(this.#container);
-    this.#renderKeyValueGenerator(this.#editorInput.element);
+    this.#renderGeneratorInputList(this.#editorInput.element);
+    this.#renderKeyValueGenerator(this.#generatorInputList.element);
   }
 
   #renderEditorInput(container) {
     this.#editorInput = new EditorInputView();
 
     render(this.#editorInput, container);
+  }
+
+  #renderGeneratorInputList(container) {
+    this.#generatorInputList = new GeneratorInputListView();
+
+    render(this.#generatorInputList, container);
   }
 
   #renderKeyValueGenerator(container) {
@@ -58,6 +66,6 @@ export default class EditorInputPresenter {
     console.log('Cancel button clicked!');
 
     const targetToRemove = evt.target.closest('li');
-    removeTarget.targetToRemove();
+    targetToRemove.remove();
   }
 }
