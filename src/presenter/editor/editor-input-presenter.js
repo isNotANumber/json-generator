@@ -1,15 +1,15 @@
 import { render } from '../../framework/render';
 import EditorInputView from '../../view/editor/editor-input-view';
-import KeyValueGeneratorView from '../../view/key-value-generator/key-value-generator-view.js';
+import GeneratorItemView from '../../view/generator/generator-item-view.js';
 import ButtonView from '../../view/button/button-view.js';
-import GeneratorInputListView from '../../view/key-value-generator/generator-input-list-view.js';
+import GeneratorInputListView from '../../view/generator/generator-input-list-view.js';
 
 export default class EditorInputPresenter {
   #container = null;
 
   #editorInput = null;
   #generatorInputList = null;
-  #keyValueGenerator = null;
+  #generatorItem = null;
 
   constructor({ container }) {
     this.#container = container;
@@ -34,10 +34,10 @@ export default class EditorInputPresenter {
   }
 
   #renderKeyValueGenerator(container) {
-    this.#keyValueGenerator = new KeyValueGeneratorView();
+    this.#generatorItem = new GeneratorItemView();
 
-    render(this.#keyValueGenerator, container);
-    this.#renderButtons(this.#keyValueGenerator.element.querySelector('.generator__buttons-container'));
+    render(this.#generatorItem, container);
+    this.#renderButtons(this.#generatorItem.element.querySelector('.generator__buttons-container'));
   }
 
   #renderButtons(container) {
@@ -57,14 +57,12 @@ export default class EditorInputPresenter {
   }
 
   #handleGeneratorAppendClick = (evt) => {
-    const childContainer = evt.target.closest('li').querySelector('.key-value-list--nested');
+    const childContainer = evt.target.closest('li').querySelector('.generator-input-list--nested');
 
     this.#renderKeyValueGenerator(childContainer);
   }
 
   #handleGeneratorCancelClick = (evt) => {
-    console.log('Cancel button clicked!');
-
     const targetToRemove = evt.target.closest('li');
     targetToRemove.remove();
   }

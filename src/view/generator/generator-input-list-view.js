@@ -3,7 +3,7 @@ import AbstractView from "../../framework/view/abstract-view.js";
 function createGeneratorInputListTemplate() {
     return (
         `
-        <ul class="key-value-list"></ul>
+        <ul class="generator-input-list"></ul>
         `
     );
 }
