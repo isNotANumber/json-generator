@@ -4,6 +4,7 @@ import EditorOutputView from '../../view/editor/editor-output-view';
 import EditorView from '../../view/editor/editor-view';
 import KeyValueListView from '../../view/key-value-generator/key-value-list-view.js';
 import KeyValueGeneratorView from '../../view/key-value-generator/key-value-generator-view.js';
+import ButtonView from '../../view/button/button-view.js';
 
 export default class EditorPresenter {
   #container = null;
@@ -12,7 +13,7 @@ export default class EditorPresenter {
   #editorInput = null;
   #editorOutput = null;
   #generatorList = null;
-  #keyValueGeneratorView = null;
+  #keyValueGenerator = null;
 
   constructor({ container }) {
     this.#container = container;
@@ -51,8 +52,29 @@ export default class EditorPresenter {
   }
 
   #renderKeyValueGenerator(container) {
-    this.#keyValueGeneratorView = new KeyValueGeneratorView();
+    this.#keyValueGenerator = new KeyValueGeneratorView();
 
-    render(this.#keyValueGeneratorView, container);
+    const appendButton = new ButtonView({
+      modifiers: ['button--small'],
+      buttonContent: '<i class="fas fa-plus"></i>',
+      onClick: this.#handleGeneratorAppendClick,
+    });
+    const deleteButton = new ButtonView({
+      modifiers: ['button--small', 'button--red'],
+      buttonContent: '<i class="fas fa-minus"></i>',
+      onClick: this.#handleGeneratorCancelClick,
+    });
+
+    render(this.#keyValueGenerator, container);
+    render(appendButton, this.#keyValueGenerator.element);
+    render(deleteButton, this.#keyValueGenerator.element);
+  }
+
+  #handleGeneratorAppendClick() {
+    console.log('Append button clicked!')
+  }
+
+  #handleGeneratorCancelClick() {
+    console.log('Cancel button clicked!')
   }
 }
