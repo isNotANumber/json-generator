@@ -36,6 +36,11 @@ export default class EditorInputPresenter {
   #renderKeyValueGenerator(container) {
     this.#keyValueGenerator = new KeyValueGeneratorView();
 
+    render(this.#keyValueGenerator, container);
+    this.#renderButtons(this.#keyValueGenerator.element);
+  }
+
+  #renderButtons(container) {
     const appendButton = new ButtonView({
       modifiers: ['button--small'],
       buttonContent: '<i class="fas fa-plus"></i>',
@@ -47,16 +52,15 @@ export default class EditorInputPresenter {
       onClick: this.#handleGeneratorCancelClick,
     });
 
-    render(this.#keyValueGenerator, container);
-    render(appendButton, this.#keyValueGenerator.element);
-    render(deleteButton, this.#keyValueGenerator.element);
+    render(appendButton, container);
+    render(deleteButton, container);
   }
 
   #handleGeneratorAppendClick() {
-    console.log('Append button clicked!')
+    console.log('Append button clicked!');
   }
 
   #handleGeneratorCancelClick() {
-    console.log('Cancel button clicked!')
+    console.log('Cancel button clicked!');
   }
 }

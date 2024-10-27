@@ -18,19 +18,25 @@ export default class EditorOutputPresenter {
   #renderEditorOutput(container) {
     this.#editorOutput = new EditorOutputView();
 
+    render(this.#editorOutput, container);
+
+    const copyButtonContainer = this.#editorOutput.element.querySelector(
+      '.editor__output-button-container'
+    );
+    this.#renderButtons(copyButtonContainer);
+  }
+
+  #renderButtons(container) {
     const copyButton = new ButtonView({
       modifiers: ['button--small'],
       buttonContent: 'Copy',
       onClick: this.#handleOutputCopyClick,
     });
 
-    const copyButtonContainer = this.#editorOutput.element.querySelector('.editor__output-button-container');
-
-    render(this.#editorOutput, container);
-    render(copyButton, copyButtonContainer);
+    render(copyButton, container);
   }
 
   #handleOutputCopyClick() {
-    console.log('Copy button clicked!')
+    console.log('Copy button clicked!');
   }
 }
