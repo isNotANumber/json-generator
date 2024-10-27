@@ -78,10 +78,18 @@ export default class MainPresenter {
   }
 
   #renderModal(container) {
-    this.#modalPresenter = new ModalPresenter({ container: container });
+    this.#modalPresenter = new ModalPresenter({ container: container, onApplyClick: this.#handleModalApplyClick, onCancelClick: this.#handleModalCancelClick });
 
     this.#modalPresenter.init();
   }
+
+  #handleModalApplyClick = () => {
+    console.log('Apply clicked!');
+  };
+
+  #handleModalCancelClick = () => {
+    console.log('Cancel clicked!');
+  };
 
   #renderNotification(container) {
     this.#notificationPresenter = new NotificationPresenter({
