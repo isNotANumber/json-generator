@@ -1,37 +1,44 @@
 import { render } from '../../framework/render.js';
+import ButtonView from '../../view/button/button-view.js';
 import ToolbarView from '../../view/toolbar/toolbar-view.js';
 
 export default class ToolbarPresenter {
   #container = null;
+  
+  #handleApplyClick = null;
+  #handleClearClick = null;
+  #handleCopyClick = null;
+  #handleSaveClick = null;
 
-  constructor({ container }) {
+  constructor({ container, onApplyClick, onClearClick, onSaveClick, onCopyClick }) {
     this.#container = container;
+
+    this.#handleApplyClick = onApplyClick;
+    this.#handleClearClick = onClearClick;
+    this.#handleSaveClick = onSaveClick;
+    this.#handleCopyClick = onCopyClick;
+
   }
 
   init() {
-    const toolbar = new ToolbarView({
-      onApplyClick: this.#handleApplyClick,
-      onClearClick: this.#handleClearClick,
-      onSaveClick: this.#handleSaveClick,
-      onCopyClick: this.#handleCopyClick,
-    });
+    const toolbar = new ToolbarView();
 
     render(toolbar, this.#container);
+    this.#renderButtons(toolbar);
   }
 
-  #handleApplyClick = () => {
-    console.log('Apply clicked!');
-  };
+  #renderButtons(toolbar) {
+    const toolbarLeft = toolbar.element.querySelector('.toolbar__left');
+    const toolbarRight = toolbar.element.querySelector('.toolbar__right');
 
-  #handleClearClick = () => {
-    console.log('Clear clicked!');
-  };
+    const applyButton = new ButtonView({modifiers: ['button--green', 'tlb-btn--apply'], buttonContent: 'Apply', onClick: this.#handleApplyClick});
+    const clearButton = new ButtonView({modifiers: ['button--red', 'tlb-btn--clear'], buttonContent: 'Clear', onClick: this.#handleClearClick});
+    const saveButton = new ButtonView({modifiers: ['tlb-btn--save'], buttonContent: 'Save', onClick: this.#handleSaveClick});
+    const sopyButton = new ButtonView({modifiers: ['tlb-btn--copy'], buttonContent: 'Copy', onClick: this.#handleCopyClick});
 
-  #handleSaveClick = () => {
-    console.log('Save clicked!');
-  };
-
-  #handleCopyClick = () => {
-    console.log('Copy clicked!');
-  };
+    render(applyButton, toolbarLeft);
+    render(clearButton, toolbarLeft);
+    render(saveButton, toolbarRight);
+    render(sopyButton, toolbarRight);
+  }
 }

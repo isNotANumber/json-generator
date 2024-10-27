@@ -16,11 +16,15 @@ function createButtonTemplate({modifiers = [], buttonContent}) {
 export default class ButtonView extends AbstractView {
     #buttonContent = null;
     #modifiers = null;
+    #handleOnClick = null;
 
-    constructor({modifiers, buttonContent}) {
+    constructor({modifiers, buttonContent, onClick}) {
         super();
         this.#buttonContent = buttonContent;
         this.#modifiers = modifiers;
+        this.#handleOnClick = onClick;
+
+        this.element.addEventListener('click', this.#handleOnClick);
     }
 
     /**
