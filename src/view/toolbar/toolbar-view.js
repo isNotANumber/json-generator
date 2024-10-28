@@ -5,8 +5,12 @@ function createToolbarTemplate() {
     `
     <div class="toolbar">
         <div class="toolbar__left">
+          <button class="button button--green tlb-btn--apply">Apply</button>
+          <button class="button button--red tlb-btn--clear">Clear</button>
         </div>
         <div class="toolbar__right">
+          <button class="button tlb-btn--save">Save</button>
+          <button class="button tlb-btn--copy">Copy</button>
         </div>
     </div>
     `

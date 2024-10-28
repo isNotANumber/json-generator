@@ -42,29 +42,16 @@ export default class MainPresenter {
   #renderToolbar(container) {
     this.#toolbarPresenter = new ToolbarPresenter({
       container: container,
-      onApplyClick: this.#handleTlbApplyClick,
-      onClearClick: this.#handleTlbClearClick,
-      onSaveClick: this.#handleTlbSaveClick,
-      onCopyClick: this.#handleTlbCopyClick,
+      onToolbarButtonClick: this.#handleToolbarButtonsClick
     });
 
     this.#toolbarPresenter.init();
   }
 
-  #handleTlbApplyClick = () => {
-    console.log('Apply clicked!');
-  };
-
-  #handleTlbClearClick = () => {
-    this.#showModal(this.#container);
-  };
-
-  #handleTlbSaveClick = () => {
-    console.log('Save clicked!');
-  };
-
-  #handleTlbCopyClick = () => {
-    console.log('Copy clicked!');
+  #handleToolbarButtonsClick = (evt) => {
+    if (evt.target.classList.contains('tlb-btn--clear')) {
+      this.#showModal(this.#container);
+    }
   };
 
   #renderEditor(container) {
