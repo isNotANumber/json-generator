@@ -1,4 +1,4 @@
-import { render } from '../../framework/render.js';
+import { render, remove } from '../../framework/render.js';
 import ModalView from '../../view/modal/modal-view.js';
 import ButtonView from '../../view/button/button-view.js';
 
@@ -41,5 +41,9 @@ export default class ModalPresenter {
 
     render(applyButton, modal);
     render(cancelButton, modal);
+  }
+
+  destroy() {
+    remove(this.#modal);
   }
 }

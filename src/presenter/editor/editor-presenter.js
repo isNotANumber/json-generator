@@ -1,4 +1,4 @@
-import { render } from '../../framework/render';
+import { render, remove } from '../../framework/render';
 import EditorView from '../../view/editor/editor-view';
 import EditorInputPresenter from './editor-input-presenter.js';
 import EditorOutputPresenter from './editor-output-presenter.js';
@@ -27,5 +27,10 @@ export default class EditorPresenter {
 
     this.#editorOutputPresenter = new EditorOutputPresenter({container: this.#editor.element});
     this.#editorOutputPresenter.init();
+  }
+
+  reset() {
+    remove(this.#editor);
+    this.init();
   }
 }

@@ -1,4 +1,4 @@
-import { render } from '../../framework/render.js';
+import { render, remove } from '../../framework/render.js';
 import MainContainerView from '../../view/main/main-container-view.js';
 import ToolbarPresenter from '../toolbar/toolbar-presenter.js';
 import SidebarPresenter from '../sidebar/sidebar-presenter.js';
@@ -29,8 +29,8 @@ export default class MainPresenter {
     this.#renderSidebar(mainContainer.element);
     this.#renderToolbar(mainContentElement);
     this.#renderEditor(mainContentElement);
-    this.#renderModal(this.#container);
-    this.#renderNotification(this.#container);
+    // this.#renderModal(this.#container);
+    // this.#renderNotification(this.#container);
   }
 
   #renderSidebar(container) {
@@ -59,6 +59,7 @@ export default class MainPresenter {
 
   #handleTlbClearClick = () => {
     console.log('Clear clicked!');
+    this.#renderModal(this.#container);
   };
 
   #handleTlbSaveClick = () => {
@@ -84,11 +85,12 @@ export default class MainPresenter {
   }
 
   #handleModalApplyClick = () => {
-    console.log('Apply clicked!');
+    this.#editorPresenter.reset();
+    this.#modalPresenter.destroy();
   };
 
   #handleModalCancelClick = () => {
-    console.log('Cancel clicked!');
+    this.#modalPresenter.destroy();
   };
 
   #renderNotification(container) {
