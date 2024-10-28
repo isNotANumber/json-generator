@@ -7,7 +7,12 @@ function createGeneratorItemTemplate() {
             <div class="generator-item">
                 <input type="text" class="generator-item__input" placeholder="Key"/>
                 <input type="text" class="generator-item__input" placeholder="Value"/>
-                <div class="generator__buttons-container"></div>
+                <button class="button button--small gnrt-btn--append">
+                    <i class="fas fa-plus"></i>
+                  </button>
+                <button class="button button--small button--red gnrt-btn--remove">
+                    <i class="fas fa-trash"></i>
+                </button>
             </div>
             <ul class="generator-input-list generator-input-list--nested"></ul>
         </li>
@@ -19,7 +24,6 @@ function createGeneratorItemTemplate() {
  * Generator item view class.
  */
 export default class GeneratorItemView extends AbstractView {
-
     /**
      * Getter for generator item template.
      * @abstract

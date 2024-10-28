@@ -3,6 +3,9 @@ body {
     font-family: Arial, sans-serif;
     color: white;
   }
+  i {
+    pointer-events: none
+  }
   .header {
     background-color: #ff7043;
     padding: 10px 20px;
