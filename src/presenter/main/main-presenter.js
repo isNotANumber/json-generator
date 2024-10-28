@@ -1,4 +1,4 @@
-import { render, remove } from '../../framework/render.js';
+import { render } from '../../framework/render.js';
 import MainContainerView from '../../view/main/main-container-view.js';
 import ToolbarPresenter from '../toolbar/toolbar-presenter.js';
 import SidebarPresenter from '../sidebar/sidebar-presenter.js';
@@ -63,22 +63,21 @@ export default class MainPresenter {
   }
 
   #showModal(container) {
-    this.#modalPresenter = new ModalPresenter({ container: container, onApplyClick: this.#handleModalApplyClick, onCancelClick: this.#handleModalCancelClick });
+    this.#modalPresenter = new ModalPresenter({ container: container, onModalButtonClick: this.#handleModalButtonClick });
 
     this.#modalPresenter.init();
   }
 
-  #handleModalApplyClick = () => {
-    this.#editorPresenter.reset();
-    this.#modalPresenter.destroy();
+  #handleModalButtonClick = (evt) => {
+    if (evt.target.classList.contains('modal-btn--confirm')) {
+      this.#editorPresenter.reset();
+      this.#modalPresenter.destroy();
 
-    this.#showNotification(this.#container, 'Editor reseted!');
-  };
-
-  #handleModalCancelClick = () => {
-    this.#modalPresenter.destroy();
-
-    this.#showNotification(this.#container, 'Editor reset cancelled!');
+      this.#showNotification(this.#container, 'Editor reseted!');
+    } else if (evt.target.classList.contains('modal-btn--cancel')) {
+        this.#modalPresenter.destroy();
+        this.#showNotification(this.#container, 'Editor reset cancelled!');
+    }
   };
 
   #showNotification(container, message) {
