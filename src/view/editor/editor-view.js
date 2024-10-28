@@ -1,9 +1,37 @@
 import AbstractView from "../../framework/view/abstract-view";
 
-function createEditorTemplate() {
+function createEditorInputTemplate() {
     return (
         `
-        <div class="editor"></div>
+        <div class="editor__pane editor__pane--input">
+            <h2>Propopties (key:value)</h2>
+        </div>
+        `
+    );
+}
+
+function createEditorOutputTemplate() {
+    return (
+        `
+        <div class="editor__pane editor__pane--output">
+            <h2>JSON</h2>
+            <pre id="json-output">{}</pre>
+            </div>
+          </div>
+        `
+    );
+}
+
+function createEditorTemplate() {
+    const editorInputTemplate = createEditorInputTemplate();
+    const editorOutputTemplate = createEditorOutputTemplate();
+
+    return (
+        `
+        <div class="editor">
+            ${editorInputTemplate}
+            ${editorOutputTemplate}
+        </div>
         `
     );
 }
