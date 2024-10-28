@@ -29,8 +29,6 @@ export default class MainPresenter {
     this.#renderSidebar(mainContainer.element);
     this.#renderToolbar(mainContentElement);
     this.#renderEditor(mainContentElement);
-    // this.#renderModal(this.#container);
-    // this.#renderNotification(this.#container);
   }
 
   #renderSidebar(container) {
@@ -58,8 +56,7 @@ export default class MainPresenter {
   };
 
   #handleTlbClearClick = () => {
-    console.log('Clear clicked!');
-    this.#renderModal(this.#container);
+    this.#showModal(this.#container);
   };
 
   #handleTlbSaveClick = () => {
@@ -78,7 +75,7 @@ export default class MainPresenter {
     this.#editorPresenter.init();
   }
 
-  #renderModal(container) {
+  #showModal(container) {
     this.#modalPresenter = new ModalPresenter({ container: container, onApplyClick: this.#handleModalApplyClick, onCancelClick: this.#handleModalCancelClick });
 
     this.#modalPresenter.init();
@@ -87,17 +84,26 @@ export default class MainPresenter {
   #handleModalApplyClick = () => {
     this.#editorPresenter.reset();
     this.#modalPresenter.destroy();
+
+    this.#showNotification(this.#container, 'Editor reseted!');
   };
 
   #handleModalCancelClick = () => {
     this.#modalPresenter.destroy();
+
+    this.#showNotification(this.#container, 'Editor reset cancelled!');
   };
 
-  #renderNotification(container) {
+  #showNotification(container, message) {
     this.#notificationPresenter = new NotificationPresenter({
       container: container,
+      message: message,
     });
 
     this.#notificationPresenter.init();
+
+    setTimeout(() => {
+      this.#notificationPresenter.destroy();
+    }, 3000);
   }
 }
