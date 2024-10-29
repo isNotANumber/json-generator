@@ -7,7 +7,7 @@ import HeaderView from '../../view/header/header-view.js';
 import NotificationView from '../../view/notification/notification-view.js';
 import ToolbarView from '../../view/toolbar/toolbar-view.js';
 
-export default class MainPresenter {
+export default class GeneralPresenter {
   #container = null;
 
   #sidebarPresenter = null;

@@ -1,6 +1,6 @@
 {
     "name": "json-generator",
-    "version": "0.0.3",
+    "version": "0.5.0",
     "private": true,
     "description": "Генератор JSON из набора пар ключ-значение",
     "browserslist": [

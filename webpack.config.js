@@ -2,7 +2,7 @@ const path = require('path');
 const HtmlPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  entry: './src/main.js',
+  entry: './src/index.js',
   output: {
     filename: 'bundle.[contentstash].js',
     path: path.resolve(__dirname, 'build'),
