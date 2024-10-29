@@ -21,6 +21,16 @@ function createToolbarTemplate() {
  * Toolbar view class.
  */
 export default class ToolbarView extends AbstractView {
+  #handleToolbarButtonsClick = null;
+
+  constructor({onToolbarButtonClick}) {
+    super();
+
+    this.#handleToolbarButtonsClick = onToolbarButtonClick;
+
+    this.element.addEventListener('click', this.#handleToolbarButtonsClick);
+  }
+
   /**
    * Getter for toolbar template.
    * @returns {string} Toolbar template as a string.

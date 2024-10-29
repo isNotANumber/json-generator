@@ -1,21 +1,22 @@
 import { render, remove } from '../../framework/render.js';
 import MainContainerView from '../../view/main/main-container-view.js';
-import ToolbarPresenter from '../toolbar/toolbar-presenter.js';
 import SidebarPresenter from '../sidebar/sidebar-presenter.js';
 import EditorPresenter from '../editor/editor-presenter.js';
 import ModalView from '../../view/modal/modal-view.js';
-import NotificationPresenter from '../notification/notification-presenter.js';
 import HeaderView from '../../view/header/header-view.js';
+import NotificationView from '../../view/notification/notification-view.js';
+import ToolbarView from '../../view/toolbar/toolbar-view.js';
 
 export default class MainPresenter {
   #container = null;
 
-  #toolbarPresenter = null;
   #sidebarPresenter = null;
   #editorPresenter = null;
-  #notificationPresenter = null;
+
   #headerComponent = null;
+  #toolbarComponent = null;
   #modalComponent = null;
+  #notificationComponent = null;
 
   constructor({ container }) {
     this.#container = container;
@@ -37,7 +38,7 @@ export default class MainPresenter {
   #renderHeader(container) {
     this.#headerComponent = new HeaderView();
 
-    render(this.#headerComponent, container)
+    render(this.#headerComponent, container);
   }
 
   #renderSidebar(container) {
@@ -49,15 +50,12 @@ export default class MainPresenter {
   }
 
   #renderToolbar(container) {
-    this.#toolbarPresenter = new ToolbarPresenter({
-      container: container,
-      onToolbarButtonClick: this.#handleToolbarButtonsClick
-    });
+    this.#toolbarComponent = new ToolbarView({onToolbarButtonClick: this.#handleToolbarButtonClick})
 
-    this.#toolbarPresenter.init();
+    render(this.#toolbarComponent, container);
   }
 
-  #handleToolbarButtonsClick = (evt) => {
+  #handleToolbarButtonClick = (evt) => {
     if (evt.target.classList.contains('tlb-btn--clear')) {
       this.#showModal(this.#container);
     }
@@ -72,7 +70,9 @@ export default class MainPresenter {
   }
 
   #showModal(container) {
-    this.#modalComponent = new ModalView({onModalButtonClick: this.#handleModalButtonClick})
+    this.#modalComponent = new ModalView({
+      onModalButtonClick: this.#handleModalButtonClick,
+    });
 
     render(this.#modalComponent, container);
   }
@@ -85,21 +85,18 @@ export default class MainPresenter {
 
       this.#showNotification(this.#container, 'Editor reseted!');
     } else if (evt.target.classList.contains('modal-btn--cancel')) {
-        remove(this.#modalComponent);
-        this.#showNotification(this.#container, 'Editor reset cancelled!');
+      remove(this.#modalComponent);
+      this.#showNotification(this.#container, 'Editor reset cancelled!');
     }
   };
 
   #showNotification(container, message) {
-    this.#notificationPresenter = new NotificationPresenter({
-      container: container,
-      message: message,
-    });
+    this.#notificationComponent = new NotificationView({ message: message });
 
-    this.#notificationPresenter.init();
+    render(this.#notificationComponent, container);
 
     setTimeout(() => {
-      this.#notificationPresenter.destroy();
+      remove(this.#notificationComponent);
     }, 3000);
   }
 }
