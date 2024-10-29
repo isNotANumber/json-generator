@@ -7,36 +7,42 @@ import GeneratorInputListView from '../../view/generator/generator-input-list-vi
 export default class EditorPresenter {
   #container = null;
 
-  #editor = new EditorView();
+  #editorComponent = new EditorView();
 
-  #generatorInputList = null;
-  #generatorItem = null;
+  #generatorInputListComponent = null;
+  #generatorItemComponent = null;
 
   constructor({ container }) {
     this.#container = container;
   }
 
   init() {
-    const editorInputContainer = this.#editor.element.querySelector('.editor__pane--input');
+    this.#renderEditor(this.#container);
 
-    render(this.#editor, this.#container)
+    const editorInputContainer = this.#editorComponent.element.querySelector('.editor__pane--input');
     
     this.#renderGeneratorInputList(editorInputContainer);
-    this.#renderGeneratorItem(this.#generatorInputList.element);
+    this.#renderGeneratorItem(this.#generatorInputListComponent.element);
+  }
+
+  #renderEditor(container) {
+    this.#editorComponent = new EditorView();
+
+    render(this.#editorComponent, container);
   }
 
   #renderGeneratorInputList(container) {
-    this.#generatorInputList = new GeneratorInputListView({
+    this.#generatorInputListComponent = new GeneratorInputListView({
       onItemButtonClick: this.#handleGeneratorItemButtonClick,
     });
 
-    render(this.#generatorInputList, container);
+    render(this.#generatorInputListComponent, container);
   }
 
   #renderGeneratorItem(container) {
-    this.#generatorItem = new GeneratorItemView();
+    this.#generatorItemComponent = new GeneratorItemView();
 
-    render(this.#generatorItem, container);
+    render(this.#generatorItemComponent, container);
   }
 
   // TODO: refactor this
@@ -54,13 +60,13 @@ export default class EditorPresenter {
         .closest('ul')
         .classList.contains('generator-input-list--nested')
     ) {
-      console.log(this.#generatorInputList.element.children);
+      console.log(this.#generatorInputListComponent.element.children);
       evt.target.closest('li').remove();
     }
   };
 
   reset() {
-    remove(this.#editor);
+    remove(this.#editorComponent);
     this.init();
   }
 }
