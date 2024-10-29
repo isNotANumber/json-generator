@@ -5,6 +5,7 @@ import SidebarPresenter from '../sidebar/sidebar-presenter.js';
 import EditorPresenter from '../editor/editor-presenter.js';
 import ModalPresenter from '../modal/modal-presenter.js';
 import NotificationPresenter from '../notification/notification-presenter.js';
+import HeaderView from '../../view/header/header-view.js';
 
 export default class MainPresenter {
   #container = null;
@@ -14,6 +15,7 @@ export default class MainPresenter {
   #editorPresenter = null;
   #modalPresenter = null;
   #notificationPresenter = null;
+  #headerComponent = null;
 
   constructor({ container }) {
     this.#container = container;
@@ -24,11 +26,18 @@ export default class MainPresenter {
     const mainContentElement =
       mainContainer.element.querySelector('.main-content');
 
+    this.#renderHeader(this.#container);
     render(mainContainer, this.#container);
 
     this.#renderSidebar(mainContainer.element);
     this.#renderToolbar(mainContentElement);
     this.#renderEditor(mainContentElement);
+  }
+
+  #renderHeader(container) {
+    this.#headerComponent = new HeaderView();
+
+    render(this.#headerComponent, container)
   }
 
   #renderSidebar(container) {
@@ -68,6 +77,7 @@ export default class MainPresenter {
     this.#modalPresenter.init();
   }
 
+  // TODO: refactor this
   #handleModalButtonClick = (evt) => {
     if (evt.target.classList.contains('modal-btn--confirm')) {
       this.#editorPresenter.reset();
