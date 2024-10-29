@@ -14,6 +14,7 @@ export default class GeneralPresenter {
   #editorPresenter = null;
 
   #headerComponent = null;
+  #mainComponent = null;
   #toolbarComponent = null;
   #modalComponent = null;
   #notificationComponent = null;
@@ -23,14 +24,13 @@ export default class GeneralPresenter {
   }
 
   init() {
-    const mainContainer = new MainContainerView();
-    const mainContentElement =
-      mainContainer.element.querySelector('.main-content');
-
     this.#renderHeader(this.#container);
-    render(mainContainer, this.#container);
+    this.#renderMain(this.#container);
 
-    this.#renderSidebar(mainContainer.element);
+    const mainContentElement =
+      this.#mainComponent.element.querySelector('.main-content');
+
+    this.#renderSidebar(this.#mainComponent.element);
     this.#renderToolbar(mainContentElement);
     this.#renderEditor(mainContentElement);
   }
@@ -39,6 +39,12 @@ export default class GeneralPresenter {
     this.#headerComponent = new HeaderView();
 
     render(this.#headerComponent, container);
+  }
+
+  #renderMain(container) {
+    this.#mainComponent = new MainContainerView();
+
+    render(this.#mainComponent, container);
   }
 
   #renderSidebar(container) {
@@ -50,16 +56,12 @@ export default class GeneralPresenter {
   }
 
   #renderToolbar(container) {
-    this.#toolbarComponent = new ToolbarView({onToolbarButtonClick: this.#handleToolbarButtonClick})
+    this.#toolbarComponent = new ToolbarView({
+      onToolbarButtonClick: this.#handleToolbarButtonClick,
+    });
 
     render(this.#toolbarComponent, container);
   }
-
-  #handleToolbarButtonClick = (evt) => {
-    if (evt.target.classList.contains('tlb-btn--clear')) {
-      this.#showModal(this.#container);
-    }
-  };
 
   #renderEditor(container) {
     this.#editorPresenter = new EditorPresenter({
@@ -77,6 +79,16 @@ export default class GeneralPresenter {
     render(this.#modalComponent, container);
   }
 
+  #showNotification(container, message) {
+    this.#notificationComponent = new NotificationView({ message: message });
+
+    render(this.#notificationComponent, container);
+
+    setTimeout(() => {
+      remove(this.#notificationComponent);
+    }, 3000);
+  }
+
   // TODO: refactor this
   #handleModalButtonClick = (evt) => {
     if (evt.target.classList.contains('modal-btn--confirm')) {
@@ -90,13 +102,9 @@ export default class GeneralPresenter {
     }
   };
 
-  #showNotification(container, message) {
-    this.#notificationComponent = new NotificationView({ message: message });
-
-    render(this.#notificationComponent, container);
-
-    setTimeout(() => {
-      remove(this.#notificationComponent);
-    }, 3000);
-  }
+  #handleToolbarButtonClick = (evt) => {
+    if (evt.target.classList.contains('tlb-btn--clear')) {
+      this.#showModal(this.#container);
+    }
+  };
 }
