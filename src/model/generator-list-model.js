@@ -1,39 +1,39 @@
 const generatorList = [
   {
     id: 1,
-    key: 'bla?',
-    value: 'blablabla',
+    key: 'bla1',
+    value: 'blablabla1',
   },
   {
     id: 2,
-    key: 'bla?',
+    key: 'bla2',
     value: [
       {
         id: 15,
-        key: 'bla?',
-        value: 'blablabla',
+        key: 'bla15',
+        value: 'blablabla15',
       },
     ],
   },
   {
     id: 3,
-    key: 'bla?',
+    key: 'bla3',
     value: [
       {
         id: 47,
-        key: 'bla?',
-        value: 'blablabla',
+        key: 'bla47',
+        value: 'blablabla47',
       },
     ],
   },
   {
     id: 50,
-    key: 'bla?',
-    value: 'blablabla',
+    key: 'bla50',
+    value: 'blablabla50',
   },
 ];
 
-class GeneratorListModel {
+export default class GeneratorListModel {
   #generatorList = generatorList;
 
   get generatorItems() {

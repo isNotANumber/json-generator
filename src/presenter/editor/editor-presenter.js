@@ -2,10 +2,13 @@ import { render, remove } from '../../framework/render';
 import EditorView from '../../view/editor/editor-view';
 import GeneratorItemView from '../../view/generator/generator-item-view.js';
 import GeneratorInputListView from '../../view/generator/generator-input-list-view.js';
+import GeneratorListModel from '../../model/generator-list-model.js';
 
 
 export default class EditorPresenter {
   #container = null;
+
+  #generatorListModel = new GeneratorListModel(); 
 
   #editorComponent = new EditorView();
 
@@ -22,7 +25,8 @@ export default class EditorPresenter {
     const editorInputContainer = this.#editorComponent.element.querySelector('.editor__pane--input');
     
     this.#renderGeneratorInputList(editorInputContainer);
-    this.#renderGeneratorItem(this.#generatorInputListComponent.element);
+    this.#buldComponentFromModel(this.#generatorListModel.generatorItems, this.#generatorInputListComponent.element);
+    // this.#renderGeneratorItem(this.#generatorInputListComponent.element);
   }
 
   #renderEditor(container) {
@@ -31,6 +35,7 @@ export default class EditorPresenter {
     render(this.#editorComponent, container);
   }
 
+  // refactor this
   #renderGeneratorInputList(container) {
     this.#generatorInputListComponent = new GeneratorInputListView({
       onItemButtonClick: this.#handleGeneratorItemButtonClick,
@@ -39,8 +44,9 @@ export default class EditorPresenter {
     render(this.#generatorInputListComponent, container);
   }
 
+  // refactor this
   #renderGeneratorItem(container) {
-    this.#generatorItemComponent = new GeneratorItemView();
+    this.#generatorItemComponent = new GeneratorItemView({id: null, key: null, value: null, child: null});
 
     render(this.#generatorItemComponent, container);
   }
@@ -55,14 +61,42 @@ export default class EditorPresenter {
         .querySelector('.generator-input-list--nested');
       this.#renderGeneratorItem(childContainer);
     } else if (
-      evt.target.classList.contains('gnrt-btn--remove') &&
-      evt.target
-        .closest('ul')
-        .classList.contains('generator-input-list--nested')
+      evt.target.classList.contains('gnrt-btn--remove') 
+      // &&
+      // evt.target
+      //   .closest('ul')
+      //   .classList.contains('generator-input-list--nested')
     ) {
       evt.target.closest('li').remove();
     }
   };
+
+  #buldComponentFromModel(items, container) {
+    for (const item of items) {
+      let currentGeneratorItem = null;
+      let currentGeneratorItemChildLocation = null;
+
+      if (Array.isArray(item.value)) {
+        currentGeneratorItem = new GeneratorItemView({
+          id: item.id,
+          key: item.key,
+          value: ''
+        })
+
+        currentGeneratorItemChildLocation = currentGeneratorItem.element.querySelector('.generator-input-list--nested');
+        this.#buldComponentFromModel(item.value, currentGeneratorItemChildLocation);
+
+      } else {
+        currentGeneratorItem = new GeneratorItemView({
+          id: item.id,
+          key: item.key,
+          value: item.value,
+        })
+      }
+
+      render(currentGeneratorItem, container)
+    }
+  }
 
   reset() {
     remove(this.#editorComponent);
