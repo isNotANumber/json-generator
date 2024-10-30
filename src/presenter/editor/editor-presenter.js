@@ -60,7 +60,6 @@ export default class EditorPresenter {
         .closest('ul')
         .classList.contains('generator-input-list--nested')
     ) {
-      console.log(this.#generatorInputListComponent.element.children);
       evt.target.closest('li').remove();
     }
   };
