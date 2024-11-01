@@ -22,9 +22,6 @@ export default class EditorInputPresenter {
 
   // refactor this
   #renderGeneratorInputList(items, container) {
-    const test = items.map((item) => ({id: item.id, key: item.key, value: item.value}));
-
-
     this.#generatorInputListComponent = new GeneratorInputListView({
       items: items.map((item) => ({id: item.id, key: item.key, value: item.value})),
       onItemButtonClick: this.#handleGeneratorItemButtonClick,
