@@ -5,8 +5,8 @@ function createGeneratorItemTemplate({id, key, value}) {
         `
         <li>
             <div data-id=${id} class="generator-item">
-                <input type="text" class="generator-item__input" placeholder="Key" value='${key}'/}>
-                <input type="text" class="generator-item__input" placeholder="Value" value='${value}'/>
+                <input type="text" class="generator-item__input generator-item__input-key" placeholder="Key" value='${key}'/}>
+                <input type="text" class="generator-item__input generator-item__input-value" placeholder="Value" value='${value}'/>
                 <button class="button button--small gnrt-btn--append">
                     <i class="fas fa-plus"></i>
                   </button>
