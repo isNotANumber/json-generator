@@ -17,17 +17,21 @@ export default class EditorInputPresenter {
   }
 
   init() {
-    this.#renderGeneratorInputList(this.#container);
-    this.#buldGeneratorItemsListFromModel(this.#generatorListModel.generatorItems, this.#generatorInputListComponent.element);
+    this.#renderGeneratorInputList(this.#generatorListModel.generatorItems, this.#container);
   }
 
   // refactor this
-  #renderGeneratorInputList(container) {
+  #renderGeneratorInputList(items, container) {
+    const test = items.map((item) => ({id: item.id, key: item.key, value: item.value}));
+
+
     this.#generatorInputListComponent = new GeneratorInputListView({
+      items: items.map((item) => ({id: item.id, key: item.key, value: item.value})),
       onItemButtonClick: this.#handleGeneratorItemButtonClick,
     });
 
     render(this.#generatorInputListComponent, container);
+    this.#renderItemsListFromState(this.#generatorInputListComponent._state, this.#generatorInputListComponent.element);
   }
 
   // refactor this
@@ -50,8 +54,6 @@ export default class EditorInputPresenter {
       this.#generatorListModel.updateItemById(targetItemId, {id: targetItemId, key: targetItemKeyInput.value})
       this.#generatorListModel.appendItemById(targetItemId, newItem);
 
-      console.log(this.#generatorListModel.generatorItems);
-
       this.#renderGeneratorItem(itemChildContainer, newItem.id);
 
     } else if (evt.target.classList.contains('gnrt-btn--remove')) {
@@ -61,8 +63,8 @@ export default class EditorInputPresenter {
     }
   };
 
-  #buldGeneratorItemsListFromModel(items, container) {
-    for (const item of items) {
+  #renderItemsListFromState(state, container) {
+    for (const item of Object.values(state)) {
       let currentGeneratorItem = null;
       let currentGeneratorItemChildLocation = null;
 
@@ -74,7 +76,7 @@ export default class EditorInputPresenter {
         })
 
         currentGeneratorItemChildLocation = currentGeneratorItem.element.querySelector('.generator-input-list--nested');
-        this.#buldGeneratorItemsListFromModel(item.value, currentGeneratorItemChildLocation);
+        this.#renderItemsListFromState(item.value, currentGeneratorItemChildLocation);
 
       } else {
         currentGeneratorItem = new GeneratorItemView({
