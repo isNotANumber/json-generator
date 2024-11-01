@@ -1,4 +1,4 @@
-import AbstractView from "../../framework/view/abstract-view.js";
+import AbstractStatefulView from "../../framework/view/abstract-stateful-view.js";
 
 function createGeneratorInputListTemplate() {
     return (
@@ -11,12 +11,13 @@ function createGeneratorInputListTemplate() {
 /**
  * Generator input list view class.
  */
-export default class GeneratorInputListView extends AbstractView {
+export default class GeneratorInputListView extends AbstractStatefulView {
 
     #handleItemButtonClick = null;
 
-    constructor({onItemButtonClick}) {
+    constructor({items, onItemButtonClick}) {
         super();
+        this._setState(items);
         this.#handleItemButtonClick = onItemButtonClick;
 
         

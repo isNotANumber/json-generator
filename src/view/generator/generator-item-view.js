@@ -1,4 +1,4 @@
-import AbstractView from "../../framework/view/abstract-view.js";
+import AbstractStatefulView from "../../framework/view/abstract-stateful-view.js";
 
 function createGeneratorItemTemplate({id, key, value}) {
     return (
@@ -23,16 +23,10 @@ function createGeneratorItemTemplate({id, key, value}) {
 /**
  * Generator item view class.
  */
-export default class GeneratorItemView extends AbstractView {
-    #id = null;
-    #key = null;
-    #value = null;
-
-    constructor({id, key, value, child}) {
+export default class GeneratorItemView extends AbstractStatefulView {
+    constructor({id, key, value}) {
         super();
-        this.#id = id;
-        this.#key = key;
-        this.#value = value;
+        this._setState({id: id, key: key, value: value})
     }
 
     /**
@@ -41,6 +35,6 @@ export default class GeneratorItemView extends AbstractView {
      * @returns {string} Generator item template as a string.
      */
     get template() {
-        return createGeneratorItemTemplate({id: this.#id, key: this.#key, value: this.#value});
+        return createGeneratorItemTemplate({id: this._state.id, key: this._state.key, value: this._state.value});
     }
 }
