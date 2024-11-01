@@ -1,4 +1,4 @@
-import { render } from '../../framework/render.js';
+import { render, remove } from '../../framework/render.js';
 import GeneratorItemView from '../../view/generator/generator-item-view.js';
 import GeneratorInputListView from '../../view/generator/generator-input-list-view.js';
 import GeneratorListModel from '../../model/generator-list-model.js';
@@ -6,6 +6,7 @@ import GeneratorListModel from '../../model/generator-list-model.js';
 
 export default class EditorInputPresenter {
   #container = null;
+  #generatorItemsComponents = {};
 
   #generatorListModel = new GeneratorListModel();
 
@@ -18,6 +19,13 @@ export default class EditorInputPresenter {
 
   init() {
     this.#renderGeneratorInputList(this.#generatorListModel.generatorItems, this.#container);
+    // this.#testSetState();
+    console.log(this.#generatorInputListComponent._state)
+  }
+
+  #testSetState() {
+    // console.log(this)
+    // this.#generatorInputListComponent._setState(this.#generatorItemsComponents);
   }
 
   // refactor this
@@ -28,7 +36,7 @@ export default class EditorInputPresenter {
     });
 
     render(this.#generatorInputListComponent, container);
-    this.#renderItemsListFromState(this.#generatorInputListComponent._state, this.#generatorInputListComponent.element);
+    this.#renderItemsListFromModel(this.#generatorListModel.generatorItems, this.#generatorInputListComponent.element);
   }
 
   // refactor this
@@ -38,30 +46,31 @@ export default class EditorInputPresenter {
     render(this.#generatorItemComponent, container);
   }
 
-  // TODO: refactor this
   #handleGeneratorItemButtonClick = (evt) => {
-    const itemLi = evt.target.closest('li');
-    const itemChildContainer = itemLi.querySelector('.generator-input-list--nested');
-    const targetItemId = itemLi.querySelector('div').dataset.id;
-    const targetItemKeyInput = itemLi.querySelector('.generator-item__input-key');
+    const item = evt.target.closest('li');
 
-    if (evt.target.classList.contains('gnrt-btn--append') && itemChildContainer.children.length < 3) {
-      const newItem = {id: '100'};
+    if (item) {
+      if (evt.target.classList.contains('gnrt-btn--append')) {
+        const targetId = item.dataset.id;
+        const targetComponent = this.#generatorItemsComponents[targetId];
+        const childContainer = targetComponent.element.querySelector('.generator-input-list--nested');
+        const newItem = new GeneratorItemView({id: '100', key: 'test', value: 'test'});
+  
+        this.#generatorItemsComponents[newItem._state.id] = newItem;
+        render(newItem, childContainer);
+        console.log(this.#generatorInputListComponent._state)
+  
+      } else if (evt.target.classList.contains('gnrt-btn--remove')) {
+        const targetId = item.dataset.id;
 
-      this.#generatorListModel.updateItemById(targetItemId, {id: targetItemId, key: targetItemKeyInput.value})
-      this.#generatorListModel.appendItemById(targetItemId, newItem);
-
-      this.#renderGeneratorItem(itemChildContainer, newItem.id);
-
-    } else if (evt.target.classList.contains('gnrt-btn--remove')) {
-
-      this.#generatorListModel.removeItemById(targetItemId);
-      itemLi.remove();
+        remove(this.#generatorItemsComponents[targetId])
+        delete this.#generatorItemsComponents[targetId];
+      }
     }
   };
 
-  #renderItemsListFromState(state, container) {
-    for (const item of Object.values(state)) {
+  #renderItemsListFromModel(model, container) {
+    for (const item of Object.values(model)) {
       let currentGeneratorItem = null;
       let currentGeneratorItemChildLocation = null;
 
@@ -73,7 +82,7 @@ export default class EditorInputPresenter {
         })
 
         currentGeneratorItemChildLocation = currentGeneratorItem.element.querySelector('.generator-input-list--nested');
-        this.#renderItemsListFromState(item.value, currentGeneratorItemChildLocation);
+        this.#renderItemsListFromModel(item.value, currentGeneratorItemChildLocation);
 
       } else {
         currentGeneratorItem = new GeneratorItemView({
@@ -82,6 +91,9 @@ export default class EditorInputPresenter {
           value: item.value,
         })
       }
+
+      // this.#generatorInputListComponent._setState(currentGeneratorItem.element.id = currentGeneratorItem);
+      this.#generatorItemsComponents[currentGeneratorItem._state.id] = currentGeneratorItem;
 
       render(currentGeneratorItem, container)
     }

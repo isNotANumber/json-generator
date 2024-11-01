@@ -3,8 +3,8 @@ import AbstractStatefulView from "../../framework/view/abstract-stateful-view.js
 function createGeneratorItemTemplate({id, key, value}) {
     return (
         `
-        <li>
-            <div data-id=${id} class="generator-item">
+        <li data-id=${id}>
+            <div class="generator-item">
                 <input type="text" class="generator-item__input generator-item__input-key" placeholder="Key" value='${key}'/}>
                 <input type="text" class="generator-item__input generator-item__input-value" placeholder="Value" value='${value}'/>
                 <button class="button button--small gnrt-btn--append">
