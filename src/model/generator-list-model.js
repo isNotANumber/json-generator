@@ -1,7 +1,7 @@
-import { defaultListState } from './const';
+import { generatorListTest, defaultListState } from './const';
 
 export default class GeneratorListModel {
-  #generatorList = defaultListState;
+  #generatorList = generatorListTest;
 
   get generatorItems() {
     return this.#generatorList;
@@ -14,7 +14,7 @@ export default class GeneratorListModel {
         return;
       }
       if (Array.isArray(item.value)) {
-        updateItemById(item.value, id, newProps);
+        this.updateItemById(id, newProps, item.value);
       }
     }
   }
