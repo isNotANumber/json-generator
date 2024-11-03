@@ -1,5 +1,5 @@
 import { render, remove } from '../../framework/render.js';
-import { generateRandomId } from '../../util.js';
+import { generateRandomId, deleteElementById } from '../../util.js';
 import GeneratorItemView from '../../view/generator/generator-item-view.js';
 import GeneratorInputListView from '../../view/generator/generator-input-list-view.js';
 import GeneratorListModel from '../../model/generator-list-model.js';
@@ -21,7 +21,6 @@ export default class EditorInputPresenter {
     this.#renderGeneratorInputList(this.#generatorListModel.generatorItems, this.#container);
   }
 
-  // refactor this
   #renderGeneratorInputList(items, container) {
     this.#generatorInputListComponent = new GeneratorInputListView({
       items: items.map((item) => ({id: item.id, key: item.key, value: item.value})),
@@ -54,8 +53,10 @@ export default class EditorInputPresenter {
       } else if (evt.target.classList.contains('gnrt-btn--remove')) {
         const targetId = item.dataset.id;
 
-        // remove(this.#generatorItemsComponents[targetId])
-        // delete this.#generatorItemsComponents[targetId];
+        const newState = deleteElementById(this.#generatorInputListComponent._state, targetId);
+
+        this.#generatorInputListComponent.updateElement(newState, 'rewrite');
+        this.#renderListFromState(this.#generatorInputListComponent._state);
       }
     }
   };
