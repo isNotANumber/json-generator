@@ -17,7 +17,7 @@ export default class GeneratorInputListView extends AbstractStatefulView {
 
     constructor({items, onItemButtonClick}) {
         super();
-        this._setState(items);
+        // this._setState(items);
         this.#handleItemButtonClick = onItemButtonClick;
 
         
