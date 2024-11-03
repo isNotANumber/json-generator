@@ -6,7 +6,6 @@ import GeneratorListModel from '../../model/generator-list-model.js';
 
 export default class EditorInputPresenter {
   #container = null;
-  #generatorItemsComponents = {};
 
   #generatorListModel = new GeneratorListModel();
 
@@ -19,14 +18,6 @@ export default class EditorInputPresenter {
 
   init() {
     this.#renderGeneratorInputList(this.#generatorListModel.generatorItems, this.#container);
-    // this.#testSetState();
-    // console.log(this.#generatorInputListComponent._state)
-    // console.log(this.#generatorItemsComponents)
-  }
-
-  #testSetState() {
-    // console.log(this)
-    // this.#generatorInputListComponent._setState(this.#generatorItemsComponents);
   }
 
   // refactor this
@@ -37,12 +28,12 @@ export default class EditorInputPresenter {
     });
 
     render(this.#generatorInputListComponent, container);
-    this.#renderItemsListFromModel(this.#generatorListModel.generatorItems, this.#generatorInputListComponent.element);
+    this.#fillStateFromModel(this.#generatorListModel.generatorItems)
+    this.#renderListFromState(this.#generatorInputListComponent._state)
   }
 
-  // refactor this
-  #renderGeneratorItem(container, id, key = '', value = '') {
-    this.#generatorItemComponent = new GeneratorItemView({id: id, key: key, value: value});
+  #renderGeneratorItem(item, container) {
+    this.#generatorItemComponent = new GeneratorItemView({id: item.id, key: item.key, value: item.value, parentId: item.parentId});
 
     render(this.#generatorItemComponent, container);
   }
@@ -53,31 +44,39 @@ export default class EditorInputPresenter {
     if (item) {
       if (evt.target.classList.contains('gnrt-btn--append')) {
         const targetId = item.dataset.id;
-        const targetComponent = this.#generatorItemsComponents[targetId];
-        // console.log(targetComponent)
-        const childContainer = targetComponent.element.querySelector('.generator-input-list--nested');
-        const newItem = new GeneratorItemView({id: '100', key: 'test', value: 'test'});
+        const newItem = {id: '100', key: 'test', value: 'test', parentId: targetId};
   
-        this.#generatorItemsComponents[newItem._state.id] = newItem;
-        this.#generatorInputListComponent._setState({[newItem._state.id]: newItem})
-        console.log(this.#generatorInputListComponent._state)
-        console.log(this.#generatorItemsComponents)
-        render(newItem, childContainer);
-        // console.log(this.#generatorInputListComponent._state)
+        
+        this.#generatorInputListComponent.updateElement({[newItem.id]: newItem});
+        this.#renderListFromState(this.#generatorInputListComponent._state);
   
       } else if (evt.target.classList.contains('gnrt-btn--remove')) {
         const targetId = item.dataset.id;
 
-        remove(this.#generatorItemsComponents[targetId])
-        delete this.#generatorItemsComponents[targetId];
+        // remove(this.#generatorItemsComponents[targetId])
+        // delete this.#generatorItemsComponents[targetId];
       }
     }
   };
 
-  #renderItemsListFromModel(model, container, parentId = null) {
+  #renderListFromState(state) {
+    for (const item of Object.values(state)) {
+      const currentGeneratorItem = item;
+      let currentGeneratorItemChildLocation = null;
+
+      if (item.parentId === null) {
+        this.#renderGeneratorItem(currentGeneratorItem, this.#generatorInputListComponent.element);
+
+      } else {
+        currentGeneratorItemChildLocation = this.#generatorInputListComponent.element.querySelector(`[data-id='${item.parentId}'`).querySelector('.generator-input-list--nested');
+        this.#renderGeneratorItem(currentGeneratorItem, currentGeneratorItemChildLocation);
+      }
+    }
+  }
+
+  #fillStateFromModel(model, parentId = null) {
     for (const item of Object.values(model)) {
       let currentGeneratorItem = null;
-      let currentGeneratorItemChildLocation = null;
 
       if (Array.isArray(item.value)) {
         currentGeneratorItem = {
@@ -86,16 +85,7 @@ export default class EditorInputPresenter {
           value: '',
           parentId: parentId
         }
-
-        // currentGeneratorItem = new GeneratorItemView({
-        //   id: item.id,
-        //   key: item.key,
-        //   value: '',
-        //   parentId: parentId
-        // })
-
-        currentGeneratorItemChildLocation = currentGeneratorItem.element.querySelector('.generator-input-list--nested');
-        this.#renderItemsListFromModel(item.value, currentGeneratorItemChildLocation, item.id);
+        this.#fillStateFromModel(item.value, item.id);
 
       } else {
         currentGeneratorItem = {
@@ -104,24 +94,9 @@ export default class EditorInputPresenter {
           value: item.value,
           parentId: parentId
         }
-
-        // currentGeneratorItem = new GeneratorItemView({
-        //   id: item.id,
-        //   key: item.key,
-        //   value: item.value,
-        //   parentId: parentId
-        // })
       }
 
-      // this.#generatorInputListComponent._setState(currentGeneratorItem.element.id = currentGeneratorItem);
-      // console.log(currentGeneratorItem.element.dataset.id)
-      // this.#generatorInputListComponent._setState({[currentGeneratorItem.element.dataset.id]: currentGeneratorItem})
-      // this.#generatorItemsComponents[currentGeneratorItem.element.dataset.id] = currentGeneratorItem;
-
-      this.#generatorInputListComponent._setState({[currentGeneratorItem.id]: currentGeneratorItem})
-      this.#generatorItemsComponents[currentGeneratorItem.id] = currentGeneratorItem;
-
-      render(currentGeneratorItem, container)
+      this.#generatorInputListComponent._setState({[currentGeneratorItem.id]: currentGeneratorItem});
     }
   }
 }

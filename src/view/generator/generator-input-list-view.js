@@ -32,4 +32,8 @@ export default class GeneratorInputListView extends AbstractStatefulView {
     get template() {
         return createGeneratorInputListTemplate();
     }
+
+    _restoreHandlers() {
+        this.element.addEventListener('click', this.#handleItemButtonClick);
+    }
 }
