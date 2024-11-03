@@ -1,4 +1,5 @@
 import { render, remove } from '../../framework/render.js';
+import { generateRandomId } from '../../util.js';
 import GeneratorItemView from '../../view/generator/generator-item-view.js';
 import GeneratorInputListView from '../../view/generator/generator-input-list-view.js';
 import GeneratorListModel from '../../model/generator-list-model.js';
@@ -44,7 +45,7 @@ export default class EditorInputPresenter {
     if (item) {
       if (evt.target.classList.contains('gnrt-btn--append')) {
         const targetId = item.dataset.id;
-        const newItem = {id: '100', key: 'test', value: 'test', parentId: targetId};
+        const newItem = {id: generateRandomId(), key: '', value: '', parentId: targetId};
   
         
         this.#generatorInputListComponent.updateElement({[newItem.id]: newItem});
