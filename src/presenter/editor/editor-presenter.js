@@ -110,6 +110,7 @@ export default class EditorPresenter {
     for (const key in state) {
         const item = state[key];
         if (item.parentId) {
+            map[item.parentId].value = [];
             map[item.parentId].value.push(map[item.id]);
         } else {
             output.push(map[item.id]);
@@ -127,7 +128,6 @@ export default class EditorPresenter {
         const targetId = item.dataset.id;
         const newItem = {id: generateRandomId(), key: '', value: '', parentId: targetId};
   
-        
         this.#generatorListComponent.updateElement({[newItem.id]: newItem});
         this.#renderListFromState(this.#generatorListComponent._state);
   
