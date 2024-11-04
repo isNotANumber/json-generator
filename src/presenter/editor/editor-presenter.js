@@ -3,8 +3,6 @@ import EditorView from '../../view/editor/editor-view';
 import { generateRandomId, appendElementById } from '../../util.js';
 import GeneratorItemView from '../../view/generator/generator-item-view.js';
 import GeneratorInputListView from '../../view/generator/generator-input-list-view.js';
-import EditorInputModel from '../../model/editor-input-model.js';
-import EditorOutputModel from '../../model/editor-output-model.js';
 
 export default class EditorPresenter {
   #container = null;
@@ -17,14 +15,13 @@ export default class EditorPresenter {
   #inputModel = null;
   #outputModel = null;
 
-  constructor({ container }) {
+  constructor({ container, inputModel, outputModel }) {
     this.#container = container;
+    this.#inputModel = inputModel;
+    this.#outputModel = outputModel;
   }
 
   init() {
-    this.#inputModel = new EditorInputModel();
-    this.#outputModel = new EditorOutputModel();
-
     this.#renderEditor(this.#container);
 
     const editorInputContainer = this.#editorComponent.element.querySelector(

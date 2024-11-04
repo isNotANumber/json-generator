@@ -6,6 +6,8 @@ import ModalView from '../../view/modal/modal-view.js';
 import HeaderView from '../../view/header/header-view.js';
 import NotificationView from '../../view/notification/notification-view.js';
 import ToolbarView from '../../view/toolbar/toolbar-view.js';
+import EditorInputModel from '../../model/editor-input-model.js';
+import EditorOutputModel from '../../model/editor-output-model.js';
 
 export default class GeneralPresenter {
   #container = null;
@@ -65,6 +67,8 @@ export default class GeneralPresenter {
   #renderEditor(container) {
     this.#editorPresenter = new EditorPresenter({
       container: container,
+      inputModel: new EditorInputModel(),
+      outputModel: new EditorOutputModel(),
     });
 
     this.#editorPresenter.init();
