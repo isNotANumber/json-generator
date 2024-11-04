@@ -79,6 +79,7 @@ export default class GeneralPresenter {
     render(this.#modalComponent, container);
   }
 
+  // TODO: refactor this (remove container)
   #showNotification(container, message) {
     this.#notificationComponent = new NotificationView({ message: message });
 
@@ -103,8 +104,32 @@ export default class GeneralPresenter {
   };
 
   #handleToolbarButtonClick = (evt) => {
-    if (evt.target.classList.contains('tlb-btn--clear')) {
+    if (evt.target.classList.contains('tlb-btn--apply')) {
+      this.#editorPresenter.apply();
+      this.#showNotification(this.#container, 'JSON rendered!');
+    } else if (evt.target.classList.contains('tlb-btn--clear')) {
       this.#showModal(this.#container);
+    } else if (evt.target.classList.contains('tlb-btn--save')) {
+      const jsonOutput = document.getElementById('json-output').textContent;
+      const blob = new Blob([jsonOutput], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'data.json';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    } else if (evt.target.classList.contains('tlb-btn--copy')) {
+      const jsonOutput = document.getElementById('json-output').textContent;
+      navigator.clipboard
+        .writeText(jsonOutput)
+        .then(() => {
+          this.#showNotification(this.#container, 'JSON copied to clipboard');
+        })
+        .catch((err) => {
+          this.#showNotification(this.#container, 'Failed to copy JSON');
+        });
     }
   };
 }
