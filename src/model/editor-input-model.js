@@ -1,17 +1,17 @@
 import { generatorListTest, defaultListState } from './const';
 
 export default class EditorInputModel {
-  #generatorList = generatorListTest;
+  #generatorItems = generatorListTest;
 
   get generatorItems() {
-    return this.#generatorList;
+    return this.#generatorItems;
   }
 
-  updateData(data) {
-    this.#generatorList = data;
+  set data(data) {
+    this.#generatorItems = data;
   }
 
   setDefaultData() {
-    this.#generatorList = generatorListTest;
+    this.#generatorItems = generatorListTest;
   }
 }

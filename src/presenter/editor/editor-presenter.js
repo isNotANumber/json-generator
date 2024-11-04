@@ -148,8 +148,6 @@ export default class EditorPresenter {
         delete this.#inputItems[targetId];
       }
     }
-
-    console.log(this.#inputItems)
   };
 
   #handleItemInput = (evt) => {
@@ -170,8 +168,8 @@ export default class EditorPresenter {
 
   apply() {
     const newData = this.#convertInputItemsToModel();
-    this.#inputModel.updateData(newData);
-    this.#outputModel.updateData(newData);
+    this.#inputModel.data = newData;
+    this.#outputModel.data = newData;
 
     this.#renderOutputData(this.#outputModel.outputJson);
   }
