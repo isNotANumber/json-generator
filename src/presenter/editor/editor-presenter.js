@@ -1,6 +1,6 @@
 import { render, remove } from '../../framework/render';
 import EditorView from '../../view/editor/editor-view';
-import { generateRandomId, deleteElementById } from '../../util.js';
+import { generateRandomId, appendElementById } from '../../util.js';
 import GeneratorItemView from '../../view/generator/generator-item-view.js';
 import GeneratorInputListView from '../../view/generator/generator-input-list-view.js';
 import EditorInputModel from '../../model/editor-input-model.js';
@@ -114,13 +114,8 @@ export default class EditorPresenter {
             delete itemObj.parentId
             output.push(itemObj)
         } else {
-            for (const elem of output) {
-                if (elem.id === itemObj.parentId) {
-                    delete itemObj.parentId
-                    elem.value = [];
-                    elem.value.push(itemObj)
-                }
-            }
+            appendElementById(output, itemObj.parentId, itemObj)
+            delete itemObj.parentId
         }
     }
 
@@ -139,6 +134,7 @@ export default class EditorPresenter {
           key: '',
           value: '',
           parentId: targetId,
+          onInput: this.#handleItemInput,
         });
 
         this.#inputItems[newItem.element.dataset.id] = newItem;
@@ -155,6 +151,8 @@ export default class EditorPresenter {
         delete this.#inputItems[targetId];
       }
     }
+
+    console.log(this.#inputItems)
   };
 
   #handleItemInput = (evt) => {
