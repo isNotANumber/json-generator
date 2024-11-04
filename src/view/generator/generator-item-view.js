@@ -26,12 +26,16 @@ function createGeneratorItemTemplate({id, key, value, parentId}) {
 export default class GeneratorItemView extends AbstractStatefulView {
     #id = null;
     #parentId = null;
+    #handleItemInput = null;
 
-    constructor({id, key, value, parentId}) {
+    constructor({id, key, value, parentId, onInput}) {
         super();
         this._setState({key: key, value: value})
         this.#id = id
         this.#parentId = parentId
+        this.#handleItemInput = onInput;
+
+        this.element.addEventListener('change', this.#handleItemInput);
     }
 
     /**
