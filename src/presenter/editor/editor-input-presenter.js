@@ -2,13 +2,13 @@ import { render } from '../../framework/render.js';
 import { generateRandomId, deleteElementById } from '../../util.js';
 import GeneratorItemView from '../../view/generator/generator-item-view.js';
 import GeneratorInputListView from '../../view/generator/generator-input-list-view.js';
-import GeneratorListModel from '../../model/generator-list-model.js';
+import EditorInputModel from '../../model/editor-input-model.js';
 
 
 export default class EditorInputPresenter {
   #container = null;
 
-  #generatorListModel = new GeneratorListModel();
+  #editorInputModel = new EditorInputModel();
 
   #generatorListComponent = null;
 
@@ -17,7 +17,7 @@ export default class EditorInputPresenter {
   }
 
   init() {
-    this.#renderGeneratorInputList(this.#generatorListModel.generatorItems, this.#container);
+    this.#renderGeneratorInputList(this.#editorInputModel.generatorItems, this.#container);
   }
 
   #renderGeneratorInputList(items, container) {
@@ -27,7 +27,7 @@ export default class EditorInputPresenter {
     });
 
     render(this.#generatorListComponent, container);
-    this.#fillStateFromModel(this.#generatorListModel.generatorItems)
+    this.#fillStateFromModel(this.#editorInputModel.generatorItems)
     this.#renderListFromState(this.#generatorListComponent._state)
   }
 

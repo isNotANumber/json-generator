@@ -1,6 +1,6 @@
 import { generatorListTest, defaultListState } from './const';
 
-export default class GeneratorListModel {
+export default class EditorInputModel {
   #generatorList = generatorListTest;
 
   get generatorItems() {
