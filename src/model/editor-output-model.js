@@ -1,13 +1,21 @@
 import { generatorListTest, defaultListState } from './const';
 
 export default class EditorOutputModel {
-  #generatorList = generatorListTest;
+  #outputJson = this.#convertToJson(generatorListTest);
 
-  get generatorItems() {
-    return this.#convertToJson();
+  get outputJson() {
+    return this.#outputJson;
   }
 
-  #convertToJson() {
-    return JSON.stringify(this.#generatorList, null, 2);
+  updateData(data) {
+    this.#outputJson = this.#convertToJson(data);
+  }
+
+  setDefaultData() {
+    this.#outputJson = this.#convertToJson(generatorListTest);
+  }
+
+  #convertToJson(data) {
+    return JSON.stringify(data, null, 2);
   }
 }
