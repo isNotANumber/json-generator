@@ -4,6 +4,7 @@ import { generateRandomId, deleteElementById } from '../../util.js';
 import GeneratorItemView from '../../view/generator/generator-item-view.js';
 import GeneratorInputListView from '../../view/generator/generator-input-list-view.js';
 import EditorInputModel from '../../model/editor-input-model.js';
+import EditorOutputModel from '../../model/editor-output-model.js';
 
 
 export default class EditorPresenter {
@@ -13,6 +14,7 @@ export default class EditorPresenter {
   #generatorListComponent = null;
 
   #editorInputModel = new EditorInputModel();
+  #editorOutputModel = new EditorOutputModel();
 
   constructor({ container }) {
     this.#container = container;
@@ -89,6 +91,34 @@ export default class EditorPresenter {
     }
   }
 
+  // refactor this
+  #renderOutputData(data) {
+    const editorOutputContainer = this.#editorComponent.element.querySelector('#json-output');
+    editorOutputContainer.textContent = data;
+  }
+
+  #convertInputStateToModel() {
+    const output = [];
+    const map = {};
+    const state = this.#generatorListComponent._state;
+
+    for (const key in state) {
+        const item = state[key];
+        map[item.id] = { id: item.id, key: item.key, value: item.value ? item.value : [] };
+    }
+
+    for (const key in state) {
+        const item = state[key];
+        if (item.parentId) {
+            map[item.parentId].value.push(map[item.id]);
+        } else {
+            output.push(map[item.id]);
+        }
+    }
+
+    return output;
+}
+
   #handleGeneratorItemButtonClick = (evt) => {
     const item = evt.target.closest('li');
 
@@ -129,5 +159,13 @@ export default class EditorPresenter {
   reset() {
     remove(this.#editorComponent);
     this.init();
+  }
+
+  apply() {
+    const newData = this.#convertInputStateToModel();
+    this.#editorInputModel.updateData(newData);
+    this.#editorOutputModel.updateData(newData);
+
+    this.#renderOutputData(this.#editorOutputModel.outputJson);
   }
 }
