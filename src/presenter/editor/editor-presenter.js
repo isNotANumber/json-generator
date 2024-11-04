@@ -162,6 +162,8 @@ export default class EditorPresenter {
   };
 
   reset() {
+    this.#inputModel.setDefaultData();
+    this.#outputModel.setDefaultData();
     remove(this.#editorComponent);
     this.init();
   }
