@@ -17,7 +17,6 @@ export default class GeneralPresenter {
   #mainComponent = null;
   #toolbarComponent = null;
   #modalComponent = null;
-  #notificationComponent = null;
 
   constructor({ container }) {
     this.#container = container;
@@ -80,13 +79,13 @@ export default class GeneralPresenter {
   }
 
   // TODO: refactor this (remove container)
-  #showNotification(container, message) {
-    this.#notificationComponent = new NotificationView({ message: message });
+  #showNotification(message) {
+    const notification = new NotificationView({ message: message });
 
-    render(this.#notificationComponent, container);
+    render(notification, this.#container);
 
     setTimeout(() => {
-      remove(this.#notificationComponent);
+      remove(notification);
     }, 3000);
   }
 
@@ -96,17 +95,17 @@ export default class GeneralPresenter {
       this.#editorPresenter.reset();
       remove(this.#modalComponent);
 
-      this.#showNotification(this.#container, 'Editor reseted!');
+      this.#showNotification('Editor reseted!');
     } else if (evt.target.classList.contains('modal-btn--cancel')) {
       remove(this.#modalComponent);
-      this.#showNotification(this.#container, 'Editor reset cancelled!');
+      this.#showNotification('Editor reset cancelled!');
     }
   };
 
   #handleToolbarButtonClick = (evt) => {
     if (evt.target.classList.contains('tlb-btn--apply')) {
       this.#editorPresenter.apply();
-      this.#showNotification(this.#container, 'JSON rendered!');
+      this.#showNotification('JSON rendered!');
     } else if (evt.target.classList.contains('tlb-btn--clear')) {
       this.#showModal(this.#container);
     } else if (evt.target.classList.contains('tlb-btn--save')) {
@@ -125,10 +124,10 @@ export default class GeneralPresenter {
       navigator.clipboard
         .writeText(jsonOutput)
         .then(() => {
-          this.#showNotification(this.#container, 'JSON copied to clipboard');
+          this.#showNotification('JSON copied to clipboard');
         })
         .catch((err) => {
-          this.#showNotification(this.#container, 'Failed to copy JSON');
+          this.#showNotification('Failed to copy JSON');
         });
     }
   };
