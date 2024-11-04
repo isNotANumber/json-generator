@@ -46,4 +46,15 @@ export default class GeneratorItemView extends AbstractStatefulView {
     get template() {
         return createGeneratorItemTemplate({id: this.#id, key: this._state.key, value: this._state.value, parentId: this.#parentId});
     }
+
+    _restoreHandlers() {
+        this.element.addEventListener('change', this.#handleItemInput);
+    }
+
+    convertToObject() {
+        const {id, parentId} = this.element.dataset;
+        const {key, value} = this._state;
+
+        return {id, parentId, key, value};
+    }
 }

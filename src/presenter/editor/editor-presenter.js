@@ -6,29 +6,32 @@ import GeneratorInputListView from '../../view/generator/generator-input-list-vi
 import EditorInputModel from '../../model/editor-input-model.js';
 import EditorOutputModel from '../../model/editor-output-model.js';
 
-
 export default class EditorPresenter {
   #container = null;
 
   #editorComponent = null;
   #generatorListComponent = null;
 
-  #editorInputModel = null;
-  #editorOutputModel = null
+  #inputItems = {};
+
+  #inputModel = null;
+  #outputModel = null;
 
   constructor({ container }) {
     this.#container = container;
   }
 
   init() {
-    this.#editorInputModel = new EditorInputModel();
-    this.#editorOutputModel = new EditorOutputModel();
+    this.#inputModel = new EditorInputModel();
+    this.#outputModel = new EditorOutputModel();
 
     this.#renderEditor(this.#container);
 
-    const editorInputContainer = this.#editorComponent.element.querySelector('.editor__pane--input');
+    const editorInputContainer = this.#editorComponent.element.querySelector(
+      '.editor__pane--input'
+    );
 
-    this.#renderGeneratorInputList(this.#editorInputModel.generatorItems, editorInputContainer);
+    this.#renderInput(editorInputContainer);
   }
 
   #renderEditor(container) {
@@ -37,91 +40,92 @@ export default class EditorPresenter {
     render(this.#editorComponent, container);
   }
 
-  #renderGeneratorInputList(items, container) {
+  #renderInput(container) {
     this.#generatorListComponent = new GeneratorInputListView({
-      items: items.map((item) => ({id: item.id, key: item.key, value: item.value})),
       onItemButtonClick: this.#handleGeneratorItemButtonClick,
     });
 
     render(this.#generatorListComponent, container);
-    this.#fillStateFromModel(this.#editorInputModel.generatorItems)
-    this.#renderListFromState(this.#generatorListComponent._state)
+
+    this.#fillItemsFromModel(this.#inputModel.generatorItems);
+
+    this.#renderInputItems(this.#inputItems);
   }
 
-  #renderGeneratorItem(item, container) {
-    const newItem = new GeneratorItemView({id: item.id, key: item.key, value: item.value, parentId: item.parentId, onInput: this.#handleItemInput});
-    render(newItem, container);
-  }
+  #renderInputItems(items) {
+    for (const item of Object.values(items)) {
+      let currentItemChildLocation = null;
 
-  #renderListFromState(state) {
-    for (const item of Object.values(state)) {
-      const currentGeneratorItem = item;
-      let currentGeneratorItemChildLocation = null;
-
-      if (item.parentId === null) {
-        this.#renderGeneratorItem(currentGeneratorItem, this.#generatorListComponent.element);
-
+      if (item.element.dataset.parentId === 'null') {
+        render(item, this.#generatorListComponent.element);
       } else {
-        currentGeneratorItemChildLocation = this.#generatorListComponent.element.querySelector(`[data-id='${item.parentId}'`).querySelector('.generator-input-list--nested');
-        this.#renderGeneratorItem(currentGeneratorItem, currentGeneratorItemChildLocation);
+        currentItemChildLocation = this.#generatorListComponent.element
+          .querySelector(`[data-id='${item.element.dataset.parentId}'`)
+          .querySelector('.generator-input-list--nested');
+
+        render(item, currentItemChildLocation);
       }
     }
   }
 
-  #fillStateFromModel(model, parentId = null) {
+  #fillItemsFromModel(model, parentId = null) {
     for (const item of Object.values(model)) {
       let currentGeneratorItem = null;
 
       if (Array.isArray(item.value)) {
-        currentGeneratorItem = {
+        currentGeneratorItem = new GeneratorItemView({
           id: item.id,
           key: item.key,
           value: '',
-          parentId: parentId
-        }
-        this.#fillStateFromModel(item.value, item.id);
-
+          parentId: parentId,
+          onInput: this.#handleItemInput,
+        });
+        this.#fillItemsFromModel(item.value, item.id);
       } else {
-        currentGeneratorItem = {
+        currentGeneratorItem = new GeneratorItemView({
           id: item.id,
           key: item.key,
           value: item.value,
-          parentId: parentId
-        }
+          parentId: parentId,
+          onInput: this.#handleItemInput,
+        });
       }
 
-      this.#generatorListComponent._setState({[currentGeneratorItem.id]: currentGeneratorItem});
+      this.#inputItems[currentGeneratorItem.element.dataset.id] =
+        currentGeneratorItem;
     }
   }
 
   // refactor this
   #renderOutputData(data) {
-    const editorOutputContainer = this.#editorComponent.element.querySelector('#json-output');
+    const editorOutputContainer =
+      this.#editorComponent.element.querySelector('#json-output');
     editorOutputContainer.textContent = data;
   }
 
-  #convertInputStateToModel() {
+  #convertInputItemsToModel() {
     const output = [];
-    const map = {};
-    const state = this.#generatorListComponent._state;
+    const items = this.#inputItems;
 
-    for (const key in state) {
-        const item = state[key];
-        map[item.id] = { id: item.id, key: item.key, value: item.value ? item.value : [] };
-    }
+    for (const item of Object.values(items)) {
+        const itemObj = item.convertToObject();
 
-    for (const key in state) {
-        const item = state[key];
-        if (item.parentId) {
-            map[item.parentId].value = [];
-            map[item.parentId].value.push(map[item.id]);
+        if (itemObj.parentId === 'null') {
+            delete itemObj.parentId
+            output.push(itemObj)
         } else {
-            output.push(map[item.id]);
+            for (const elem of output) {
+                if (elem.id === itemObj.parentId) {
+                    delete itemObj.parentId
+                    elem.value = [];
+                    elem.value.push(itemObj)
+                }
+            }
         }
     }
 
     return output;
-}
+  }
 
   #handleGeneratorItemButtonClick = (evt) => {
     const item = evt.target.closest('li');
@@ -129,35 +133,40 @@ export default class EditorPresenter {
     if (item) {
       if (evt.target.classList.contains('gnrt-btn--append')) {
         const targetId = item.dataset.id;
-        const newItem = {id: generateRandomId(), key: '', value: '', parentId: targetId};
-  
-        this.#generatorListComponent.updateElement({[newItem.id]: newItem});
-        this.#renderListFromState(this.#generatorListComponent._state);
-  
+
+        const newItem = new GeneratorItemView({
+          id: generateRandomId(),
+          key: '',
+          value: '',
+          parentId: targetId,
+        });
+
+        this.#inputItems[newItem.element.dataset.id] = newItem;
+
+        const currentItemChildLocation = this.#inputItems[
+          targetId
+        ].element.querySelector('.generator-input-list--nested');
+
+        render(newItem, currentItemChildLocation);
       } else if (evt.target.classList.contains('gnrt-btn--remove')) {
         const targetId = item.dataset.id;
 
-        const newState = deleteElementById(this.#generatorListComponent._state, targetId);
-
-        this.#generatorListComponent.updateElement(newState, 'rewrite');
-        this.#renderListFromState(this.#generatorListComponent._state);
+        remove(this.#inputItems[targetId]);
+        delete this.#inputItems[targetId];
       }
     }
   };
 
   #handleItemInput = (evt) => {
     const targetId = evt.target.closest('li').dataset.id;
-    const targetItem = this.#generatorListComponent._state[targetId];
+    const targetItem = this.#inputItems[targetId];
 
     if (evt.target.classList.contains('generator-item__input-key')) {
-      targetItem.key = evt.target.value;
-
+      targetItem._setState({ key: evt.target.value });
     } else if (evt.target.classList.contains('generator-item__input-value')) {
-      targetItem.value = evt.target.value;
+      targetItem._setState({ value: evt.target.value });
     }
-
-    this.#generatorListComponent._state[targetId] = targetItem;
-  }
+  };
 
   reset() {
     remove(this.#editorComponent);
@@ -165,10 +174,10 @@ export default class EditorPresenter {
   }
 
   apply() {
-    const newData = this.#convertInputStateToModel();
-    this.#editorInputModel.updateData(newData);
-    this.#editorOutputModel.updateData(newData);
+    const newData = this.#convertInputItemsToModel();
+    this.#inputModel.updateData(newData);
+    this.#outputModel.updateData(newData);
 
-    this.#renderOutputData(this.#editorOutputModel.outputJson);
+    this.#renderOutputData(this.#outputModel.outputJson);
   }
 }
