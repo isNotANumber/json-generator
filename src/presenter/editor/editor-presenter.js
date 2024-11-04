@@ -10,17 +10,20 @@ import EditorOutputModel from '../../model/editor-output-model.js';
 export default class EditorPresenter {
   #container = null;
 
-  #editorComponent = new EditorView();
+  #editorComponent = null;
   #generatorListComponent = null;
 
-  #editorInputModel = new EditorInputModel();
-  #editorOutputModel = new EditorOutputModel();
+  #editorInputModel = null;
+  #editorOutputModel = null
 
   constructor({ container }) {
     this.#container = container;
   }
 
   init() {
+    this.#editorInputModel = new EditorInputModel();
+    this.#editorOutputModel = new EditorOutputModel();
+
     this.#renderEditor(this.#container);
 
     const editorInputContainer = this.#editorComponent.element.querySelector('.editor__pane--input');
