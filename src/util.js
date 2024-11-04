@@ -31,10 +31,10 @@ function deleteElementById(obj, id) {
     return newObj;
 }
 
+// refactor this
 function appendElementById(arr, id, newElement) {
     function recursiveAppend(arr) {
         for (let item of arr) {
-          console.log(item)
             if (item.id === id) {
                 if (!Array.isArray(item.value)) {
                     item.value = [];
