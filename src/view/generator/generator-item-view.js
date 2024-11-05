@@ -14,7 +14,6 @@ function createGeneratorItemTemplate({id, key, value, parentId}) {
                     <i class="fas fa-trash"></i>
                 </button>
             </div>
-            <ul class="generator-input-list generator-input-list--nested"></ul>
         </li>
         `
     );
@@ -41,6 +40,10 @@ export default class GeneratorItemView extends AbstractStatefulView {
      */
     get template() {
         return createGeneratorItemTemplate({id: this.#id, key: this._state.key, value: this._state.value, parentId: this.#parentId});
+    }
+
+    _restoreHandlers() {
+        return;
     }
 
     convertToObject() {

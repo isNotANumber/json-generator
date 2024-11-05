@@ -10,7 +10,8 @@ export default class EditorPresenter {
   #editorComponent = null;
   #generatorListComponent = null;
 
-  #inputItems = {};
+  #inputItems = null;
+  #nestedLists = null;
 
   #inputModel = null;
   #outputModel = null;
@@ -22,6 +23,9 @@ export default class EditorPresenter {
   }
 
   init() {
+    this.#inputItems = {};
+    this.#nestedLists = {};
+
     this.#renderEditor(this.#container);
 
     const editorInputContainer = this.#editorComponent.element.querySelector(
@@ -57,11 +61,15 @@ export default class EditorPresenter {
       if (item.element.dataset.parentId === 'null') {
         render(item, this.#generatorListComponent.element);
       } else {
-        currentItemChildLocation = this.#generatorListComponent.element
-          .querySelector(`[data-id='${item.element.dataset.parentId}'`)
-          .querySelector('.generator-input-list--nested');
+        const nestedList = new GeneratorInputListView({
+          isNested: true,
+          parentId: item.element.dataset.parentId,
+        });
 
-        render(item, currentItemChildLocation);
+        this.#nestedLists[item.element.dataset.parentId] = nestedList;
+
+        render(nestedList, this.#inputItems[item.element.dataset.parentId].element, 'afterend')
+        render(item, nestedList.element);
       }
     }
   }
@@ -142,15 +150,29 @@ export default class EditorPresenter {
 
     this.#inputItems[newItem.element.dataset.id] = newItem;
 
-    const currentItemChildLocation = this.#inputItems[
-      targetId
-    ].element.querySelector('.generator-input-list--nested');
+    if (this.#nestedLists[targetId]) {
+      render(newItem, this.#nestedLists[targetId].element);
+    } else {
+      const nestedList = new GeneratorInputListView({
+        isNested: true,
+        parentId: targetId,
+      });
 
-    render(newItem, currentItemChildLocation);
+      this.#nestedLists[targetId] = nestedList;
+
+      render(nestedList, this.#inputItems[targetId].element, 'afterend')
+      render(newItem, nestedList.element)
+    }
   };
 
   #handleRemoveClick = (item) => {
     const targetId = item.dataset.id;
+    const targetNestedList = this.#nestedLists[targetId];
+
+    if (this.#nestedLists[targetId]) {
+      remove(this.#nestedLists[targetId])
+      delete this.#nestedLists[targetId];
+    }
 
     remove(this.#inputItems[targetId]);
     delete this.#inputItems[targetId];
@@ -161,9 +183,9 @@ export default class EditorPresenter {
     const targetItem = this.#inputItems[targetId];
 
     if (evt.target.classList.contains('generator-item__input-key')) {
-      targetItem._setState({ key: evt.target.value });
+      targetItem.updateElement({ key: evt.target.value });
     } else if (evt.target.classList.contains('generator-item__input-value')) {
-      targetItem._setState({ value: evt.target.value });
+      targetItem.updateElement({ key: evt.target.value });
     }
   };
 

@@ -1,9 +1,9 @@
 import AbstractView from "../../framework/view/abstract-stateful-view.js";
 
-function createGeneratorInputListTemplate() {
+function createGeneratorInputListTemplate({parentId, isNested}) {
     return (
         `
-        <ul class="generator-input-list"></ul>
+        <ul data-parent-id=${parentId} class="generator-input-list ${isNested ? 'generator-input-list--nested' : ''}"></ul>
         `
     );
 }
@@ -15,15 +15,20 @@ export default class GeneratorInputListView extends AbstractView {
 
     #handleItemButtonClick = null;
     #handleItemInput = null;
+    #isNested = false;
+    #parentId = null;
 
-    constructor({onItemButtonClick, onItemInput}) {
+    constructor({onItemButtonClick, onItemInput, isNested, parentId = null}) {
         super();
         this.#handleItemButtonClick = onItemButtonClick;
         this.#handleItemInput = onItemInput;
+        this.#isNested = isNested;
+        this.#parentId = parentId;
 
-        
-        this.element.addEventListener('click', this.#handleItemButtonClick);
-        this.element.addEventListener('change', this.#handleItemInput);
+        if (!this.#isNested) {
+            this.element.addEventListener('click', this.#handleItemButtonClick);
+            this.element.addEventListener('change', this.#handleItemInput);
+        }        
     }
 
     /**
@@ -32,6 +37,6 @@ export default class GeneratorInputListView extends AbstractView {
      * @returns {string} Generator input list template as a string.
      */
     get template() {
-        return createGeneratorInputListTemplate();
+        return createGeneratorInputListTemplate({parentId: this.#parentId,isNested: this.#isNested});
     }
 }
