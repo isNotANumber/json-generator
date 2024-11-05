@@ -40,6 +40,7 @@ export default class EditorPresenter {
   #renderInput(container) {
     this.#generatorListComponent = new GeneratorInputListView({
       onItemButtonClick: this.#handleGeneratorItemButtonClick,
+      onItemInput: this.#handleItemInput,
     });
 
     render(this.#generatorListComponent, container);
@@ -75,7 +76,6 @@ export default class EditorPresenter {
           key: item.key,
           value: '',
           parentId: parentId,
-          onInput: this.#handleItemInput,
         });
         this.#fillItemsFromModel(item.value, item.id);
       } else {
@@ -84,7 +84,6 @@ export default class EditorPresenter {
           key: item.key,
           value: item.value,
           parentId: parentId,
-          onInput: this.#handleItemInput,
         });
       }
 
@@ -131,7 +130,6 @@ export default class EditorPresenter {
           key: '',
           value: '',
           parentId: targetId,
-          onInput: this.#handleItemInput,
         });
 
         this.#inputItems[newItem.element.dataset.id] = newItem;

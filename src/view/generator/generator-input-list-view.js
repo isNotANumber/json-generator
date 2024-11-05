@@ -14,13 +14,16 @@ function createGeneratorInputListTemplate() {
 export default class GeneratorInputListView extends AbstractView {
 
     #handleItemButtonClick = null;
+    #handleItemInput = null;
 
-    constructor({onItemButtonClick}) {
+    constructor({onItemButtonClick, onItemInput}) {
         super();
         this.#handleItemButtonClick = onItemButtonClick;
+        this.#handleItemInput = onItemInput;
 
         
         this.element.addEventListener('click', this.#handleItemButtonClick);
+        this.element.addEventListener('change', this.#handleItemInput);
     }
 
     /**

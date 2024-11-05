@@ -26,16 +26,12 @@ function createGeneratorItemTemplate({id, key, value, parentId}) {
 export default class GeneratorItemView extends AbstractStatefulView {
     #id = null;
     #parentId = null;
-    #handleItemInput = null;
 
-    constructor({id, key, value, parentId, onInput}) {
+    constructor({id, key, value, parentId}) {
         super();
         this._setState({key: key, value: value})
         this.#id = id
         this.#parentId = parentId
-        this.#handleItemInput = onInput;
-
-        this.element.addEventListener('change', this.#handleItemInput);
     }
 
     /**
@@ -45,10 +41,6 @@ export default class GeneratorItemView extends AbstractStatefulView {
      */
     get template() {
         return createGeneratorItemTemplate({id: this.#id, key: this._state.key, value: this._state.value, parentId: this.#parentId});
-    }
-
-    _restoreHandlers() {
-        this.element.addEventListener('change', this.#handleItemInput);
     }
 
     convertToObject() {
