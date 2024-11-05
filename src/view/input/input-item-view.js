@@ -26,9 +26,9 @@ export default class InputItemView extends AbstractStatefulView {
     #id = null;
     #parentId = null;
 
-    constructor({id, key, value, parentId}) {
+    constructor({id, key, value, parentId, inputValueDisabled = false}) {
         super();
-        this._setState({key: key, value: value, inputValueDisabled: false})
+        this._setState({key: key, value: value, inputValueDisabled})
         this.#id = id
         this.#parentId = parentId
     }

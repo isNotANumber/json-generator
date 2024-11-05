@@ -11,6 +11,7 @@ export default class Adapter {
           key: item.key,
           value: '',
           parentId: parentId,
+          inputValueDisabled: true
         });
         this.convertModelDataToInputItems(item.value, item.id, result);
       } else {
