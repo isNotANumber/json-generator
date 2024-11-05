@@ -74,15 +74,14 @@ export default class GeneralPresenter {
     this.#editorPresenter.init();
   }
 
-  #showModal(container) {
+  #showModal() {
     this.#modalComponent = new ModalView({
       onModalButtonClick: this.#handleModalButtonClick,
     });
 
-    render(this.#modalComponent, container);
+    render(this.#modalComponent, this.#container);
   }
 
-  // TODO: refactor this (remove container)
   #showNotification(message) {
     const notification = new NotificationView({ message: message });
 
@@ -124,7 +123,7 @@ export default class GeneralPresenter {
   };
 
   #handleToolbarClearClick = () => {
-    this.#showModal(this.#container);
+    this.#showModal();
   };
 
   #handleToolbarSaveClick = () => {
