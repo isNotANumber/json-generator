@@ -81,20 +81,18 @@ export default class EditorPresenter {
   }
 
   #handleGeneratorItemButtonClick = (evt) => {
-    const item = evt.target.closest('li');
+    const targetId = evt.target.closest('li').dataset.id;
 
-    if (item) {
+    if (targetId) {
       if (evt.target.classList.contains('gnrt-btn--append')) {
-        this.#handleAppendClick(item);
+        this.#handleAppendClick(targetId);
       } else if (evt.target.classList.contains('gnrt-btn--remove')) {
-        this.#handleRemoveClick(item);
+        this.#handleRemoveClick(targetId);
       }
     }
   };
 
-  #handleAppendClick = (item) => {
-    const targetId = item.dataset.id;
-
+  #handleAppendClick = (targetId) => {
     const newItem = new InputItemView({
       id: generateRandomId(),
       key: '',
@@ -102,11 +100,14 @@ export default class EditorPresenter {
       parentId: targetId,
     });
 
-    this.#inputItems[newItem.element.dataset.id] = newItem;
+    this.#inputItems[newItem.id] = newItem;
 
     if (this.#nestedLists[targetId]) {
-      render(newItem, this.#nestedLists[targetId].element);
-    } else {
+      if (this.#nestedLists[targetId].element.children.length < 3) {
+        render(newItem, this.#nestedLists[targetId].element);
+      }
+    } 
+    else {
       const nestedList = new InputItemsListView({
         isNested: true,
         parentId: targetId,
@@ -116,11 +117,14 @@ export default class EditorPresenter {
 
       render(nestedList, this.#inputItems[targetId].element, RenderPosition.AFTEREND)
       render(newItem, nestedList.element)
+
+      this.#inputItems[targetId].updateElement({inputValueDisabled: true})
     }
   };
 
-  #handleRemoveClick = (item) => {
-    const targetId = item.dataset.id;
+  #handleRemoveClick = (targetId) => {
+    const targetItem = this.#inputItems[targetId];
+    const targetItemParentId = targetItem.parentId;
 
     if (this.#nestedLists[targetId]) {
       remove(this.#nestedLists[targetId])
@@ -129,6 +133,16 @@ export default class EditorPresenter {
 
     remove(this.#inputItems[targetId]);
     delete this.#inputItems[targetId];
+
+    if (targetItemParentId !== 'null') {
+      const childrenCount = this.#nestedLists[targetItemParentId].element.children.length;
+
+      if (childrenCount === 0) {
+        this.#inputItems[targetItemParentId].updateElement({inputValueDisabled: false})
+        remove(this.#nestedLists[targetItemParentId])
+        delete this.#nestedLists[targetItemParentId];
+      }
+    }
   };
 
   #handleItemInput = (evt) => {
