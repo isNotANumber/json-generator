@@ -45,11 +45,4 @@ export default class GeneratorItemView extends AbstractStatefulView {
     _restoreHandlers() {
         return;
     }
-
-    convertToObject() {
-        const {id, parentId} = this.element.dataset;
-        const {key, value} = this._state;
-
-        return {id, parentId, key, value};
-    }
 }

@@ -1,8 +1,9 @@
 import { render, remove } from '../../framework/render';
 import EditorView from '../../view/editor/editor-view';
-import { generateRandomId, appendElementById } from '../../util.js';
+import { generateRandomId } from '../../util.js';
 import GeneratorItemView from '../../view/generator/generator-item-view.js';
 import GeneratorInputListView from '../../view/generator/generator-input-list-view.js';
+import Adapter from '../../framework/view/adapter/adapter.js';
 
 export default class EditorPresenter {
   #container = null;
@@ -49,7 +50,7 @@ export default class EditorPresenter {
 
     render(this.#generatorListComponent, container);
 
-    this.#fillItemsFromModel(this.#inputModel.generatorItems);
+    this.#inputItems = Adapter.convertModelDataToInputItems(this.#inputModel.generatorItems);
 
     this.#renderInputItems(this.#inputItems);
   }
@@ -74,56 +75,11 @@ export default class EditorPresenter {
     }
   }
 
-  #fillItemsFromModel(model, parentId = null) {
-    for (const item of Object.values(model)) {
-      let currentGeneratorItem = null;
-
-      if (Array.isArray(item.value)) {
-        currentGeneratorItem = new GeneratorItemView({
-          id: item.id,
-          key: item.key,
-          value: '',
-          parentId: parentId,
-        });
-        this.#fillItemsFromModel(item.value, item.id);
-      } else {
-        currentGeneratorItem = new GeneratorItemView({
-          id: item.id,
-          key: item.key,
-          value: item.value,
-          parentId: parentId,
-        });
-      }
-
-      this.#inputItems[currentGeneratorItem.element.dataset.id] =
-        currentGeneratorItem;
-    }
-  }
-
   // refactor this
   #renderOutputData(data) {
     const editorOutputContainer =
       this.#editorComponent.element.querySelector('#json-output');
     editorOutputContainer.textContent = data;
-  }
-
-  #convertInputItemsToModel() {
-    const output = [];
-    const items = this.#inputItems;
-
-    for (const item of Object.values(items)) {
-      const itemObj = item.convertToObject();
-
-      if (itemObj.parentId === 'null') {
-        delete itemObj.parentId;
-        output.push(itemObj);
-      } else {
-        appendElementById(output, itemObj.parentId, itemObj);
-        delete itemObj.parentId;
-      }
-    }
-
-    return output;
   }
 
   #handleGeneratorItemButtonClick = (evt) => {
@@ -197,7 +153,7 @@ export default class EditorPresenter {
   }
 
   apply() {
-    const newData = this.#convertInputItemsToModel();
+    const newData = Adapter.convertInputItemsToModel(this.#inputItems);
     this.#inputModel.data = newData;
     this.#outputModel.data = newData;
 
