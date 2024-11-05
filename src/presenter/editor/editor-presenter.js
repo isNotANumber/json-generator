@@ -87,9 +87,11 @@ export default class EditorPresenter {
   }
 
   #handleGeneratorItemButtonClick = (evt) => {
-    const targetId = evt.target.closest('li').dataset.id;
+    const target = evt.target.closest('li');
 
-    if (targetId) {
+    if (target) {
+      const targetId = target.dataset.id;
+
       if (evt.target.classList.contains('gnrt-btn--append')) {
         this.#handleAppendClick(targetId);
       } else if (evt.target.classList.contains('gnrt-btn--remove')) {
@@ -99,26 +101,14 @@ export default class EditorPresenter {
   };
 
   #handleAppendClick = (targetId) => {
-    const newItem = new InputItemView({
-      id: generateRandomId(),
-      key: '',
-      value: '',
-      parentId: targetId,
-    });
-
-    this.#inputItems[newItem.id] = newItem;
+    const newItem = this.#createNewItem(targetId);
 
     if (this.#nestedLists[targetId]) {
       if (this.#getListChildrenCount(targetId) < 3) {
         render(newItem, this.#nestedLists[targetId].element);
       }
     } else {
-      const nestedList = new InputItemsListView({
-        isNested: true,
-        parentId: targetId,
-      });
-
-      this.#nestedLists[targetId] = nestedList;
+      const nestedList = this.#createNewList(targetId);
 
       render(
         nestedList,
@@ -162,6 +152,30 @@ export default class EditorPresenter {
       targetItem.updateElement({ value: evt.target.value });
     }
   };
+
+  #createNewItem(id) {
+    const newItem = new InputItemView({
+      id: generateRandomId(),
+      key: '',
+      value: '',
+      parentId: id,
+    });
+
+    this.#inputItems[newItem.id] = newItem;
+
+    return newItem;
+  }
+
+  #createNewList(id) {
+    const newList = new InputItemsListView({
+      isNested: true,
+      parentId: id,
+    });
+
+    this.#nestedLists[id] = newList;
+
+    return newList;
+  }
 
   #removeItem(id) {
     remove(this.#inputItems[id]);
