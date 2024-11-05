@@ -208,6 +208,11 @@ export default class EditorPresenter {
     const targetItem = this.#inputItems[targetId];
     const targetItemParentId = targetItem.parentId;
 
+    // TODO: show notification
+    if (targetItemParentId === null) {
+      return;
+    }
+
     if (this.#nestedLists[targetId]) {
       this.#removeNestedList(targetId);
     }
