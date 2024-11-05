@@ -104,15 +104,15 @@ export default class EditorPresenter {
     const items = this.#inputItems;
 
     for (const item of Object.values(items)) {
-        const itemObj = item.convertToObject();
+      const itemObj = item.convertToObject();
 
-        if (itemObj.parentId === 'null') {
-            delete itemObj.parentId
-            output.push(itemObj)
-        } else {
-            appendElementById(output, itemObj.parentId, itemObj)
-            delete itemObj.parentId
-        }
+      if (itemObj.parentId === 'null') {
+        delete itemObj.parentId;
+        output.push(itemObj);
+      } else {
+        appendElementById(output, itemObj.parentId, itemObj);
+        delete itemObj.parentId;
+      }
     }
 
     return output;
@@ -123,29 +123,37 @@ export default class EditorPresenter {
 
     if (item) {
       if (evt.target.classList.contains('gnrt-btn--append')) {
-        const targetId = item.dataset.id;
-
-        const newItem = new GeneratorItemView({
-          id: generateRandomId(),
-          key: '',
-          value: '',
-          parentId: targetId,
-        });
-
-        this.#inputItems[newItem.element.dataset.id] = newItem;
-
-        const currentItemChildLocation = this.#inputItems[
-          targetId
-        ].element.querySelector('.generator-input-list--nested');
-
-        render(newItem, currentItemChildLocation);
+        this.#handleAppendClick(item);
       } else if (evt.target.classList.contains('gnrt-btn--remove')) {
-        const targetId = item.dataset.id;
-
-        remove(this.#inputItems[targetId]);
-        delete this.#inputItems[targetId];
+        this.#handleRemoveClick(item);
       }
     }
+  };
+
+  #handleAppendClick = (item) => {
+    const targetId = item.dataset.id;
+
+    const newItem = new GeneratorItemView({
+      id: generateRandomId(),
+      key: '',
+      value: '',
+      parentId: targetId,
+    });
+
+    this.#inputItems[newItem.element.dataset.id] = newItem;
+
+    const currentItemChildLocation = this.#inputItems[
+      targetId
+    ].element.querySelector('.generator-input-list--nested');
+
+    render(newItem, currentItemChildLocation);
+  };
+
+  #handleRemoveClick = (item) => {
+    const targetId = item.dataset.id;
+
+    remove(this.#inputItems[targetId]);
+    delete this.#inputItems[targetId];
   };
 
   #handleItemInput = (evt) => {

@@ -108,31 +108,47 @@ export default class GeneralPresenter {
 
   #handleToolbarButtonClick = (evt) => {
     if (evt.target.classList.contains('tlb-btn--apply')) {
-      this.#editorPresenter.apply();
-      this.#showNotification('JSON rendered!');
+      this.#handleToolbarApplyClick();
     } else if (evt.target.classList.contains('tlb-btn--clear')) {
-      this.#showModal(this.#container);
+      this.#handleToolbarClearClick();
     } else if (evt.target.classList.contains('tlb-btn--save')) {
-      const jsonOutput = document.getElementById('json-output').textContent;
-      const blob = new Blob([jsonOutput], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'data.json';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
+      this.#handleToolbarSaveClick();
     } else if (evt.target.classList.contains('tlb-btn--copy')) {
-      const jsonOutput = document.getElementById('json-output').textContent;
-      navigator.clipboard
-        .writeText(jsonOutput)
-        .then(() => {
-          this.#showNotification('JSON copied to clipboard');
-        })
-        .catch((err) => {
-          this.#showNotification('Failed to copy JSON');
-        });
+      this.#handleToolbarCopyClick();
     }
+  };
+
+  #handleToolbarApplyClick = () => {
+    this.#editorPresenter.apply();
+    this.#showNotification('JSON rendered!');
+  };
+
+  #handleToolbarClearClick = () => {
+    this.#showModal(this.#container);
+  };
+
+  #handleToolbarSaveClick = () => {
+    const jsonOutput = document.getElementById('json-output').textContent;
+    const blob = new Blob([jsonOutput], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'data.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
+  #handleToolbarCopyClick = () => {
+    const jsonOutput = document.getElementById('json-output').textContent;
+    navigator.clipboard
+      .writeText(jsonOutput)
+      .then(() => {
+        this.#showNotification('JSON copied to clipboard');
+      })
+      .catch((err) => {
+        this.#showNotification('Failed to copy JSON');
+      });
   };
 }
