@@ -1,6 +1,6 @@
 import AbstractView from "../../framework/view/abstract-stateful-view.js";
 
-function createGeneratorInputListTemplate({parentId, isNested}) {
+function createItemsListTemplate({parentId, isNested}) {
     return (
         `
         <ul data-parent-id=${parentId} class="generator-input-list ${isNested ? 'generator-input-list--nested' : ''}"></ul>
@@ -11,7 +11,7 @@ function createGeneratorInputListTemplate({parentId, isNested}) {
 /**
  * Generator input list view class.
  */
-export default class GeneratorInputListView extends AbstractView {
+export default class InputItemsListView extends AbstractView {
 
     #handleItemButtonClick = null;
     #handleItemInput = null;
@@ -37,6 +37,6 @@ export default class GeneratorInputListView extends AbstractView {
      * @returns {string} Generator input list template as a string.
      */
     get template() {
-        return createGeneratorInputListTemplate({parentId: this.#parentId,isNested: this.#isNested});
+        return createItemsListTemplate({parentId: this.#parentId,isNested: this.#isNested});
     }
 }

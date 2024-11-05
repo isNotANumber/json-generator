@@ -1,4 +1,4 @@
-import GeneratorItemView from '../../../view/generator/generator-item-view';
+import InputItemView from '../../../view/input/input-item-view';
 
 export default class Adapter {
   static convertModelDataToInputItems(data, parentId = null, result = {}) {
@@ -6,7 +6,7 @@ export default class Adapter {
       let currentGeneratorItem = null;
 
       if (Array.isArray(item.value)) {
-        currentGeneratorItem = new GeneratorItemView({
+        currentGeneratorItem = new InputItemView({
           id: item.id,
           key: item.key,
           value: '',
@@ -14,7 +14,7 @@ export default class Adapter {
         });
         this.convertModelDataToInputItems(item.value, item.id, result);
       } else {
-        currentGeneratorItem = new GeneratorItemView({
+        currentGeneratorItem = new InputItemView({
           id: item.id,
           key: item.key,
           value: item.value,

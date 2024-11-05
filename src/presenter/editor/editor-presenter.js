@@ -1,15 +1,15 @@
-import { render, remove } from '../../framework/render';
+import { render, remove, RenderPosition } from '../../framework/render';
 import EditorView from '../../view/editor/editor-view';
 import { generateRandomId } from '../../util.js';
-import GeneratorItemView from '../../view/generator/generator-item-view.js';
-import GeneratorInputListView from '../../view/generator/generator-input-list-view.js';
+import InputItemView from '../../view/input/input-item-view.js';
+import InputItemsListView from '../../view/input/input-items-list-view.js';
 import Adapter from '../../framework/view/adapter/adapter.js';
 
 export default class EditorPresenter {
   #container = null;
 
   #editorComponent = null;
-  #generatorListComponent = null;
+  #inputItemsListComponent = null;
 
   #inputItems = null;
   #nestedLists = null;
@@ -43,12 +43,12 @@ export default class EditorPresenter {
   }
 
   #renderInput(container) {
-    this.#generatorListComponent = new GeneratorInputListView({
+    this.#inputItemsListComponent = new InputItemsListView({
       onItemButtonClick: this.#handleGeneratorItemButtonClick,
       onItemInput: this.#handleItemInput,
     });
 
-    render(this.#generatorListComponent, container);
+    render(this.#inputItemsListComponent, container);
 
     this.#inputItems = Adapter.convertModelDataToInputItems(this.#inputModel.generatorItems);
 
@@ -57,19 +57,17 @@ export default class EditorPresenter {
 
   #renderInputItems(items) {
     for (const item of Object.values(items)) {
-      let currentItemChildLocation = null;
-
       if (item.element.dataset.parentId === 'null') {
-        render(item, this.#generatorListComponent.element);
+        render(item, this.#inputItemsListComponent.element);
       } else {
-        const nestedList = new GeneratorInputListView({
+        const nestedList = new InputItemsListView({
           isNested: true,
           parentId: item.element.dataset.parentId,
         });
 
         this.#nestedLists[item.element.dataset.parentId] = nestedList;
 
-        render(nestedList, this.#inputItems[item.element.dataset.parentId].element, 'afterend')
+        render(nestedList, this.#inputItems[item.element.dataset.parentId].element, RenderPosition.AFTEREND)
         render(item, nestedList.element);
       }
     }
@@ -97,7 +95,7 @@ export default class EditorPresenter {
   #handleAppendClick = (item) => {
     const targetId = item.dataset.id;
 
-    const newItem = new GeneratorItemView({
+    const newItem = new InputItemView({
       id: generateRandomId(),
       key: '',
       value: '',
@@ -109,21 +107,20 @@ export default class EditorPresenter {
     if (this.#nestedLists[targetId]) {
       render(newItem, this.#nestedLists[targetId].element);
     } else {
-      const nestedList = new GeneratorInputListView({
+      const nestedList = new InputItemsListView({
         isNested: true,
         parentId: targetId,
       });
 
       this.#nestedLists[targetId] = nestedList;
 
-      render(nestedList, this.#inputItems[targetId].element, 'afterend')
+      render(nestedList, this.#inputItems[targetId].element, RenderPosition.AFTEREND)
       render(newItem, nestedList.element)
     }
   };
 
   #handleRemoveClick = (item) => {
     const targetId = item.dataset.id;
-    const targetNestedList = this.#nestedLists[targetId];
 
     if (this.#nestedLists[targetId]) {
       remove(this.#nestedLists[targetId])
@@ -141,7 +138,7 @@ export default class EditorPresenter {
     if (evt.target.classList.contains('generator-item__input-key')) {
       targetItem.updateElement({ key: evt.target.value });
     } else if (evt.target.classList.contains('generator-item__input-value')) {
-      targetItem.updateElement({ key: evt.target.value });
+      targetItem.updateElement({ value: evt.target.value });
     }
   };
 
