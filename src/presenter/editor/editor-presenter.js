@@ -50,7 +50,9 @@ export default class EditorPresenter {
 
     render(this.#inputItemsListComponent, container);
 
-    this.#inputItems = Adapter.convertModelDataToInputItems(this.#inputModel.generatorItems);
+    this.#inputItems = Adapter.convertModelDataToInputItems(
+      this.#inputModel.generatorItems
+    );
 
     this.#renderInputItems(this.#inputItems);
   }
@@ -67,7 +69,11 @@ export default class EditorPresenter {
 
         this.#nestedLists[item.element.dataset.parentId] = nestedList;
 
-        render(nestedList, this.#inputItems[item.element.dataset.parentId].element, RenderPosition.AFTEREND)
+        render(
+          nestedList,
+          this.#inputItems[item.element.dataset.parentId].element,
+          RenderPosition.AFTEREND
+        );
         render(item, nestedList.element);
       }
     }
@@ -103,11 +109,10 @@ export default class EditorPresenter {
     this.#inputItems[newItem.id] = newItem;
 
     if (this.#nestedLists[targetId]) {
-      if (this.#nestedLists[targetId].element.children.length < 3) {
+      if (this.#getListChildrenCount(targetId) < 3) {
         render(newItem, this.#nestedLists[targetId].element);
       }
-    } 
-    else {
+    } else {
       const nestedList = new InputItemsListView({
         isNested: true,
         parentId: targetId,
@@ -115,10 +120,14 @@ export default class EditorPresenter {
 
       this.#nestedLists[targetId] = nestedList;
 
-      render(nestedList, this.#inputItems[targetId].element, RenderPosition.AFTEREND)
-      render(newItem, nestedList.element)
+      render(
+        nestedList,
+        this.#inputItems[targetId].element,
+        RenderPosition.AFTEREND
+      );
+      render(newItem, nestedList.element);
 
-      this.#inputItems[targetId].updateElement({inputValueDisabled: true})
+      this.#inputItems[targetId].updateElement({ inputValueDisabled: true });
     }
   };
 
@@ -127,20 +136,18 @@ export default class EditorPresenter {
     const targetItemParentId = targetItem.parentId;
 
     if (this.#nestedLists[targetId]) {
-      remove(this.#nestedLists[targetId])
-      delete this.#nestedLists[targetId];
+      this.#removeNestedList(targetId);
     }
 
-    remove(this.#inputItems[targetId]);
-    delete this.#inputItems[targetId];
+    this.#removeItem(targetId);
 
-    if (targetItemParentId !== 'null') {
-      const childrenCount = this.#nestedLists[targetItemParentId].element.children.length;
+    if (targetItemParentId !== null) {
+      if (this.#getListChildrenCount(targetItemParentId) === 0) {
+        this.#inputItems[targetItemParentId].updateElement({
+          inputValueDisabled: false,
+        });
 
-      if (childrenCount === 0) {
-        this.#inputItems[targetItemParentId].updateElement({inputValueDisabled: false})
-        remove(this.#nestedLists[targetItemParentId])
-        delete this.#nestedLists[targetItemParentId];
+        this.#removeNestedList(targetItemParentId);
       }
     }
   };
@@ -155,6 +162,20 @@ export default class EditorPresenter {
       targetItem.updateElement({ value: evt.target.value });
     }
   };
+
+  #removeItem(id) {
+    remove(this.#inputItems[id]);
+    delete this.#inputItems[id];
+  }
+
+  #removeNestedList(id) {
+    remove(this.#nestedLists[id]);
+    delete this.#nestedLists[id];
+  }
+
+  #getListChildrenCount(listId) {
+    return this.#nestedLists[listId].element.children.length;
+  }
 
   reset() {
     this.#inputModel.setDefaultData();
