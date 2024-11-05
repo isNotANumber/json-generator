@@ -39,4 +39,8 @@ export default class InputItemsListView extends AbstractView {
     get template() {
         return createItemsListTemplate({parentId: this.#parentId,isNested: this.#isNested});
     }
+
+    get parentId() {
+        return this.#parentId;
+    }
 }
