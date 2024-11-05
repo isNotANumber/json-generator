@@ -4,7 +4,7 @@ import { generatorListTest, defaultListState } from './const';
  * Model class for managing editor input data.
  */
 export default class EditorInputModel {
-  #generatorItems = generatorListTest;
+  #generatorItems = defaultListState;
 
   /**
    * Gets the current generator items.
@@ -26,6 +26,6 @@ export default class EditorInputModel {
    * Resets the generator items to their default state.
    */
   setDefaultData() {
-    this.#generatorItems = generatorListTest;
+    this.#generatorItems = defaultListState;
   }
 }
