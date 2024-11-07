@@ -66,6 +66,11 @@ const testList2 = [
             key: 'bla47',
             value: 'blablabla47',
           },
+          {
+            id: '48',
+            key: 'bla48',
+            value: 'blablabla48',
+          },
         ],
       },
       {
