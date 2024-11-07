@@ -1,10 +1,10 @@
-import { generatorListTest, defaultListState } from './const';
+import { defaultListState, testList1, testList2 } from './const';
 
 /**
  * Model class for managing editor input data.
  */
 export default class EditorInputModel {
-  #generatorItems = generatorListTest;
+  #generatorItems = testList2;
 
   /**
    * Gets the current generator items.
