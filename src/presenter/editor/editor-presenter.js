@@ -126,13 +126,7 @@ export default class EditorPresenter {
    * @returns {InputItemView} The created input item component.
    */
   #createInputItemComponent(item, parentId) {
-    return new InputItemView({
-      id: item.id,
-      key: item.key,
-      value: item.value,
-      parentId: parentId,
-      inputValueDisabled: typeof item.value !== 'string', // Disable if value is a string
-    });
+    return new InputItemView({item: item, parentId: parentId});
   }
 
   /**

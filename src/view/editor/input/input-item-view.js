@@ -1,12 +1,12 @@
 import AbstractStatefulView from "../../../framework/view/abstract-stateful-view.js";
 
-function createInputItemTemplate({id, key, value, parentId, inputValueDisabled}) {
+function createInputItemTemplate({id, key, value, inputValueDisabled, parentId}) {
     return (
         `
         <li data-id=${id} data-parent-id=${parentId}>
             <div class="input-item">
                 <input type="text" class="input-item__field input-item__field_key" placeholder="Key" value='${key}'/}>
-                <input type="text" class="input-item__field input-item__field_value" placeholder="${inputValueDisabled ? 'disabled' : 'Value'}" value='${inputValueDisabled ? '' : value}' ${inputValueDisabled ? 'disabled' : ''}/>
+                <input type="text" class="input-item__field input-item__field_value" placeholder="${inputValueDisabled ? 'disabled' : 'Value'}" value='${value}' ${inputValueDisabled ? 'disabled' : ''}/>
                 <button class="button button_small input-item__button_append">
                     <i class="icon fas fa-plus"></i>
                   </button>
@@ -23,14 +23,23 @@ function createInputItemTemplate({id, key, value, parentId, inputValueDisabled})
  * Input item view class.
  */
 export default class InputItemView extends AbstractStatefulView {
-    #id = null;
-    #parentId = null;
 
-    constructor({id, key, value, parentId, inputValueDisabled = false}) {
+    constructor({item, parentId}) {
         super();
-        this._setState({key: key, value: value, inputValueDisabled})
-        this.#id = id
-        this.#parentId = parentId
+        this._state = this.#parseItemToState(item, parentId)
+    }
+
+    #parseItemToState(item, parentId) {
+        const state = {id: item.id, key: item.key, value: item.value, parentId: parentId};
+
+        if (Array.isArray(state.value)) {
+            state.inputValueDisabled = true;
+            state.value = 'disabled';
+        } else {
+            state.inputValueDisabled = false;
+        }
+        
+        return state;
     }
 
     /**
@@ -39,15 +48,15 @@ export default class InputItemView extends AbstractStatefulView {
      * @returns {string} Input item template as a string.
      */
     get template() {
-        return createInputItemTemplate({id: this.#id, key: this._state.key, value: this._state.value, parentId: this.#parentId, inputValueDisabled: this._state.inputValueDisabled});
+        return createInputItemTemplate({...this._state});
     }
 
     get id() {
-        return this.#id;
+        return this._state.id;
     }
 
     get parentId() {
-        return this.#parentId;
+        return this._state.parentId;
     }
 
     _restoreHandlers() {
