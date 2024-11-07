@@ -18,12 +18,12 @@ export default class InputItemsListView extends AbstractView {
     #isNested = false;
     #parentId = null;
 
-    constructor({onItemButtonClick, onItemInput, isNested, parentId = null}) {
+    constructor({isNested, parentId = null, onItemButtonClick, onItemInput }) {
         super();
-        this.#handleItemButtonClick = onItemButtonClick;
-        this.#handleItemInput = onItemInput;
         this.#isNested = isNested;
         this.#parentId = parentId;
+        this.#handleItemButtonClick = onItemButtonClick;
+        this.#handleItemInput = onItemInput;
 
         if (!this.#isNested) {
             this.element.addEventListener('click', this.#handleItemButtonClick);

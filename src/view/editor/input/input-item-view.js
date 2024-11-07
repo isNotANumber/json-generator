@@ -6,7 +6,7 @@ function createInputItemTemplate({id, key, value, inputValueDisabled, parentId})
         <li data-id=${id} data-parent-id=${parentId}>
             <div class="input-item">
                 <input type="text" class="input-item__field input-item__field_key" placeholder="Key" value='${key}'/}>
-                <input type="text" class="input-item__field input-item__field_value" placeholder="${inputValueDisabled ? 'disabled' : 'Value'}" value='${value}' ${inputValueDisabled ? 'disabled' : ''}/>
+                <input type="text" class="input-item__field input-item__field_value" placeholder="${inputValueDisabled ? 'disabled' : 'Value'}" value='${inputValueDisabled ? 'disabled' : value}' ${inputValueDisabled ? 'disabled' : ''}/>
                 <button class="button button_small input-item__button_append">
                     <i class="icon fas fa-plus"></i>
                   </button>
@@ -34,7 +34,7 @@ export default class InputItemView extends AbstractStatefulView {
 
         if (Array.isArray(state.value)) {
             state.inputValueDisabled = true;
-            state.value = 'disabled';
+            state.value = '';
         } else {
             state.inputValueDisabled = false;
         }
@@ -49,6 +49,14 @@ export default class InputItemView extends AbstractStatefulView {
      */
     get template() {
         return createInputItemTemplate({...this._state});
+    }
+
+    get id() {
+        return this._state.id;
+    }
+
+    get parentId() {
+        return this._state.parentId;
     }
 
     _restoreHandlers() {
