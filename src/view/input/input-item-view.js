@@ -8,10 +8,10 @@ function createInputItemTemplate({id, key, value, parentId, inputValueDisabled})
                 <input type="text" class="input-item__field input-item__field_key" placeholder="Key" value='${key}'/}>
                 <input type="text" class="input-item__field input-item__field_value" placeholder="${inputValueDisabled ? 'disabled' : 'Value'}" value='${inputValueDisabled ? '' : value}' ${inputValueDisabled ? 'disabled' : ''}/>
                 <button class="button button_small input-item__button_append">
-                    <i class="fas fa-plus"></i>
+                    <i class="icon fas fa-plus"></i>
                   </button>
                 <button class="button button_small button_red input-item__button_remove">
-                    <i class="fas fa-trash"></i>
+                    <i class="icon fas fa-trash"></i>
                 </button>
             </div>
         </li>

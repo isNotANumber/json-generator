@@ -3,9 +3,6 @@ body {
     font-family: Arial, sans-serif;
     color: white;
   }
-  i {
-    pointer-events: none
-  }
   .header {
     background-color: #ff7043;
     padding: 10px 20px;
@@ -122,6 +119,10 @@ body {
     display: flex;
     justify-content: flex-end;
   }
+  .input-list {
+    list-style-type: none;
+    padding-left: 20px;
+  }
   .input-item {
     display: flex;
     align-items: center;
@@ -153,10 +154,6 @@ body {
   }
   .input-item__field:disabled {
     background-color: #333;
-  }
-  ul {
-    list-style-type: none;
-    padding-left: 20px;
   }
   .modal {
     position: fixed;
@@ -190,6 +187,9 @@ body {
     padding: 0 50px;
     border-radius: 4px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  }
+  .icon {
+    pointer-events: none
   }
   @media (min-width: 768px) {
     .main-container {
