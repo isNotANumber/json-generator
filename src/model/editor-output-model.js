@@ -8,7 +8,7 @@ export default class EditorOutputModel {
    * Gets the current output JSON representation.
    * @returns {string} The current output JSON string.
    */
-  get outputJson() {
+  get data() {
     return this.#outputJson;
   }
 
