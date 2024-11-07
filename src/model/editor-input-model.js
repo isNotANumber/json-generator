@@ -4,28 +4,28 @@ import { defaultListState, testList1, testList2 } from './const';
  * Model class for managing editor input data.
  */
 export default class EditorInputModel {
-  #generatorItems = testList2;
+  #data = testList2;
 
   /**
-   * Gets the current generator items.
-   * @returns {Array} The array of current generator items.
+   * Gets the current data.
+   * @returns {Array} The array of current data.
    */
-  get generatorItems() {
-    return this.#generatorItems;
+  get data() {
+    return this.#data;
   }
 
   /**
-   * Sets the generator items to the provided data.
-   * @param {Array} data - The new data to set as generator items.
+   * Sets the data to the new data.
+   * @param {Array} data - The new data to set as data.
    */
-  set data(data) {
-    this.#generatorItems = data;
+  set data(newData) {
+    this.#data = newData;
   }
 
   /**
-   * Resets the generator items to their default state.
+   * Resets the data to their default state.
    */
   setDefaultData() {
-    this.#generatorItems = defaultListState;
+    this.#data = testList2;
   }
 }

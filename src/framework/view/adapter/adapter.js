@@ -14,10 +14,10 @@ export default class Adapter {
    */
   static convertModelDataToInputItems(data, parentId = null, result = {}) {
     for (const item of Object.values(data)) {
-      let currentGeneratorItem = null;
+      let currentInputItem = null;
 
       if (Array.isArray(item.value)) {
-        currentGeneratorItem = new InputItemView({
+        currentInputItem = new InputItemView({
           id: item.id,
           key: item.key,
           value: '',
@@ -26,7 +26,7 @@ export default class Adapter {
         });
         this.convertModelDataToInputItems(item.value, item.id, result);
       } else {
-        currentGeneratorItem = new InputItemView({
+        currentInputItem = new InputItemView({
           id: item.id,
           key: item.key,
           value: item.value,
@@ -34,7 +34,7 @@ export default class Adapter {
         });
       }
 
-      result[currentGeneratorItem.element.dataset.id] = currentGeneratorItem;
+      result[currentInputItem.element.dataset.id] = currentInputItem;
     }
 
     return result;

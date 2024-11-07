@@ -105,7 +105,7 @@ export default class EditorPresenter {
     render(this.#inputItemsListComponent, container);
 
     this.#inputItems = Adapter.convertModelDataToInputItems(
-      this.#inputModel.generatorItems
+      this.#inputModel.data
     );
 
     this.#renderInputItems(this.#inputItems);
