@@ -4,13 +4,13 @@ function createToolbarTemplate() {
   return (
     `
     <div class="toolbar">
-        <div class="toolbar__left">
-          <button class="button button--green tlb-btn--apply">Apply</button>
-          <button class="button button--red tlb-btn--clear">Clear</button>
+        <div class="toolbar__left-side">
+          <button class="button button_green toolbar__button_apply">Apply</button>
+          <button class="button button_red toolbar__button_clear">Clear</button>
         </div>
-        <div class="toolbar__right">
-          <button class="button tlb-btn--save">Save</button>
-          <button class="button tlb-btn--copy">Copy</button>
+        <div class="toolbar__right-side">
+          <button class="button toolbar__button_save">Save</button>
+          <button class="button toolbar__button_copy">Copy</button>
         </div>
     </div>
     `

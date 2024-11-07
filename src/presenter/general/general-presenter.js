@@ -201,13 +201,13 @@ export default class GeneralPresenter {
    * @private
    */
   #handleToolbarButtonClick = (evt) => {
-    if (evt.target.classList.contains('tlb-btn--apply')) {
+    if (evt.target.classList.contains('toolbar__button_apply')) {
       this.#handleToolbarApplyClick();
-    } else if (evt.target.classList.contains('tlb-btn--clear')) {
+    } else if (evt.target.classList.contains('toolbar__button_clear')) {
       this.#handleToolbarClearClick();
-    } else if (evt.target.classList.contains('tlb-btn--save')) {
+    } else if (evt.target.classList.contains('toolbar__button_save')) {
       this.#handleToolbarSaveClick();
-    } else if (evt.target.classList.contains('tlb-btn--copy')) {
+    } else if (evt.target.classList.contains('toolbar__button_copy')) {
       this.#handleToolbarCopyClick();
     }
   };
