@@ -1,218 +1,268 @@
+/* Base Styles */
 body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    color: white;
-  }
-  .header {
-    background-color: #ff7043;
-    padding: 10px 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .header__logo {
-    font-size: 20px;
-    font-weight: bold;
-  }
+  margin: 0;
+  font-family: Arial, sans-serif;
+  color: white;
+}
+
+/* Layout Components */
+.main-container {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 45px);
+}
+
+/* Header Styles */
+.header {
+  background-color: #ff7043;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header__logo {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+/* Sidebar Styles */
+.sidebar {
+  width: 100%;
+  background-color: #444;
+  border-bottom: 1px solid #555;
+  padding: 10px;
+}
+
+.sidebar__title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.sidebar__menu {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  justify-content: space-around;
+}
+
+.sidebar__menu-item {
+  padding: 5px 0;
+}
+
+.sidebar__menu-item a {
+  text-decoration: none;
+  color: white;
+}
+
+/* Main Content Area */
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: #333;
+  color: white;
+}
+
+/* Toolbar Styles */
+.toolbar {
+  padding: 10px;
+  border-bottom: 1px solid #555;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.toolbar__left,
+.toolbar__right {
+  display: flex;
+  align-items: center;
+}
+
+/* Button Styles */
+.button {
+  margin: 0 5px;
+  padding: 8px 15px;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 14px;
+  color: white;
+  background-color: #ff8c42;
+  transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.button:hover {
+  background-color: #e67e37;
+}
+
+/* Button Variants */
+.button_small {
+  margin: 0 3px;
+  padding: 5px 10px;
+}
+
+.button_green {
+  background-color: #4caf50;
+}
+
+.button_green:hover {
+  background-color: #388e3c;
+}
+
+.button_red {
+  background-color: #e74c3c;
+}
+
+.button_red:hover {
+  background-color: #c0392b;
+}
+
+/* Editor Styles */
+.editor {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.editor__pane {
+  flex: 1;
+  padding: 10px;
+  border-bottom: 1px solid #555;
+}
+
+.editor__pane:last-child {
+  border-bottom: none;
+}
+
+.editor__pane pre {
+  background-color: #444;
+  padding: 10px;
+  border: 1px solid #555;
+  border-radius: 4px;
+  overflow: auto;
+}
+
+.editor__output-button-container {
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* Input List Styles */
+.input-list {
+  list-style-type: none;
+  padding-left: 20px;
+}
+
+.input-item {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+  padding-left: 10px;
+  min-width: fit-content;
+  position: relative;
+}
+
+.input-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background-color: #ff8c42;
+}
+
+.input__buttons-container {
+  min-width: fit-content;
+}
+
+.input-item__field {
+  margin-right: 10px;
+  padding: 5px;
+  border: 1px solid #555;
+  border-radius: 4px;
+  background-color: #444;
+  color: white;
+  width: 100px;
+}
+
+.input-item__field:disabled {
+  background-color: #333;
+}
+
+/* Modal Styles */
+.modal {
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal__content {
+  background-color: #333;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 400px;
+  border-radius: 4px;
+}
+
+.modal__buttons {
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* Notification Styles */
+.notification {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #4caf50;
+  color: white;
+  padding: 0 50px;
+  border-radius: 4px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Icon Styles */
+.icon {
+  pointer-events: none;
+}
+
+/* Media Queries */
+@media (min-width: 768px) {
   .main-container {
-    display: flex;
-    flex-direction: column;
-    height: calc(100vh - 45px);
-  }
-  .sidebar {
-    width: 100%;
-    background-color: #444;
-    border-bottom: 1px solid #555;
-    padding: 10px;
-  }
-  .sidebar__title {
-    font-size: 18px;
-    font-weight: bold;
-    margin-bottom: 10px;
-  }
-  .sidebar__menu {
-    list-style: none;
-    padding: 0;
-    display: flex;
-    justify-content: space-around;
-  }
-  .sidebar__menu-item {
-    padding: 5px 0;
-  }
-  .sidebar__menu-item a {
-    text-decoration: none;
-    color: white;
-  }
-  .main-content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    background-color: #333;
-    color: white;
-  }
-  .toolbar {
-    padding: 10px;
-    border-bottom: 1px solid #555;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .toolbar__left {
-    display: flex;
-    align-items: center;
-  }
-  .toolbar__right {
-    display: flex;
-    align-items: center;
-  }
-  .button {
-    margin: 0 5px;
-    padding: 8px 15px;
-    border: none;
-    cursor: pointer;
-    border-radius: 4px;
-    font-size: 14px;
-    color: white;
-    background-color: #ff8c42;
-    transition: background-color 0.3s, box-shadow 0.3s;
-  }
-  .button:hover {
-    background-color: #e67e37;
-  }
-  .button_small {
-    margin: 0 3px;
-    padding: 5px 10px;
-  }
-  .button_green {
-    background-color: #4caf50;
-  }
-  .button_green:hover {
-    background-color: #388e3c;
-  }
-  .button_red {
-    background-color: #e74c3c;
-  }
-  .button_red:hover {
-    background-color: #c0392b;
-  }
-  .editor {
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-  }
-  .editor__pane {
-    flex: 1;
-    padding: 10px;
-    border-bottom: 1px solid #555;
-  }
-  .editor__pane:last-child {
-    border-bottom: none;
-  }
-  .editor__pane pre {
-    background-color: #444;
-    padding: 10px;
-    border: 1px solid #555;
-    border-radius: 4px;
-    overflow: auto;
-  }
-  .editor__output-button-container {
-    display: flex;
-    justify-content: flex-end;
-  }
-  .input-list {
-    list-style-type: none;
-    padding-left: 20px;
-  }
-  .input-item {
-    display: flex;
-    align-items: center;
-    margin-top: 10px;
-    padding-left: 10px;
-    min-width: fit-content;
-    position: relative;
-  }
-  .input__buttons-container {
-    min-width: fit-content;
-  }
-  .input-item::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 2px;
-    background-color: #ff8c42;
-  }
-  .input-item__field {
-    margin-right: 10px;
-    padding: 5px;
-    border: 1px solid #555;
-    border-radius: 4px;
-    background-color: #444;
-    color: white;
-    width: 100px;
-  }
-  .input-item__field:disabled {
-    background-color: #333;
-  }
-  .modal {
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.4);
-  }
-  .modal__content {
-    background-color: #333;
-    margin: 15% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-    max-width: 400px;
-    border-radius: 4px;
-  }
-  .modal__buttons {
-    display: flex;
-    justify-content: flex-end;
-  }
-  .notification {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background-color: #4caf50;
-    color: white;
-    padding: 0 50px;
-    border-radius: 4px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  }
-  .icon {
-    pointer-events: none
-  }
-  @media (min-width: 768px) {
-    .main-container {
       flex-direction: row;
-    }
-    .sidebar {
+  }
+
+  .sidebar {
       width: 200px;
       border-bottom: none;
       border-right: 1px solid #555;
-    }
-    .sidebar__menu {
+  }
+
+  .sidebar__menu {
       flex-direction: column;
       justify-content: flex-start;
-    }
-    .editor {
+  }
+
+  .editor {
       flex-direction: row;
-    }
-    .editor__pane {
+  }
+
+  .editor__pane {
       border-bottom: none;
       border-right: 1px solid #555;
-    }
-    .editor__pane:last-child {
-      border-right: none;
-    }
   }
-  
+
+  .editor__pane:last-child {
+      border-right: none;
+  }
+}
