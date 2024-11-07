@@ -1,4 +1,4 @@
-import InputItemView from '../../../view/input/input-item-view';
+import InputItemView from '../../../view/editor/input/input-item-view.js';
 
 /**
  * Adapter class for converting model data to input items and vice versa.

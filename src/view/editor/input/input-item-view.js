@@ -1,4 +1,4 @@
-import AbstractStatefulView from "../../framework/view/abstract-stateful-view.js";
+import AbstractStatefulView from "../../../framework/view/abstract-stateful-view.js";
 
 function createInputItemTemplate({id, key, value, parentId, inputValueDisabled}) {
     return (

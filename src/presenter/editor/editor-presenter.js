@@ -1,9 +1,9 @@
 import { render, remove, RenderPosition } from '../../framework/render';
 import EditorView from '../../view/editor/editor-view';
 import { generateRandomId } from '../../util.js';
-import InputItemView from '../../view/input/input-item-view.js';
-import InputItemsListView from '../../view/input/input-items-list-view.js';
 import Adapter from '../../framework/view/adapter/adapter.js';
+import InputItemView from '../../view/editor/input/input-item-view.js';
+import InputItemsListView from '../../view/editor/input/input-items-list-view.js';
 
 export default class EditorPresenter {
   /**
