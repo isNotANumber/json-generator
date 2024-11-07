@@ -51,14 +51,6 @@ export default class InputItemView extends AbstractStatefulView {
         return createInputItemTemplate({...this._state});
     }
 
-    get id() {
-        return this._state.id;
-    }
-
-    get parentId() {
-        return this._state.parentId;
-    }
-
     _restoreHandlers() {
         return;
     }
