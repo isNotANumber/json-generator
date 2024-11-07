@@ -122,7 +122,7 @@ body {
     display: flex;
     justify-content: flex-end;
   }
-  .generator-item {
+  .input-item {
     display: flex;
     align-items: center;
     margin-top: 10px;
@@ -130,10 +130,10 @@ body {
     min-width: fit-content;
     position: relative;
   }
-  .generator__buttons-container {
+  .input__buttons-container {
     min-width: fit-content;
   }
-  .generator-item::before {
+  .input-item::before {
     content: '';
     position: absolute;
     left: 0;
@@ -142,7 +142,7 @@ body {
     width: 2px;
     background-color: #ff8c42;
   }
-  .generator-item__input {
+  .input-item__field {
     margin-right: 10px;
     padding: 5px;
     border: 1px solid #555;
@@ -151,7 +151,7 @@ body {
     color: white;
     width: 100px;
   }
-  .generator-item__input:disabled {
+  .input-item__field:disabled {
     background-color: #333;
   }
   ul {

@@ -4,9 +4,9 @@ function createInputItemTemplate({id, key, value, parentId, inputValueDisabled})
     return (
         `
         <li data-id=${id} data-parent-id=${parentId}>
-            <div class="generator-item">
-                <input type="text" class="generator-item__input generator-item__input-key" placeholder="Key" value='${key}'/}>
-                <input type="text" class="generator-item__input generator-item__input-value" placeholder="${inputValueDisabled ? 'disabled' : 'Value'}" value='${inputValueDisabled ? '' : value}' ${inputValueDisabled ? 'disabled' : ''}/>
+            <div class="input-item">
+                <input type="text" class="input-item__field input-item__key" placeholder="Key" value='${key}'/}>
+                <input type="text" class="input-item__field input-item__value" placeholder="${inputValueDisabled ? 'disabled' : 'Value'}" value='${inputValueDisabled ? '' : value}' ${inputValueDisabled ? 'disabled' : ''}/>
                 <button class="button button--small gnrt-btn--append">
                     <i class="fas fa-plus"></i>
                   </button>
@@ -20,7 +20,7 @@ function createInputItemTemplate({id, key, value, parentId, inputValueDisabled})
 }
 
 /**
- * Generator item view class.
+ * Input item view class.
  */
 export default class InputItemView extends AbstractStatefulView {
     #id = null;
@@ -34,9 +34,9 @@ export default class InputItemView extends AbstractStatefulView {
     }
 
     /**
-     * Getter for generator item template.
+     * Getter for input item template.
      * @abstract
-     * @returns {string} Generator item template as a string.
+     * @returns {string} Input item template as a string.
      */
     get template() {
         return createInputItemTemplate({id: this.#id, key: this._state.key, value: this._state.value, parentId: this.#parentId, inputValueDisabled: this._state.inputValueDisabled});

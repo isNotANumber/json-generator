@@ -98,7 +98,7 @@ export default class EditorPresenter {
    */
   #renderInput(container) {
     this.#inputItemsListComponent = new InputItemsListView({
-      onItemButtonClick: this.#handleGeneratorItemButtonClick,
+      onItemButtonClick: this.#handleInputItemButtonClick,
       onItemInput: this.#handleItemInput,
     });
 
@@ -154,12 +154,12 @@ export default class EditorPresenter {
   }
 
   /**
-   * Handles the click event on generator item buttons.
+   * Handles the click event on input item buttons.
    *
    * @param {Event} evt - The click event.
    * @private
    */
-  #handleGeneratorItemButtonClick = (evt) => {
+  #handleInputItemButtonClick = (evt) => {
     const target = evt.target.closest('li');
 
     if (target) {
@@ -239,9 +239,9 @@ export default class EditorPresenter {
     const targetId = evt.target.closest('li').dataset.id;
     const targetItem = this.#inputItems[targetId];
 
-    if (evt.target.classList.contains('generator-item__input-key')) {
+    if (evt.target.classList.contains('input-item__key')) {
       targetItem.updateElement({ key: evt.target.value });
-    } else if (evt.target.classList.contains('generator-item__input-value')) {
+    } else if (evt.target.classList.contains('input-item__value')) {
       targetItem.updateElement({ value: evt.target.value });
     }
   };

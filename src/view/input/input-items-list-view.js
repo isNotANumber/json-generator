@@ -3,13 +3,13 @@ import AbstractView from "../../framework/view/abstract-stateful-view.js";
 function createItemsListTemplate({parentId, isNested}) {
     return (
         `
-        <ul data-parent-id=${parentId} class="generator-input-list ${isNested ? 'generator-input-list--nested' : ''}"></ul>
+        <ul data-parent-id=${parentId} class="input-list ${isNested ? 'input-list--nested' : ''}"></ul>
         `
     );
 }
 
 /**
- * Generator input list view class.
+ * Input list view class.
  */
 export default class InputItemsListView extends AbstractView {
 
@@ -32,9 +32,9 @@ export default class InputItemsListView extends AbstractView {
     }
 
     /**
-     * Getter for generator input list template.
+     * Getter for input list template.
      * @abstract
-     * @returns {string} Generator input list template as a string.
+     * @returns {string} Input list template as a string.
      */
     get template() {
         return createItemsListTemplate({parentId: this.#parentId,isNested: this.#isNested});
