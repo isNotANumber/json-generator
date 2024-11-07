@@ -3,7 +3,9 @@ import AbstractView from "../../framework/view/abstract-view";
 function createNotificationTemplate({message}) {
     return (
         `
-        <div id="notification" class="notification">${message}</div>
+        <div class="notification">
+            <p class="notification__message">${message}</p>
+        </div>
         `
     );
 }
