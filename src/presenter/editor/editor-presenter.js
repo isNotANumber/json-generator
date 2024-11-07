@@ -5,158 +5,85 @@ import InputItemView from '../../view/editor/input/input-item-view.js';
 import InputItemsListView from '../../view/editor/input/input-items-list-view.js';
 
 export default class EditorPresenter {
-  /**
-   * @private
-   * @type {HTMLElement|null}
-   */
   #container = null;
 
-  /**
-   * @private
-   * @type {EditorView|null}
-   */
   #editorComponent = null;
 
-  /**
-   * @private
-   * @type {InputItemsListView|null}
-   */
-  #baseInputItemsList = null;
+  #inputItemComponents = new Map();
+  #inputItemsListComponents = new Map();
 
-  /**
-   * @private
-   * @type {EditorInputModel|null}
-   */
   #inputModel = null;
-
-  /**
-   * @private
-   * @type {EditorOutputModel|null}
-   */
   #outputModel = null;
 
-  /**
-   * Initializes an instance of the EditorPresenter.
-   *
-   * @param {Object} params - The parameters for initializing the presenter.
-   * @param {HTMLElement} params.container - The container element for the editor.
-   * @param {EditorInputModel} params.inputModel - The model managing input data.
-   * @param {EditorOutputModel} params.outputModel - The model managing output data.
-   */
   constructor({ container, inputModel, outputModel }) {
     this.#container = container;
     this.#inputModel = inputModel;
     this.#outputModel = outputModel;
   }
 
-  /**
-   * Initializes the editor presenter and renders the editor component.
-   */
   init() {
-    const data = this.#inputModel.data;
-
     this.#renderEditor(this.#container);
 
-    const editorInput = this.#editorComponent.element.querySelector(
+    const editorInputContainer = this.#editorComponent.element.querySelector(
       '.editor__pane_input'
     );
 
-    this.#baseInputItemsList = new InputItemsListView({
-      // onItemButtonClick: this.#handleInputItemButtonClick,
-      // onItemInput: this.#handleItemInput,
-    });
-
-    this.#renderBaseInputList(this.#baseInputItemsList, editorInput);
-    this.#renderComponentsFromData(data, this.#baseInputItemsList.element);
+    this.#renderInputItemsListComponent('base', editorInputContainer);
+    this.#renderComponentsFromData(
+      this.#inputModel.data,
+      this.#inputItemsListComponents.get('base').element
+    );
   }
 
-  /**
-   * Renders the editor component in the provided container.
-   *
-   * @param {HTMLElement} container - The container to render the editor.
-   * @private
-   */
   #renderEditor(container) {
     this.#editorComponent = new EditorView();
 
     render(this.#editorComponent, container);
   }
 
-  /**
-   * Renders the input section inside the specified container.
-   *
-   * @param {HTMLElement} container - The container for the input section.
-   * @private
-   */
-  #renderBaseInputList(component, container) {
-    render(component, container);
-  }
-
-  /**
-   * Recursively renders components from the provided data into the specified container
-   * for nested data.
-   *
-   * @param {Array} data - The array of data items to be rendered.
-   * @param {HTMLElement} container - The DOM element where the components will be rendered.
-   * @param {string|null} [parentId=null] - The ID of the parent component.
-   */
   #renderComponentsFromData(data, container, parentId = null) {
     data.forEach((item) => {
-      const inputItem = this.#createInputItemComponent(item, parentId);
-      render(inputItem, container);
+      this.#renderInputItemComponent(item, parentId, container);
 
       if (Array.isArray(item.value)) {
-        const inputItemsList = this.#createInputItemsListComponent(item.id);
-        render(inputItemsList, container);
+        this.#renderInputItemsListComponent(item.id, container);
 
         this.#renderComponentsFromData(
           item.value,
-          inputItemsList.element,
+          this.#inputItemsListComponents.get(item.id).element,
           item.id
         );
       }
     });
   }
 
-  /**
-   * Creates an input item component based on the provided item data.
-   *
-   * @param {Object} item - The data item used to create the input item component.
-   * @param {string|null} parentId - The ID of the parent component, used for hierarchy.
-   * @returns {InputItemView} The created input item component.
-   */
-  #createInputItemComponent(item, parentId) {
-    return new InputItemView({item: item, parentId: parentId});
+  #renderInputItemComponent(item, parentId, container) {
+    const inputItemComponent = new InputItemView({
+      item: item,
+      parentId: parentId,
+    });
+    this.#inputItemComponents.set(item.id, inputItemComponent);
+
+    render(inputItemComponent, container);
   }
 
-  /**
-   * Creates an input items list component for the specified parent ID.
-   *
-   * @param {string|null} parentId - The ID of the parent component.
-   * @returns {InputItemsListView} The created input items list component.
-   */
-  #createInputItemsListComponent(parentId) {
-    return new InputItemsListView({ parentId: parentId, isNested: true });
+  #renderInputItemsListComponent(parentId, container) {
+    const inputItemsListComponent = new InputItemsListView({
+      parentId: parentId,
+      isNested: true,
+    });
+    this.#inputItemsListComponents.set(parentId, inputItemsListComponent);
+
+    render(inputItemsListComponent, container);
   }
 
   // TODO: refactor this
-  /**
-   * Renders the output data in the output container.
-   * This function can be refactored.
-   *
-   * @param {string} data - The output data to display.
-   * @private
-   */
   #renderOutputData() {
     const editorOutputContainer =
       this.#editorComponent.element.querySelector('#json-output');
     editorOutputContainer.textContent = this.#outputModel.data;
   }
 
-  /**
-   * Resets the editor state to its default configuration.
-   * @returns {void}
-   */
   reset() {
     this.#inputModel.setDefaultData();
     this.#outputModel.setDefaultData();
@@ -164,10 +91,6 @@ export default class EditorPresenter {
     this.init();
   }
 
-  /**
-   * Applies the changes made in input items to the models and renders the output data.
-   * @returns {void}
-   */
   apply() {
     const data = this.#inputModel.data;
     this.#outputModel.data = data;
