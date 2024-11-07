@@ -183,12 +183,12 @@ export default class GeneralPresenter {
    * @private
    */
   #handleModalButtonClick = (evt) => {
-    if (evt.target.classList.contains('modal-btn--confirm')) {
+    if (evt.target.classList.contains('modal__button_confirm')) {
       this.#editorPresenter.reset();
       remove(this.#modalComponent);
 
       this.#showNotification('Editor reseted!');
-    } else if (evt.target.classList.contains('modal-btn--cancel')) {
+    } else if (evt.target.classList.contains('modal__button_cancel')) {
       remove(this.#modalComponent);
       this.#showNotification('Editor reset cancelled!');
     }

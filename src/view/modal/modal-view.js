@@ -3,13 +3,13 @@ import AbstractView from "../../framework/view/abstract-view";
 function createModalTemplate() {
     return (
         `
-        <div id="modal" class="modal">
+        <div class="modal">
             <div class="modal__content">
-                <h2>Warning</h2>
-                <p id="modal-message">Are you sure you want to perform this action?</p>
-                <div class="modal__content__buttons">
-                    <button class="button button--red modal-btn--confirm">Confirm</button>
-                    <button class="button modal-btn--cancel">Cancel</button>
+                <h2 class="modal__title">Warning</h2>
+                <p class="modal__message">Are you sure you want to perform this action?</p>
+                <div class="modal__buttons">
+                    <button class="button button_red modal__button_confirm">Confirm</button>
+                    <button class="button modal__button_cancel">Cancel</button>
                 </div>
             </div>
         </div>

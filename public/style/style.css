@@ -86,16 +86,16 @@ body {
     margin: 0 3px;
     padding: 5px 10px;
   }
-  .button--green {
+  .button_green {
     background-color: #4caf50;
   }
-  .button--green:hover {
+  .button_green:hover {
     background-color: #388e3c;
   }
   .button_red {
     background-color: #e74c3c;
   }
-  .button--red:hover {
+  .button_red:hover {
     background-color: #c0392b;
   }
   .editor {
