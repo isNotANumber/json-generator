@@ -5,12 +5,12 @@ function createInputItemTemplate({id, key, value, parentId, inputValueDisabled})
         `
         <li data-id=${id} data-parent-id=${parentId}>
             <div class="input-item">
-                <input type="text" class="input-item__field input-item__key" placeholder="Key" value='${key}'/}>
-                <input type="text" class="input-item__field input-item__value" placeholder="${inputValueDisabled ? 'disabled' : 'Value'}" value='${inputValueDisabled ? '' : value}' ${inputValueDisabled ? 'disabled' : ''}/>
-                <button class="button button--small gnrt-btn--append">
+                <input type="text" class="input-item__field input-item__field_key" placeholder="Key" value='${key}'/}>
+                <input type="text" class="input-item__field input-item__field_value" placeholder="${inputValueDisabled ? 'disabled' : 'Value'}" value='${inputValueDisabled ? '' : value}' ${inputValueDisabled ? 'disabled' : ''}/>
+                <button class="button button_small input-item__button_append">
                     <i class="fas fa-plus"></i>
                   </button>
-                <button class="button button--small button--red gnrt-btn--remove">
+                <button class="button button_small button_red input-item__button_remove">
                     <i class="fas fa-trash"></i>
                 </button>
             </div>

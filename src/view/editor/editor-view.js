@@ -3,7 +3,7 @@ import AbstractView from "../../framework/view/abstract-view";
 function createEditorInputTemplate() {
     return (
         `
-        <div class="editor__pane editor__pane--input">
+        <div class="editor__pane editor__pane_input">
             <h2>Propopties (key:value)</h2>
         </div>
         `
@@ -13,7 +13,7 @@ function createEditorInputTemplate() {
 function createEditorOutputTemplate() {
     return (
         `
-        <div class="editor__pane editor__pane--output">
+        <div class="editor__pane editor__pane_output">
             <h2>JSON</h2>
             <pre id="json-output">{}</pre>
             </div>

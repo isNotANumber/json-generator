@@ -82,7 +82,7 @@ body {
   .button:hover {
     background-color: #e67e37;
   }
-  .button--small {
+  .button_small {
     margin: 0 3px;
     padding: 5px 10px;
   }
@@ -92,7 +92,7 @@ body {
   .button--green:hover {
     background-color: #388e3c;
   }
-  .button--red {
+  .button_red {
     background-color: #e74c3c;
   }
   .button--red:hover {

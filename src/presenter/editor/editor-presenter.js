@@ -72,7 +72,7 @@ export default class EditorPresenter {
     this.#renderEditor(this.#container);
 
     const editorInputContainer = this.#editorComponent.element.querySelector(
-      '.editor__pane--input'
+      '.editor__pane_input'
     );
 
     this.#renderInput(editorInputContainer);
@@ -165,9 +165,9 @@ export default class EditorPresenter {
     if (target) {
       const targetId = target.dataset.id;
 
-      if (evt.target.classList.contains('gnrt-btn--append')) {
+      if (evt.target.classList.contains('input-item__button_append')) {
         this.#handleAppendClick(targetId);
-      } else if (evt.target.classList.contains('gnrt-btn--remove')) {
+      } else if (evt.target.classList.contains('input-item__button_remove')) {
         this.#handleRemoveClick(targetId);
       }
     }
@@ -239,9 +239,9 @@ export default class EditorPresenter {
     const targetId = evt.target.closest('li').dataset.id;
     const targetItem = this.#inputItems[targetId];
 
-    if (evt.target.classList.contains('input-item__key')) {
+    if (evt.target.classList.contains('input-item__field_key')) {
       targetItem.updateElement({ key: evt.target.value });
-    } else if (evt.target.classList.contains('input-item__value')) {
+    } else if (evt.target.classList.contains('input-item__field_value')) {
       targetItem.updateElement({ value: evt.target.value });
     }
   };

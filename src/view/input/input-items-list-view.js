@@ -3,7 +3,7 @@ import AbstractView from "../../framework/view/abstract-stateful-view.js";
 function createItemsListTemplate({parentId, isNested}) {
     return (
         `
-        <ul data-parent-id=${parentId} class="input-list ${isNested ? 'input-list--nested' : ''}"></ul>
+        <ul data-parent-id=${parentId} class="input-list ${isNested ? 'input-list_nested' : ''}"></ul>
         `
     );
 }
