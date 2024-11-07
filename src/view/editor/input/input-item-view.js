@@ -26,10 +26,10 @@ export default class InputItemView extends AbstractStatefulView {
 
     constructor({item, parentId}) {
         super();
-        this._state = this.#parseItemToState(item, parentId)
+        this._state = this.#parseObjectToState(item, parentId)
     }
 
-    #parseItemToState(item, parentId) {
+    #parseObjectToState(item, parentId) {
         const state = {id: item.id, key: item.key, value: item.value, parentId: parentId};
 
         if (Array.isArray(state.value)) {
@@ -40,6 +40,12 @@ export default class InputItemView extends AbstractStatefulView {
         }
         
         return state;
+    }
+
+    parseStateToObject() {
+        const { id, key, value, parentId } = this._state
+
+        return { id, key, value, parentId };
     }
 
     /**

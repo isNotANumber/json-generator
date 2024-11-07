@@ -3,6 +3,7 @@ import EditorView from '../../view/editor/editor-view';
 import { generateRandomId } from '../../util.js';
 import InputItemView from '../../view/editor/input/input-item-view.js';
 import InputItemsListView from '../../view/editor/input/input-items-list-view.js';
+import Adapter from '../../framework/adapter/adapter.js';
 
 export default class EditorPresenter {
   #container = null;
@@ -85,10 +86,10 @@ export default class EditorPresenter {
   }
 
   // TODO: refactor this
-  #renderOutputData() {
+  #renderOutputData(data) {
     const editorOutputContainer =
       this.#editorComponent.element.querySelector('#json-output');
-    editorOutputContainer.textContent = this.#outputModel.data;
+    editorOutputContainer.textContent = data;
   }
 
   #handleInputItemButtonClick = (evt) => {
@@ -136,7 +137,6 @@ export default class EditorPresenter {
 
   #handleRemoveClick = (targetId) => {
     const targetItem = this.#inputItemComponents.get(targetId);
-    // const targetItemParentId = targetItem.element.dataset.parentId;
     const targetItemParentId = targetItem.parentId;
 
     const targetItemsChildsList = this.#inputItemsListComponents.get(targetId);
@@ -197,9 +197,10 @@ export default class EditorPresenter {
   }
 
   apply() {
-    const data = this.#inputModel.data;
-    this.#outputModel.data = data;
+    const newData = Adapter.convertInputItemsToModel(this.#inputItemComponents);
+    this.#inputModel.data = newData;
+    this.#outputModel.data = newData;
 
-    this.#renderOutputData();
+    this.#renderOutputData(this.#outputModel.data);
   }
 }
