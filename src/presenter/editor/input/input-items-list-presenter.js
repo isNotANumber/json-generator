@@ -1,13 +1,13 @@
 import { render, remove, RenderPosition } from '../../../framework/render.js';
 import { generateRandomId } from '../../../util.js';
-import InputItemView from '../../../view/editor/input/input-item-view.js';
+import InputItemPresenter from './input-item-presenter.js'
 import InputItemsListView from '../../../view/editor/input/input-items-list-view.js';
 import Adapter from '../../../framework/adapter/adapter.js'
 
 export default class InputItemsListPresenter {
   #container = null;
 
-  #inputItemComponents = new Map();
+  #inputItemPresenters = new Map();
   #inputItemsListComponents = new Map();
 
   #inputModel = null;
@@ -26,7 +26,7 @@ export default class InputItemsListPresenter {
   }
 
   get inputItems() {
-    return Adapter.convertInputItemsToModel(this.#inputItemComponents);
+    return Adapter.convertInputItemsToModel(this.#inputItemPresenters);
   }
 
   #renderComponentsFromData(data, container, parentId = null) {
@@ -46,13 +46,11 @@ export default class InputItemsListPresenter {
   }
 
   #renderInputItemComponent(item, parentId, container) {
-    const inputItemComponent = new InputItemView({
-      item: item,
-      parentId: parentId,
-    });
-    this.#inputItemComponents.set(item.id, inputItemComponent);
+    const inputItemPresenter = new InputItemPresenter({container: container, parentId: parentId})
 
-    render(inputItemComponent, container);
+    inputItemPresenter.init(item);
+
+    this.#inputItemPresenters.set(item.id, inputItemPresenter);
   }
 
   #renderInputItemsListComponent(
@@ -87,7 +85,7 @@ export default class InputItemsListPresenter {
   };
 
   #handleAppendClick = (targetId) => {
-    const targetItem = this.#inputItemComponents.get(targetId);
+    const targetItem = this.#inputItemPresenters.get(targetId);
     const targetItemsList = this.#inputItemsListComponents.get(targetId);
 
     const newItem = { id: generateRandomId(), key: '', value: '' };
@@ -116,7 +114,7 @@ export default class InputItemsListPresenter {
   };
 
   #handleRemoveClick = (targetId) => {
-    const targetItem = this.#inputItemComponents.get(targetId);
+    const targetItem = this.#inputItemPresenters.get(targetId);
     const targetItemParentId = targetItem.parentId;
 
     const targetItemsChildsList = this.#inputItemsListComponents.get(targetId);
@@ -133,9 +131,9 @@ export default class InputItemsListPresenter {
     }
     this.#removeItem(targetId);
 
-    if (targetItemParentId !== null) {
+    if (targetItemParentId) {
       if (this.#getListChildrenCount(targetItemsParentList) === 0) {
-        this.#inputItemComponents.get(targetItemParentId).updateElement({
+        this.#inputItemPresenters.get(targetItemParentId).updateElement({
           inputValueDisabled: false,
         });
 
@@ -146,7 +144,7 @@ export default class InputItemsListPresenter {
 
   #handleItemInput = (evt) => {
     const targetId = evt.target.closest('li').dataset.id;
-    const targetItem = this.#inputItemComponents.get(targetId);
+    const targetItem = this.#inputItemPresenters.get(targetId);
 
     if (evt.target.classList.contains('input-item__field_key')) {
       targetItem.updateElement({ key: evt.target.value });
@@ -161,8 +159,8 @@ export default class InputItemsListPresenter {
   }
 
   #removeItem(id) {
-    remove(this.#inputItemComponents.get(id));
-    this.#inputItemComponents.delete(id);
+    this.#inputItemPresenters.get(id).destroy();
+    this.#inputItemPresenters.delete(id);
   }
 
   #getListChildrenCount(itemsList) {

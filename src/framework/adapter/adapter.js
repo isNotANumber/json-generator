@@ -5,7 +5,7 @@ export default class Adapter {
     const output = [];
 
     items.forEach(item => {
-      const itemObj = item.parseStateToObject();
+      const itemObj = item.component.parseStateToObject();
 
       if (itemObj.parentId === null) {
         delete itemObj.parentId;

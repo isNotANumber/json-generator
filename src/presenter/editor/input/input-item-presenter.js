@@ -1,4 +1,4 @@
-import { render } from '../../../framework/render.js';
+import { render, remove } from '../../../framework/render.js';
 import InputItemView from '../../../view/editor/input/input-item-view.js';
 
 export default class InputItemPresenter {
@@ -12,6 +12,18 @@ export default class InputItemPresenter {
     this.#parentId = parentId;
   }
 
+  get component() {
+    return this.#inputItemComponent;
+  }
+
+  get element() {
+    return this.#inputItemComponent.element;
+  }
+
+  get parentId() {
+    return this.#parentId;
+  }
+
   init(item) {
     this.#renderInputItemComponent(item, this.#parentId, this.#container)
   }
@@ -23,5 +35,13 @@ export default class InputItemPresenter {
     });
 
     render(this.#inputItemComponent, container);
+  }
+
+  updateElement() {
+    this.#inputItemComponent.updateElement();
+  }
+
+  destroy() {
+    remove(this.#inputItemComponent);
   }
 }
