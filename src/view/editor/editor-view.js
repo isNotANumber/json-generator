@@ -49,4 +49,9 @@ export default class EditorView extends AbstractView {
     get template() {
         return createEditorTemplate();
     }
+
+    get inputContainer() {
+        console.log(this.element.querySelector('.editor__pane_input'))
+        return this.element.querySelector('.editor__pane_input');
+    }
 }
