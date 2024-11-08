@@ -37,8 +37,8 @@ export default class InputItemPresenter {
     render(this.#inputItemComponent, container);
   }
 
-  updateElement() {
-    this.#inputItemComponent.updateElement();
+  updateItemState(props) {
+    this.#inputItemComponent._setState({...props});
   }
 
   destroy() {

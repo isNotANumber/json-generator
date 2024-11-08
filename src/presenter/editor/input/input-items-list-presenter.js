@@ -34,7 +34,7 @@ export default class InputItemsListPresenter {
       this.#renderInputItemComponent(item, parentId, container);
 
       if (Array.isArray(item.value)) {
-        this.#renderInputItemsListComponent(item.id, container);
+        this.#renderInputItemsListComponent(item.id, this.#inputItemPresenters.get(item.id).element);
 
         this.#renderComponentsFromData(
           item.value,
@@ -57,7 +57,6 @@ export default class InputItemsListPresenter {
     parentId,
     container,
     isNested = true,
-    renderPosition = RenderPosition.BEFOREEND
   ) {
     const inputItemsListComponent = new InputItemsListView({
       onItemButtonClick: this.#handleInputItemButtonClick,
@@ -67,7 +66,7 @@ export default class InputItemsListPresenter {
     });
     this.#inputItemsListComponents.set(parentId, inputItemsListComponent);
 
-    render(inputItemsListComponent, container, renderPosition);
+    render(inputItemsListComponent, container);
   }
 
   #handleInputItemButtonClick = (evt) => {
@@ -103,13 +102,12 @@ export default class InputItemsListPresenter {
         targetId,
         targetItem.element,
         true,
-        RenderPosition.AFTEREND
       );
       const nestedList = this.#inputItemsListComponents.get(targetId);
 
       this.#renderInputItemComponent(newItem, targetId, nestedList.element);
 
-      targetItem.updateElement({ inputValueDisabled: true });
+      targetItem.updateItemState({ inputValueDisabled: true });
     }
   };
 
@@ -133,7 +131,7 @@ export default class InputItemsListPresenter {
 
     if (targetItemParentId) {
       if (this.#getListChildrenCount(targetItemsParentList) === 0) {
-        this.#inputItemPresenters.get(targetItemParentId).updateElement({
+        this.#inputItemPresenters.get(targetItemParentId).updateItemState({
           inputValueDisabled: false,
         });
 
@@ -147,9 +145,9 @@ export default class InputItemsListPresenter {
     const targetItem = this.#inputItemPresenters.get(targetId);
 
     if (evt.target.classList.contains('input-item__field_key')) {
-      targetItem.updateElement({ key: evt.target.value });
+      targetItem.updateItemState({ key: evt.target.value });
     } else if (evt.target.classList.contains('input-item__field_value')) {
-      targetItem.updateElement({ value: evt.target.value });
+      targetItem.updateItemState({ value: evt.target.value });
     }
   };
 
