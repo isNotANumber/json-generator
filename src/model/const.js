@@ -82,4 +82,39 @@ const testList2 = [
   },
 ];
 
-export { defaultListState, testList1, testList2 };
+const testList3 = {
+  _id: '6730844b186b65c26abc2a82',
+  index: 0,
+  guid: '368e49f1-328c-468f-b854-691230547103',
+  isActive: true,
+  balance: '$3,422.85',
+  picture: 'http://placehold.it/32x32',
+  age: 39,
+  tags: [
+    'sunt',
+    'labore',
+    'nostrud',
+    'consequat',
+    'laborum',
+    'velit',
+    'cupidatat',
+  ],
+  friends: [
+    {
+      id: 0,
+      name: 'Hodge Gibson',
+    },
+    {
+      id: 1,
+      name: 'Madden Faulkner',
+    },
+    {
+      id: 2,
+      name: 'Watson Matthews',
+    },
+  ],
+  greeting: 'Hello, Monica Justice! You have 9 unread messages.',
+  favoriteFruit: 'banana',
+};
+
+export { defaultListState, testList1, testList2, testList3 };
