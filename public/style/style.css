@@ -157,7 +157,8 @@ body {
 
 .input-item {
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
   margin-top: 10px;
   padding-left: 10px;
   min-width: fit-content;
@@ -172,6 +173,18 @@ body {
   bottom: 0;
   width: 2px;
   background-color: #ff8c42;
+}
+
+.input-item__content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.input-item__controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .input__buttons-container {
@@ -191,9 +204,22 @@ body {
 .input-item__field:disabled {
   background-color: #333;
 }
+.input-item__value-type {
+  background-color: #555;
+  border: 1px solid #444;
+  color: #fff;
+  padding: 5px;
+  margin-right: 10px;
+  width: 100px;
+}
+.type-label {
+  color: #ffa500;
+  margin-right: 10px;
+}
 
 /* Modal Styles */
 .modal {
+  display: none;
   position: fixed;
   z-index: 1;
   left: 0;
@@ -239,30 +265,30 @@ body {
 /* Media Queries */
 @media (min-width: 768px) {
   .main-container {
-      flex-direction: row;
+    flex-direction: row;
   }
 
   .sidebar {
-      width: 200px;
-      border-bottom: none;
-      border-right: 1px solid #555;
+    width: 200px;
+    border-bottom: none;
+    border-right: 1px solid #555;
   }
 
   .sidebar__menu {
-      flex-direction: column;
-      justify-content: flex-start;
+    flex-direction: column;
+    justify-content: flex-start;
   }
 
   .editor {
-      flex-direction: row;
+    flex-direction: row;
   }
 
   .editor__pane {
-      border-bottom: none;
-      border-right: 1px solid #555;
+    border-bottom: none;
+    border-right: 1px solid #555;
   }
 
   .editor__pane:last-child {
-      border-right: none;
+    border-right: none;
   }
 }

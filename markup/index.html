@@ -30,20 +30,87 @@
         <div class="editor">
           <div class="editor__pane editor__pane_input">
             <h2>Propopties (key:value)</h2>
-            <ul id="input-list">
-              <li>
-                <div class="input-item">
-                  <input type="text" class="input-item__field input-item__field_key" id="key1" placeholder="Key"/>
-                  <input type="text" class="input-item__field input-item__field_value" id="value1" placeholder="Value"/>
-                  <button class="button button_small input-item__button_append">
-                    <i class="icon fas fa-plus"></i>
-                  </button>
-                  <button class="button button_small button_red input-item__button_remove">
-                    <i class="icon fas fa-trash"></i>
-                  </button>
+            
+            <div class="input-item input-item__control input-item__control_initial">
+                <div class="input-item__content">
+                  <select class="input-item__value-type">
+                    <option value="string">String</option>
+                    <option value="array" selected>Array</option>
+                    <option value="object">Object</option>
+                  </select>
+                  <div class="input-item__controls">
+                    <button class="button button_small input-item__button_append">
+                      <i class="icon fas fa-plus"></i>
+                    </button>
+                  </div>
+                </div>
+            </div>
+
+            <ul class="input-list">
+              <li class="input-item input-item__array">
+                <div class="input-item__content">
+                  <span class="type-label">Array</span>
+                  <select class="input-item__value-type">
+                    <option value="array">Array</option>
+                    <option value="object" selected>Object</option>
+                  </select>
+                  <div class="input-item__controls">
+                    <button class="button button_small input-item__button_append">
+                      <i class="icon fas fa-plus"></i>
+                    </button>
+                    <button class="button button_small button_red input-item__button_remove">
+                      <i class="icon fas fa-trash"></i>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="input-item__chlildren">
+                  <ul class="input-list input-list_nested">
+
+                    <li class="input-item input-item__object">
+                      <div class="input-item__content">
+                        <span class="type-label">Object</span>
+                        <input type="text" class="input-item__field input-item__field_key" id="key1" placeholder="Key"/>
+                        <select class="input-item__value-type">
+                          <option value="string" selected>String</option>
+                          <option value="array">Array</option>
+                          <option value="object">Object</option>
+                        </select>
+                        <div class="input-item__controls">
+                          <button class="button button_small input-item__button_append">
+                            <i class="icon fas fa-plus"></i>
+                          </button>
+                          <button class="button button_small button_red input-item__button_remove">
+                            <i class="icon fas fa-trash"></i>
+                          </button>
+                        </div>
+                      </div>
+
+                      <div class="input-item__chlildren">
+                        <ul class="input-list input-list_nested">
+
+                          <li class="input-item input-item__string">
+                              <div class="input-item__content">
+                                <span class="type-label">String</span>
+                                <input type="text" class="input-item__field input-item__field_value" id="value1" placeholder="Value"/>
+                                <div class="input-item__controls">
+                                  <button class="button button_small input-item__button_append">
+                                    <i class="icon fas fa-plus"></i>
+                                  </button>
+                                  <button class="button button_small button_red input-item__button_remove">
+                                    <i class="icon fas fa-trash"></i>
+                                  </button>
+                                </div>
+                              </div>
+                          </li>
+
+                        </ul>
+                      </div>
+                    </li>
+
+                  </ul>
                 </div>
               </li>
-              <ul class="input-list input-list_nested"></ul>
             </ul>
           </div>
           <div class="editor__pane editor__pane_output">
