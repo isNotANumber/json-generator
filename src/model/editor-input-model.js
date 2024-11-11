@@ -1,10 +1,10 @@
-import { defaultListState, testList1, testList2 } from './const';
+import { defaultListState, testList1, testList2, testListSimple, testListComplex } from './const';
 
 /**
  * Model class for managing editor input data.
  */
 export default class EditorInputModel {
-  #data = testList2;
+  #data = testListComplex;
 
   /**
    * Gets the current data.
@@ -26,6 +26,6 @@ export default class EditorInputModel {
    * Resets the data to their default state.
    */
   setDefaultData() {
-    this.#data = testList2;
+    this.#data = testListComplex;
   }
 }

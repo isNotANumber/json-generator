@@ -160,7 +160,7 @@ body {
   flex-direction: column;
   align-items: flex-start;
   margin-top: 10px;
-  padding-left: 10px;
+  padding-left: 20px;
   min-width: fit-content;
   position: relative;
 }
@@ -204,7 +204,7 @@ body {
 .input-item__field:disabled {
   background-color: #333;
 }
-.input-item__value-type {
+.input-item__value_type {
   background-color: #555;
   border: 1px solid #444;
   color: #fff;
@@ -219,7 +219,6 @@ body {
 
 /* Modal Styles */
 .modal {
-  display: none;
   position: fixed;
   z-index: 1;
   left: 0;

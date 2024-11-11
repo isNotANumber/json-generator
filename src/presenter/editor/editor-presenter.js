@@ -1,11 +1,11 @@
 import { render, remove } from '../../framework/render';
 import EditorView from '../../view/editor/editor-view';
-import InputItemsListPresenter from './input/input-items-list-presenter.js';
+import InputPresenter from './input/input-presenter.js';
 
 export default class EditorPresenter {
   #container = null;
 
-  #inputItemsListPresenter = null;
+  #inputPresenter = null;
 
   #editorComponent = null;
 
@@ -30,12 +30,12 @@ export default class EditorPresenter {
   }
 
   #renderInputItemsList(container) {
-    this.#inputItemsListPresenter = new InputItemsListPresenter({
+    this.#inputPresenter = new InputPresenter({
       container: container,
       inputModel: this.#inputModel,
     });
 
-    this.#inputItemsListPresenter.init();
+    this.#inputPresenter.init();
   }
 
   // TODO: refactor this
@@ -53,7 +53,7 @@ export default class EditorPresenter {
   }
 
   apply() {
-    const newData = this.#inputItemsListPresenter.inputItems;
+    const newData = this.#inputPresenter.inputComponents;
     this.#inputModel.data = newData;
     this.#outputModel.data = newData;
 
