@@ -10,6 +10,7 @@ export default class InputPresenter {
   #inputContentContainer = null;
 
   #inputItemComponents = new Map();
+  // #inputComplexItemComponents = new Map();
 
   #inputModel = null;
 
@@ -24,6 +25,8 @@ export default class InputPresenter {
       this.#inputModel.data,
       this.#inputContentContainer
     );
+
+    // console.log(this.#inputComplexItemComponents)
   }
 
   // --- Getter for components --- //
@@ -69,6 +72,8 @@ export default class InputPresenter {
     for (const item of array) {
       if (typeof item === 'object') {
         this.#renderObjectItems(item, arrayId);
+      } else {
+        this.#renderStringTypeItem(item, arrayId, this.#inputItemComponents.get(arrayId).childrenContainer);
       }
     }
   }
@@ -107,6 +112,7 @@ export default class InputPresenter {
       key: key,
     });
     this.#inputItemComponents.set(objectItem.id, objectItem);
+    // this.#inputComplexItemComponents.set(objectItem.id, objectItem);
 
     render(objectItem, container);
 
