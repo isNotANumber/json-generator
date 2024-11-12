@@ -20,7 +20,7 @@ function createInputItemStringTemplate({id, parentId, value}) {
 
 export default class StringItemView extends AbstractStatefulView {
 
-    constructor({id, parentId, value}) {
+    constructor({id, parentId = null, value = 'bbb'}) {
         super();
         this._state = {id: id, parentId: parentId, value: value};
     }
@@ -40,6 +40,10 @@ export default class StringItemView extends AbstractStatefulView {
 
     get parentId() {
         return this._state.parentId;
+    }
+
+    getStateValueAsObject() {
+        return { value: this._state.value }
     }
 
     _restoreHandlers() {

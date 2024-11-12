@@ -30,9 +30,9 @@ function createInputItemArrayTemplate({id, parentId, selectedType}) {
 
 export default class ArrayItemView extends AbstractStatefulView {
 
-    constructor({id, parentId, value = [], selectedType = 'string'}) {
+    constructor({id, parentId = null, selectedType = 'string'}) {
         super();
-        this._state = {id: id, parentId: parentId, value: value, selectedType: selectedType};
+        this._state = {id: id, parentId: parentId, selectedType: selectedType};
     }
 
     /**
@@ -54,6 +54,10 @@ export default class ArrayItemView extends AbstractStatefulView {
 
     get parentId() {
         return this._state.parentId;
+    }
+
+    getStateValueAsObject() {
+        return { value: [] }
     }
 
     _restoreHandlers() {
