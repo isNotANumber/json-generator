@@ -61,6 +61,11 @@ export default class InputItemPresenter {
 
         render(this.#arrayComponent, targetComponent.childrenContainer);
 
+        if (this.#isBlockNeeded()) {
+            this.#blockAppendButton();
+        }
+
+        // remove ?
         return this.#arrayComponent.id;
     }
 
@@ -69,38 +74,27 @@ export default class InputItemPresenter {
 
     render(arrayTypeItem, targetComponent.childrenContainer);
 
+    if (this.#isBlockNeeded()) {
+        this.#blockAppendButton();
+    }
+
+    // remove ?
     return arrayTypeItem.id;
-
-    // if (this.#arrayComponent === null) {
-    //     this.#arrayComponent = new ArrayItemView({id: generateRandomId(), parentId: this.#parentComponent.id});
-
-    //     render(this.#arrayComponent, this.#parentComponent.childrenContainer);
-
-    //     return this.#arrayComponent.id;
-    // } else if (this.#arrayComponent.parentId === targetId) {
-    //     const arrayTypeItem = new ArrayItemView({id: generateRandomId(), parentId: this.#arrayComponent.id});
-    //     this.#childComponents.set(arrayTypeItem.id, arrayTypeItem);
-
-    //     render(arrayTypeItem, this.#arrayComponent.childrenContainer);
-
-    //     return arrayTypeItem.id;
-    // }
   }
 
   appendStringItemPart(targetId, props) {
-    // test
-    // targetId = this.#parentComponent.id;
+    const targetComponent = this.getComponentById(targetId);
 
-    props = props ? props : {id: generateRandomId(), parentId: targetId};
-
-    const parentItemContainer = targetId === this.#parentComponent.id ? 
-        this.#parentComponent.childrenContainer :
-        this.#childComponents.get(targetId).childrenContainer;
+    props = props ? props : {id: generateRandomId(), parentId: targetId, rootId: this.#parentComponent.id};
 
     const stringTypeItem = new StringItemView({...props});
     this.#childComponents.set(stringTypeItem.id, stringTypeItem);
 
-    render(stringTypeItem, parentItemContainer);
+    render(stringTypeItem, targetComponent.childrenContainer);
+
+    if (this.#isBlockNeeded()) {
+        this.#blockAppendButton();
+    }
   }
 
   removeItemPart(id) {
@@ -140,8 +134,24 @@ export default class InputItemPresenter {
     return this.#childComponents.get(id);
   }
 
+  #isBlockNeeded() {
+    console.log(this.#arrayComponent)
+    console.log(this.#childComponents.size)
+
+    if (this.#arrayComponent !== null || this.#childComponents.size > 0) {
+        return true;
+    }
+
+    return false;
+  }
+
   get id() {
-    console.log(this.#parentComponent)
     return this.#parentComponent.id;
+  }
+
+  // refactor
+  #blockAppendButton() {
+    this.#parentComponent._setState({blocked: true});
+    this.#parentComponent.element.querySelector('.input-item__button_append').disabled = true;
   }
 }

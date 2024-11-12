@@ -64,19 +64,14 @@ export default class InputPresenter {
     this.#inputItemComponents.get(presenterId);
 
     const targetComponent = targetPresenter.getComponentById(targetId);
-    console.log(targetComponent)
 
     const selectedType = targetComponent._state.selectedType;
-    console.log(selectedType)
-    const targetChildrenContainer = targetComponent.childrenContainer;
-    console.log(targetChildrenContainer)
+    // const targetChildrenContainer = targetComponent.childrenContainer;
 
     if (selectedType === 'string') {
-      // targetPresenter.appendStringItemPart()
-      // this.#renderStringTypeItem('', targetId, targetChildrenContainer);
+      targetPresenter.appendStringItemPart(targetId);
     } else if (selectedType === 'array') {
       targetPresenter.appendArrayItemPart(targetId);
-      // this.#renderArrayTypeItem(targetId, targetChildrenContainer);
     } else {
       // this.#renderObjectTypeItem('', targetId, targetChildrenContainer);
     }

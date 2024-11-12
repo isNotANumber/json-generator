@@ -1,6 +1,6 @@
 import AbstractStatefulView from "../../../../framework/view/abstract-stateful-view.js";
 
-function createInputItemObjectTemplate({id, parentId, key, selectedType}) {
+function createInputItemObjectTemplate({id, parentId, key, selectedType, blocked}) {
     return (
         `
         <li data-id="${id}" data-parent-id=${parentId} class="input-item input-item__object">
@@ -13,7 +13,7 @@ function createInputItemObjectTemplate({id, parentId, key, selectedType}) {
                 <option value="object" ${selectedType === 'object' ? 'selected' : ''}>Object</option>
             </select>
             <div class="input-item__controls">
-                <button class="button button_small input-item__button_append">
+                <button class="button button_small input-item__button_append" ${blocked ? 'disabled' : ''}>
                     <i class="icon fas fa-plus"></i>
                 </button>
                 <button class="button button_small button_red input-item__button_remove">
@@ -33,7 +33,7 @@ export default class ObjectItemView extends AbstractStatefulView {
 
     constructor({id, key = 'aaa', selectedType = 'string', onItemFieldChange}) {
         super();
-        this._state = {id: id, key: key, selectedType: selectedType};
+        this._state = {id: id, key: key, selectedType: selectedType, blocked: false};
 
         this.#itemFieldChangeHandler = onItemFieldChange;
 

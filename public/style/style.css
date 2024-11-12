@@ -97,6 +97,12 @@ body {
   background-color: #e67e37;
 }
 
+.button:disabled {
+  cursor: not-allowed;
+  background-color: #555;
+  opacity: 0.5;
+}
+
 /* Button Variants */
 .button_small {
   margin: 0 3px;
