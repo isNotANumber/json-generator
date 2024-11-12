@@ -55,9 +55,14 @@ export default class InputPresenter {
   };
 
   #handleAppendClick(target) {
-    const targetId = this.#inputItemComponents.get(target.dataset.id) ? target.dataset.id : target.dataset.parentId;
+    const targetId = target.dataset.id;
+    const presenterId = target.dataset.rootId;
+    // const targetParentId = target.dataset.parentId;
 
-    const targetPresenter = this.#inputItemComponents.get(targetId);
+    const targetPresenter = this.#inputItemComponents.get(targetId) ? 
+    this.#inputItemComponents.get(targetId) : 
+    this.#inputItemComponents.get(presenterId);
+
     const targetComponent = targetPresenter.getComponentById(targetId);
     console.log(targetComponent)
 

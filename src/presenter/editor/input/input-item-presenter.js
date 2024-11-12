@@ -38,11 +38,7 @@ export default class InputItemPresenter {
   #handleItemInput = (evt) => {
     const targetId = evt.target.closest('.input-item').dataset.id;
 
-    const targetItem = targetId === this.#parentComponent.id ? 
-    this.#parentComponent :
-    this.#arrayComponent.id ?
-    this.#arrayComponent : 
-    this.#childComponents.get(targetId);
+    const targetItem = this.getComponentById(targetId);
 
     const fieldClass = evt.target.classList;
 
@@ -58,28 +54,37 @@ export default class InputItemPresenter {
   // -- Child methods -- //
 
   appendArrayItemPart(targetId) {
+    const targetComponent = this.getComponentById(targetId);
 
     if (this.#arrayComponent === null) {
-        this.#arrayComponent = new ArrayItemView({id: generateRandomId(), parentId: this.#parentComponent.id});
+        this.#arrayComponent = new ArrayItemView({id: generateRandomId(), parentId: this.#parentComponent.id, rootId: this.#parentComponent.id});
 
-        render(this.#arrayComponent, this.#parentComponent.childrenContainer);
+        render(this.#arrayComponent, targetComponent.childrenContainer);
 
         return this.#arrayComponent.id;
-    } else if (this.#arrayComponent.parentId === targetId) {
-        const arrayTypeItem = new ArrayItemView({id: generateRandomId(), parentId: this.#arrayComponent.id});
-        this.#childComponents.set(arrayTypeItem.id, arrayTypeItem);
-
-        render(arrayTypeItem, this.#arrayComponent.childrenContainer);
-
-        return arrayTypeItem.id;
     }
 
-    const arrayTypeItem = new ArrayItemView({id: generateRandomId(), parentId: targetId});
+    const arrayTypeItem = new ArrayItemView({id: generateRandomId(), parentId: targetId, rootId: this.#parentComponent.id});
     this.#childComponents.set(arrayTypeItem.id, arrayTypeItem);
 
-    render(arrayTypeItem, this.#childComponents.get(targetId).childrenContainer);
+    render(arrayTypeItem, targetComponent.childrenContainer);
 
     return arrayTypeItem.id;
+
+    // if (this.#arrayComponent === null) {
+    //     this.#arrayComponent = new ArrayItemView({id: generateRandomId(), parentId: this.#parentComponent.id});
+
+    //     render(this.#arrayComponent, this.#parentComponent.childrenContainer);
+
+    //     return this.#arrayComponent.id;
+    // } else if (this.#arrayComponent.parentId === targetId) {
+    //     const arrayTypeItem = new ArrayItemView({id: generateRandomId(), parentId: this.#arrayComponent.id});
+    //     this.#childComponents.set(arrayTypeItem.id, arrayTypeItem);
+
+    //     render(arrayTypeItem, this.#arrayComponent.childrenContainer);
+
+    //     return arrayTypeItem.id;
+    // }
   }
 
   appendStringItemPart(targetId, props) {
@@ -128,7 +133,7 @@ export default class InputItemPresenter {
   getComponentById(id) {
     if (this.#parentComponent.id === id) {
         return this.#parentComponent;
-    } else if (this.#arrayComponent === id) {
+    } else if (this.#arrayComponent.id === id) {
         return this.#arrayComponent;
     }
 
