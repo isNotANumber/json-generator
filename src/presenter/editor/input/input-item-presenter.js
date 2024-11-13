@@ -33,6 +33,8 @@ export default class InputItemPresenter {
     const targetComponent = this.getComponentById(targetId);
 
     targetComponent._setState(value);
+
+    console.log(this.getItemAsObject());
   }
 
   registerChildObjectItem(item) {
