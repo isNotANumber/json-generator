@@ -37,9 +37,10 @@ export default class InputPresenter {
     this.#initiateItemPresenter(this.#initialComponent.childrenContainer);
   }
 
-  #initiateItemPresenter(container) {
+  #initiateItemPresenter(container, props) {
     const objectItem = new InputItemPresenter({
       container: container,
+      props: props
     });
 
     objectItem.init();
