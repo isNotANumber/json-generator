@@ -22,33 +22,18 @@ export default class InputItemPresenter {
   #renderObjectTypeItem(container, props) {
     props = props ? props : { id: generateRandomId() };
 
-    this.#parentComponent = new ObjectItemView({
-      ...props,
-      onItemFieldChange: this.#handleItemInput,
-    });
+    this.#parentComponent = new ObjectItemView({...props,});
 
     render(this.#parentComponent, container);
   }
 
-  // -- Handlers -- //
-
-  #handleItemInput = (evt) => {
-    const targetId = evt.target.closest('.input-item').dataset.id;
-
-    const targetItem = this.getComponentById(targetId);
-
-    const fieldClass = evt.target.classList;
-
-    if (fieldClass.contains('input-item__field_key')) {
-      targetItem._setState({ key: evt.target.value });
-    } else if (fieldClass.contains('input-item__field_value')) {
-      targetItem._setState({ value: evt.target.value });
-    } else if (fieldClass.contains('input-item__value_type')) {
-      targetItem._setState({ selectedType: evt.target.value });
-    }
-  };
-
   // -- Child methods -- //
+
+  updateItemState(targetId, value) {
+    const targetComponent = this.getComponentById(targetId);
+
+    targetComponent._setState(value);
+  }
 
   appendArrayItemPart(targetId) {
     const targetComponent = this.getComponentById(targetId);
@@ -88,6 +73,7 @@ export default class InputItemPresenter {
     }
   }
 
+  // refactor: childs components also should be erased from childComponents
   removeItemPart(targetId) {
     const targetComponent = this.getComponentById(targetId);
 
@@ -97,6 +83,8 @@ export default class InputItemPresenter {
     if (!this.#isBlockNeeded()) {
       this.#unblockAppendControl();
     }
+
+    console.log(this.#childComponents)
   }
 
   // -- Getters -- //

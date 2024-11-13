@@ -1,8 +1,8 @@
 import { render, remove } from '../../../framework/render.js';
-import { generateRandomId } from '../../../util.js';
-import ArrayItemView from '../../../view/editor/input/items/array-item-view.js';
-import StringItemView from '../../../view/editor/input/items/string-item-view.js';
-import ObjectItemView from '../../../view/editor/input/items/object-item-view.js';
+// import { generateRandomId } from '../../../util.js';
+// import ArrayItemView from '../../../view/editor/input/items/array-item-view.js';
+// import StringItemView from '../../../view/editor/input/items/string-item-view.js';
+// import ObjectItemView from '../../../view/editor/input/items/object-item-view.js';
 import InputInitialView from '../../../view/editor/input/input-initial-view.js';
 import InputItemPresenter from './input-item-presenter.js';
 
@@ -19,8 +19,10 @@ export default class InputPresenter {
   init() {
     this.#renderInitialInput();
 
-    const test = new InputItemPresenter({container: this.#inputItemComponents.get('root').childrenContainer});
-    test.init()
+    const test = new InputItemPresenter({
+      container: this.#inputItemComponents.get('root').childrenContainer,
+    });
+    test.init();
     this.#inputItemComponents.set(test.id, test);
 
     // this.#renderItemsFromModel(this.#inputModel.data);
@@ -32,8 +34,8 @@ export default class InputPresenter {
 
   #renderInitialInput() {
     const inputContent = new InputInitialView({
-      onItemButtonClick: this.#handleInputItemButtonClick,
-      // onItemInput: this.#handleItemInput,
+      onControlClick: this.#handleInputItemButtonClick,
+      onItemFieldChange: this.#handleItemFieldChange,
     });
     this.#inputItemComponents.set('root', inputContent);
     render(inputContent, this.#container);
@@ -54,18 +56,12 @@ export default class InputPresenter {
   #handleAppendClick(target) {
     const targetId = target.dataset.id;
     const presenterId = target.dataset.rootObjId;
-    // const targetParentId = target.dataset.parentId;
-
-    // const targetPresenter = this.#inputItemComponents.get(targetId) ? 
-    // this.#inputItemComponents.get(targetId) : 
-    // this.#inputItemComponents.get(presenterId);
 
     const targetPresenter = this.#inputItemComponents.get(presenterId);
 
     const targetComponent = targetPresenter.getComponentById(targetId);
 
     const selectedType = targetComponent._state.selectedType;
-    // const targetChildrenContainer = targetComponent.childrenContainer;
 
     if (selectedType === 'string') {
       targetPresenter.appendStringItemPart(targetId);
@@ -80,20 +76,35 @@ export default class InputPresenter {
     const targetId = target.dataset.id;
     const presenterId = target.dataset.rootObjId;
 
-    // const targetPresenter = this.#inputItemComponents.get(targetId) ? 
-    // this.#inputItemComponents.get(targetId) : 
-    // this.#inputItemComponents.get(presenterId);
-
     const targetPresenter = this.#inputItemComponents.get(presenterId);
 
     if (presenterId === undefined) {
       targetPresenter.destroy();
-      this.#inputItemComponents.delete(targetId)
+      this.#inputItemComponents.delete(targetId);
       return;
     }
 
     targetPresenter.removeItemPart(targetId);
   }
+
+  #handleItemFieldChange = (evt) => {
+    const target = evt.target.closest('.input-item');
+    const targetId = target.dataset.id;
+    const presenterId = target.dataset.rootObjId;
+    const fieldClass = evt.target.classList;
+
+    const targetPresenter = this.#inputItemComponents.get(presenterId);
+
+    if (fieldClass.contains('input-item__field_key')) {
+      targetPresenter.updateItemState(targetId, { key: evt.target.value });
+    } else if (fieldClass.contains('input-item__field_value')) {
+      targetPresenter.updateItemState(targetId, { value: evt.target.value });
+    } else if (fieldClass.contains('input-item__value_type')) {
+      targetPresenter.updateItemState(targetId, {
+        selectedType: evt.target.value,
+      });
+    }
+  };
 
   // #renderItemsFromModel(items) {
   //   for (const [key, value] of Object.entries(items)) {
@@ -150,20 +161,6 @@ export default class InputPresenter {
   //   render(stringItem, parentItem.childrenContainer);
   //   return stringItem.id;
   // }
-
-  // #handleItemInput = (evt) => {
-  //   const targetId = evt.target.closest('.input-item').dataset.id;
-  //   const targetItem = this.#inputItemComponents.get(targetId);
-  //   const fieldClass = evt.target.classList;
-
-  //   if (fieldClass.contains('input-item__field_key')) {
-  //     targetItem._setState({ key: evt.target.value });
-  //   } else if (fieldClass.contains('input-item__field_value')) {
-  //     targetItem._setState({ value: evt.target.value });
-  //   } else if (fieldClass.contains('input-item__value_type')) {
-  //     targetItem._setState({ selectedType: evt.target.value });
-  //   }
-  // };
 
   // #handleInputItemButtonClick = (evt) => {
   //   const target = evt.target.closest('.input-item');

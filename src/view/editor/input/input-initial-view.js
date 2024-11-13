@@ -29,19 +29,19 @@ function createInputInitialTemplate({selectedType}) {
  * Input list view class.
  */
 export default class InputInitialView extends AbstractStatefulView {
-    #handleItemButtonClick = null;
-    #handleItemInput = null;
+    #handleControlClick = null;
+    #handleItemFieldChange = null;
 
-    constructor({onItemButtonClick, onItemInput, selectedType = 'string'}) {
+    constructor({selectedType = 'string', onControlClick, onItemFieldChange}) {
         super();
 
         this._state = {selectedType: selectedType};
 
-        this.#handleItemButtonClick = onItemButtonClick;
-        this.#handleItemInput = onItemInput;
+        this.#handleControlClick = onControlClick;
+        this.#handleItemFieldChange = onItemFieldChange;
 
-        this.element.addEventListener('click', this.#handleItemButtonClick);
-        this.element.addEventListener('change', this.#handleItemInput)
+        this.element.addEventListener('click', this.#handleControlClick);
+        this.element.addEventListener('change', this.#handleItemFieldChange)
     }
 
     /**

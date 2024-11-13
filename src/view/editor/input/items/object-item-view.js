@@ -29,15 +29,10 @@ function createInputItemObjectTemplate({id, parentId, key, selectedType, blocked
 }
 
 export default class ObjectItemView extends AbstractStatefulView {
-    #itemFieldChangeHandler = null;
 
-    constructor({id, key = 'aaa', selectedType = 'string', onItemFieldChange}) {
+    constructor({id, key = 'aaa', selectedType = 'string'}) {
         super();
         this._state = {id: id, key: key, selectedType: selectedType, blocked: false};
-
-        this.#itemFieldChangeHandler = onItemFieldChange;
-
-        this.element.addEventListener('change', this.#itemFieldChangeHandler);
     }
 
     /**
