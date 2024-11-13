@@ -53,7 +53,7 @@ export default class EditorPresenter {
   }
 
   apply() {
-    const newData = this.#inputPresenter.inputComponents;
+    const newData = this.#inputPresenter.dataAsObj;
     this.#inputModel.data = newData;
     this.#outputModel.data = newData;
 

@@ -10,7 +10,7 @@ export default class InputItemPresenter {
   #arrayComponent = null;
   #childComponents = new Map();
 
-  constructor({ id, container }) {
+  constructor({ container }) {
     this.#container = container;
   }
 
@@ -34,14 +34,6 @@ export default class InputItemPresenter {
     const targetComponent = this.getComponentById(targetId);
 
     targetComponent._setState(value);
-
-    console.log(this.getItemAsObject());
-  }
-
-  registerChildObjectItem(item) {
-    this.#childComponents.set(item.id, item);
-
-    console.log(this.getItemAsObject());
   }
 
   appendArrayItemPart() {
@@ -91,49 +83,39 @@ export default class InputItemPresenter {
     if (targetComponent === this.#arrayComponent) {
       remove(targetComponent);
       this.#arrayComponent = null;
+      this.#removeChildren(targetId);
 
 
     } else {
       remove(targetComponent);
       this.#childComponents.delete(targetId);
+      // this.#removeItemAndChildren(targetId);
     }
+
+    console.log(this.#childComponents)
 
     if (!this.#isBlockNeeded()) {
       this.#unblockAppendControl();
     }
-
-    console.log(this.#childComponents);
   }
 
   // -- Getters -- //
 
   // rewrite logic
   getItemAsObject() {
-    let result = null;
+    let result = this.#arrayComponent !== null ? [] : null;
 
     for (const item of this.#childComponents.values()) {
-      if (item instanceof ArrayItemView) {
-        result = [];
-      } else if (item instanceof StringItemView) {
-        const itemContent = item._state.value;
+      const itemContent = item._state.value;
 
         if (Array.isArray(result)) {
           result.push(itemContent);
         } else {
           result = itemContent;
         }
-      } else if (item instanceof ObjectItemView) {
-        const itemContent = { key: item._state.key, value: null };
-
-        if (Array.isArray(result)) {
-          result.push(itemContent);
-        } else {
-          result = itemContent;
-        }
-      }
     }
 
-    return { key: this.#parentComponent._state.key, value: result };
+    return {  parentId: this.#parentComponent._state.parentId, arrId: this.#arrayComponent?.id, key: this.#parentComponent._state.key, value: result };
   }
 
   getComponentById(id) {
@@ -179,6 +161,16 @@ export default class InputItemPresenter {
       '.input-item__button_append'
     ).disabled = false;
   }
+
+  #removeChildren(id) {
+    const map = this.#childComponents;
+    const childrenToRemove = [...map.entries()].filter(([_, value]) => value._state.parentId === id).map(([key]) => key);
+
+    for (const childId of childrenToRemove) {
+      this.#removeChildren(childId);
+      map.delete(childId);
+    }
+  };
 
   destroy() {
     remove(this.#parentComponent);
