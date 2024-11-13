@@ -29,7 +29,7 @@ function createInputItemObjectTemplate({id, parentId, key, selectedType, blocked
 
 export default class ObjectItemView extends AbstractStatefulView {
 
-    constructor({id, parentId = null, key = 'aaa', selectedType = 'string'}) {
+    constructor({id, parentId = null, key = '', selectedType = 'string'}) {
         super();
         this._state = {id: id, parentId: parentId, key: key, selectedType: selectedType, blocked: false};
     }
@@ -53,10 +53,6 @@ export default class ObjectItemView extends AbstractStatefulView {
 
     get parentId() {
         return this._state.parentId;
-    }
-
-    getStateValueAsObject() {
-        return { value: this._state.key }
     }
 
     _restoreHandlers() {

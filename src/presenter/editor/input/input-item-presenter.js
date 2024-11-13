@@ -37,6 +37,8 @@ export default class InputItemPresenter {
 
   registerChildObjectItem(item) {
     this.#childComponents.set(item.id, item);
+    
+    console.log(this.getItemAsObject());
   }
 
   appendArrayItemPart(targetId) {
@@ -54,6 +56,8 @@ export default class InputItemPresenter {
     if (this.#isBlockNeeded()) {
       this.#blockAppendControl();
     }
+
+    console.log(this.getItemAsObject());
   }
 
   appendStringItemPart(targetId, props) {
@@ -75,6 +79,8 @@ export default class InputItemPresenter {
     if (this.#isBlockNeeded()) {
       this.#blockAppendControl();
     }
+
+    console.log(this.getItemAsObject());
   }
 
   // refactor: childs components also should be erased from childComponents
@@ -95,26 +101,32 @@ export default class InputItemPresenter {
 
   // rewrite logic
   getItemAsObject() {
-    const result = {
-      key: this.#parentComponent.getStateValueAsObject().value,
-      value: null,
-    };
-
-    if (!this.#childComponents.size) {
-      return result;
-    }
+    let result = null;
 
     for (const item of this.#childComponents.values()) {
-      const itemValue = item.getStateValueAsObject().value;
 
-      if (Array.isArray(result.value)) {
-        result.value.push(itemValue);
-      } else {
-        result.value = itemValue;
-      }
+        if (item instanceof ArrayItemView) {
+            result = [];
+        } else if (item instanceof StringItemView) {
+            const itemContent = item._state.value;
+
+            if (Array.isArray(result)) {
+                result.push(itemContent);
+            } else {
+                result = itemContent;
+            }
+        } else if (item instanceof ObjectItemView) {
+            const itemContent = {key: item._state.key, value: null};
+
+            if (Array.isArray(result)) {
+                result.push(itemContent);
+            } else {
+                result = itemContent;
+            }
+        }
     }
 
-    return result;
+    return {key: this.#parentComponent._state.key, value: result}
   }
 
   getComponentById(id) {

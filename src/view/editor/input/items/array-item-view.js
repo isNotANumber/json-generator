@@ -55,10 +55,6 @@ export default class ArrayItemView extends AbstractStatefulView {
         return this._state.parentId;
     }
 
-    getStateValueAsObject() {
-        return { value: [] }
-    }
-
     _restoreHandlers() {
         return;
     }
