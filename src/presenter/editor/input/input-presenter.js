@@ -5,7 +5,7 @@ import InputItemPresenter from './input-item-presenter.js';
 export default class InputPresenter {
   #container;
   #initialComponent = null;
-  #inputItemComponents = new Map();
+  #inputItemPresenters = new Map();
   #inputModel = null;
 
   constructor({ container, inputModel }) {
@@ -18,7 +18,7 @@ export default class InputPresenter {
   }
 
   get dataAsObj() {
-    return this.#convertComponentsToObj(this.#inputItemComponents);
+    return this.#convertComponentsToObj(this.#inputItemPresenters);
   }
 
   #renderInitialInput() {
@@ -41,7 +41,7 @@ export default class InputPresenter {
 
     objectItem.init(props);
 
-    this.#inputItemComponents.set(objectItem.id, objectItem);
+    this.#inputItemPresenters.set(objectItem.id, objectItem);
 
     return objectItem;
   }
@@ -66,7 +66,7 @@ export default class InputPresenter {
   #handleAppendClick(target) {
     const targetId = target.dataset.id;
     const presenterId = target.dataset.rootObjId;
-    const targetPresenter = this.#inputItemComponents.get(presenterId);
+    const targetPresenter = this.#inputItemPresenters.get(presenterId);
     const targetComponent = targetPresenter.getComponentById(targetId);
     const selectedType = targetComponent._state.selectedType;
 
@@ -85,11 +85,11 @@ export default class InputPresenter {
     const targetId = target.dataset.id;
     const presenterId = target.dataset.rootObjId;
 
-    const targetPresenter = this.#inputItemComponents.get(presenterId);
+    const targetPresenter = this.#inputItemPresenters.get(presenterId);
 
     if (presenterId === targetId) {
       targetPresenter.destroy();
-      this.#inputItemComponents.delete(targetId);
+      this.#inputItemPresenters.delete(targetId);
 
       return;
     }
@@ -103,7 +103,7 @@ export default class InputPresenter {
     const presenterId = target.dataset.rootObjId;
     const fieldClass = evt.target.classList;
 
-    const targetPresenter = this.#inputItemComponents.get(presenterId);
+    const targetPresenter = this.#inputItemPresenters.get(presenterId);
 
     if (fieldClass.contains('input-item__field_key')) {
       targetPresenter.updateItemState(targetId, { key: evt.target.value });
@@ -166,7 +166,7 @@ export default class InputPresenter {
   #convertComponentsToObj() {
     const result = {};
 
-    for (const item of this.#inputItemComponents.values()) {
+    for (const item of this.#inputItemPresenters.values()) {
       const itemObj = item.getItemAsObject();
 
       result[itemObj.key] = itemObj.value;
