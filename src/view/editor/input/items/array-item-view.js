@@ -1,14 +1,13 @@
 import AbstractStatefulView from "../../../../framework/view/abstract-stateful-view.js";
 
-function createInputItemArrayTemplate({id, parentId, rootId, selectedType}) {
+function createInputItemArrayTemplate({id, parentId, rootObjId, selectedType}) {
     return (
         `
-        <li data-id="${id}" data-parent-id=${parentId} data-root-id=${rootId} class="input-item input-item__array">
+        <li data-id="${id}" data-parent-id=${parentId} data-root-obj-id=${rootObjId} class="input-item input-item__array">
             <div class="input-item__content">
                 <span class="type-label">Array</span>
                 <select class="input-item__value_type">
                     <option value="string" ${selectedType === 'string' ? 'selected' : ''}>String</option>
-                    <option value="array" ${selectedType === 'array' ? 'selected' : ''}>Array</option>
                     <option value="object" ${selectedType === 'object' ? 'selected' : ''}>Object</option>
                 </select>
                 <div class="input-item__controls">
@@ -30,9 +29,9 @@ function createInputItemArrayTemplate({id, parentId, rootId, selectedType}) {
 
 export default class ArrayItemView extends AbstractStatefulView {
 
-    constructor({id, parentId = null, rootId = null, selectedType = 'string'}) {
+    constructor({id, parentId = null, rootObjId = null, selectedType = 'string'}) {
         super();
-        this._state = {id: id, parentId: parentId, rootId: rootId, selectedType: selectedType};
+        this._state = {id: id, parentId: parentId, rootObjId: rootObjId, selectedType: selectedType};
     }
 
     /**

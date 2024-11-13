@@ -3,7 +3,7 @@ import AbstractStatefulView from "../../../../framework/view/abstract-stateful-v
 function createInputItemObjectTemplate({id, parentId, key, selectedType, blocked}) {
     return (
         `
-        <li data-id="${id}" data-parent-id=${parentId} class="input-item input-item__object">
+        <li data-id="${id}" data-parent-id=${parentId} data-root-obj-id=${id} class="input-item input-item__object">
             <div class="input-item__content">
             <span class="type-label">Object</span>
             <input type="text" class="input-item__field input-item__field_key" placeholder="Key" value='${key}' />

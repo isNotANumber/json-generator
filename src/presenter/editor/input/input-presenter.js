@@ -23,8 +23,6 @@ export default class InputPresenter {
     test.init()
     this.#inputItemComponents.set(test.id, test);
 
-    console.log(this.#inputItemComponents)
-
     // this.#renderItemsFromModel(this.#inputModel.data);
   }
 
@@ -55,12 +53,14 @@ export default class InputPresenter {
 
   #handleAppendClick(target) {
     const targetId = target.dataset.id;
-    const presenterId = target.dataset.rootId;
+    const presenterId = target.dataset.rootObjId;
     // const targetParentId = target.dataset.parentId;
 
-    const targetPresenter = this.#inputItemComponents.get(targetId) ? 
-    this.#inputItemComponents.get(targetId) : 
-    this.#inputItemComponents.get(presenterId);
+    // const targetPresenter = this.#inputItemComponents.get(targetId) ? 
+    // this.#inputItemComponents.get(targetId) : 
+    // this.#inputItemComponents.get(presenterId);
+
+    const targetPresenter = this.#inputItemComponents.get(presenterId);
 
     const targetComponent = targetPresenter.getComponentById(targetId);
 
@@ -78,11 +78,13 @@ export default class InputPresenter {
 
   #handleRemoveClick(target) {
     const targetId = target.dataset.id;
-    const presenterId = target.dataset.rootId;
+    const presenterId = target.dataset.rootObjId;
 
-    const targetPresenter = this.#inputItemComponents.get(targetId) ? 
-    this.#inputItemComponents.get(targetId) : 
-    this.#inputItemComponents.get(presenterId);
+    // const targetPresenter = this.#inputItemComponents.get(targetId) ? 
+    // this.#inputItemComponents.get(targetId) : 
+    // this.#inputItemComponents.get(presenterId);
+
+    const targetPresenter = this.#inputItemComponents.get(presenterId);
 
     if (presenterId === undefined) {
       targetPresenter.destroy();

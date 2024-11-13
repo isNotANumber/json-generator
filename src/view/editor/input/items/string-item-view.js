@@ -1,9 +1,9 @@
 import AbstractStatefulView from "../../../../framework/view/abstract-stateful-view.js";
 
-function createInputItemStringTemplate({id, parentId, rootId, value}) {
+function createInputItemStringTemplate({id, parentId, rootObjId, value}) {
     return (
         `
-        <li data-id="${id}" data-parent-id=${parentId} data-root-id=${rootId} class="input-item input-item__string">
+        <li data-id="${id}" data-parent-id=${parentId} data-root-obj-id=${rootObjId} class="input-item input-item__string">
             <div class="input-item__content">
             <span class="type-label">String</span>
             <input type="text" class="input-item__field input-item__field_value" placeholder="Value" value='${value}' />
@@ -20,9 +20,9 @@ function createInputItemStringTemplate({id, parentId, rootId, value}) {
 
 export default class StringItemView extends AbstractStatefulView {
 
-    constructor({id, parentId = null, rootId = null, value = 'bbb'}) {
+    constructor({id, parentId = null, rootObjId = null, value = 'bbb'}) {
         super();
-        this._state = {id: id, parentId: parentId, rootId: rootId, value: value};
+        this._state = {id: id, parentId: parentId, rootObjId: rootObjId, value: value};
     }
 
     /**

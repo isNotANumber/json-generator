@@ -56,7 +56,7 @@ export default class InputItemPresenter {
     const arrayTypeItem = new ArrayItemView({
       id: generateRandomId(),
       parentId: targetId,
-      rootId: this.#parentComponent.id,
+      rootObjId: this.#parentComponent.id,
     });
     this.#childComponents.set(arrayTypeItem.id, arrayTypeItem);
 
@@ -65,12 +65,6 @@ export default class InputItemPresenter {
     if (this.#isBlockNeeded()) {
       this.#blockAppendControl();
     }
-
-    // test
-    console.log(this.getItemAsObject());
-
-    // remove ?
-    return arrayTypeItem.id;
   }
 
   appendStringItemPart(targetId, props) {
@@ -81,7 +75,7 @@ export default class InputItemPresenter {
       : {
           id: generateRandomId(),
           parentId: targetId,
-          rootId: this.#parentComponent.id,
+          rootObjId: this.#parentComponent.id,
         };
 
     const stringTypeItem = new StringItemView({ ...props });
@@ -92,9 +86,6 @@ export default class InputItemPresenter {
     if (this.#isBlockNeeded()) {
       this.#blockAppendControl();
     }
-
-    // test
-    console.log(this.getItemAsObject());
   }
 
   removeItemPart(targetId) {
