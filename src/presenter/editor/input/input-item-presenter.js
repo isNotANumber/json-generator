@@ -16,11 +16,6 @@ export default class InputItemPresenter {
 
   init(item) {
     this.#renderObjectTypeItem(this.#container);
-
-    // this.appendArrayItemPart();
-    // this.appendStringItemPart();
-
-    // this.getItemAsObject();
   }
 
   // -- Render methods -- //
@@ -62,8 +57,11 @@ export default class InputItemPresenter {
         render(this.#arrayComponent, targetComponent.childrenContainer);
 
         if (this.#isBlockNeeded()) {
-            this.#blockAppendButton();
+            this.#blockAppendControl();
         }
+
+        // test
+        console.log(this.getItemAsObject());
 
         // remove ?
         return this.#arrayComponent.id;
@@ -75,8 +73,11 @@ export default class InputItemPresenter {
     render(arrayTypeItem, targetComponent.childrenContainer);
 
     if (this.#isBlockNeeded()) {
-        this.#blockAppendButton();
+        this.#blockAppendControl();
     }
+
+    // test
+    console.log(this.getItemAsObject());
 
     // remove ?
     return arrayTypeItem.id;
@@ -93,17 +94,33 @@ export default class InputItemPresenter {
     render(stringTypeItem, targetComponent.childrenContainer);
 
     if (this.#isBlockNeeded()) {
-        this.#blockAppendButton();
+        this.#blockAppendControl();
+    }
+
+    // test
+    console.log(this.getItemAsObject());
+  }
+
+  removeItemPart(targetId) {
+    const targetComponent = this.getComponentById(targetId);
+
+    if (this.#arrayComponent?.id === targetId) {
+        remove(this.#arrayComponent);
+        this.#arrayComponent = null;
+    } else {
+        remove(targetComponent);
+        this.#childComponents.delete(targetId);
+    }
+
+    if (!this.#isBlockNeeded()) {
+        this.#unblockAppendControl();
     }
   }
 
-  removeItemPart(id) {
-    remove(this.#childComponents.get(id));
-    this.#childComponents.delete(id);
-  }
+  // -- Getters -- // 
 
-  // -- Common -- // 
 
+  // rewrite logic
   getItemAsObject() {
     const result = {key: this.#parentComponent.getStateValueAsObject().value, value: null}
 
@@ -127,12 +144,14 @@ export default class InputItemPresenter {
   getComponentById(id) {
     if (this.#parentComponent.id === id) {
         return this.#parentComponent;
-    } else if (this.#arrayComponent.id === id) {
+    } else if (this.#arrayComponent?.id === id) {
         return this.#arrayComponent;
     }
 
     return this.#childComponents.get(id);
   }
+
+  // -- Common -- // 
 
   #isBlockNeeded() {
     console.log(this.#arrayComponent)
@@ -150,8 +169,21 @@ export default class InputItemPresenter {
   }
 
   // refactor
-  #blockAppendButton() {
+  #blockAppendControl() {
     this.#parentComponent._setState({blocked: true});
     this.#parentComponent.element.querySelector('.input-item__button_append').disabled = true;
+  }
+
+  // refactor
+  #unblockAppendControl() {
+    this.#parentComponent._setState({blocked: false});
+    this.#parentComponent.element.querySelector('.input-item__button_append').disabled = false;
+  }
+
+  destroy() {
+    remove(this.#parentComponent)
+    this.#parentComponent = null
+    this.#arrayComponent = null;
+    this.#childComponents = new Map();
   }
 }

@@ -45,11 +45,10 @@ export default class InputPresenter {
     const target = evt.target.closest('.input-item');
 
     if (target) {
-      const targetId = target.dataset.id;
       if (evt.target.classList.contains('input-item__button_append')) {
         this.#handleAppendClick(target);
       } else if (evt.target.classList.contains('input-item__button_remove')) {
-        // this.#handleRemoveClick(targetId);
+        this.#handleRemoveClick(target);
       }
     }
   };
@@ -77,11 +76,22 @@ export default class InputPresenter {
     }
   }
 
-  // #handleRemoveClick(targetId) {
-  //   const targetItem = this.#inputItemComponents.get(targetId);
-  //   remove(targetItem);
-  //   this.#removeItemAndChildren(targetId);
-  // }
+  #handleRemoveClick(target) {
+    const targetId = target.dataset.id;
+    const presenterId = target.dataset.rootId;
+
+    const targetPresenter = this.#inputItemComponents.get(targetId) ? 
+    this.#inputItemComponents.get(targetId) : 
+    this.#inputItemComponents.get(presenterId);
+
+    if (presenterId === undefined) {
+      targetPresenter.destroy();
+      this.#inputItemComponents.delete(targetId)
+      return;
+    }
+
+    targetPresenter.removeItemPart(targetId);
+  }
 
   // #renderItemsFromModel(items) {
   //   for (const [key, value] of Object.entries(items)) {
