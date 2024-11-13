@@ -7,6 +7,7 @@ import ObjectItemView from '../../../view/editor/input/items/object-item-view.js
 export default class InputItemPresenter {
   #container = null;
   #parentComponent = null;
+  #arrayComponent = null;
   #childComponents = new Map();
 
   constructor({ id, container }) {
@@ -20,9 +21,9 @@ export default class InputItemPresenter {
   // -- Render methods -- //
 
   #renderObjectTypeItem(container, props) {
-    props = props ? props : { id: generateRandomId() };
+    const itemProps = {id: generateRandomId(), ...props}
 
-    this.#parentComponent = new ObjectItemView({...props,});
+    this.#parentComponent = new ObjectItemView({ ...itemProps });
 
     render(this.#parentComponent, container);
   }
@@ -39,66 +40,69 @@ export default class InputItemPresenter {
 
   registerChildObjectItem(item) {
     this.#childComponents.set(item.id, item);
-    
+
     console.log(this.getItemAsObject());
   }
 
-  appendArrayItemPart(targetId) {
-    const targetComponent = this.getComponentById(targetId);
-
+  appendArrayItemPart() {
     const arrayTypeItem = new ArrayItemView({
       id: generateRandomId(),
-      parentId: targetId,
+      parentId: this.#parentComponent.id,
       rootObjId: this.#parentComponent.id,
     });
-    this.#childComponents.set(arrayTypeItem.id, arrayTypeItem);
 
-    render(arrayTypeItem, targetComponent.childrenContainer);
+    this.#arrayComponent = arrayTypeItem;
+
+    render(arrayTypeItem, this.#parentComponent.childrenContainer);
 
     if (this.#isBlockNeeded()) {
       this.#blockAppendControl();
     }
 
     return arrayTypeItem.id;
-
-    console.log(this.getItemAsObject());
   }
 
-  appendStringItemPart(targetId, props) {
-    const targetComponent = this.getComponentById(targetId);
+  appendStringItemPart(props) {
+    let container;
+    const itemProps = {id: generateRandomId(), rootObjId: this.#parentComponent.id, ...props}
 
-    props = props
-      ? props
-      : {
-          id: generateRandomId(),
-          parentId: targetId,
-          rootObjId: this.#parentComponent.id,
-        };
+    if (this.#arrayComponent !== null) {
+      itemProps.parentId = this.#arrayComponent.id;
+      container = this.#arrayComponent.childrenContainer;
+    } else {
+      itemProps.parentId = this.#parentComponent.id;
+      container = this.#parentComponent.childrenContainer;
+    }
 
-    const stringTypeItem = new StringItemView({ ...props });
+    const stringTypeItem = new StringItemView({ ...itemProps });
     this.#childComponents.set(stringTypeItem.id, stringTypeItem);
 
-    render(stringTypeItem, targetComponent.childrenContainer);
+    render(stringTypeItem, container);
 
     if (this.#isBlockNeeded()) {
       this.#blockAppendControl();
     }
-
-    console.log(this.getItemAsObject());
   }
 
   // refactor: childs components also should be erased from childComponents
   removeItemPart(targetId) {
     const targetComponent = this.getComponentById(targetId);
 
-    remove(targetComponent);
-    this.#childComponents.delete(targetId);
+    if (targetComponent === this.#arrayComponent) {
+      remove(targetComponent);
+      this.#arrayComponent = null;
+
+
+    } else {
+      remove(targetComponent);
+      this.#childComponents.delete(targetId);
+    }
 
     if (!this.#isBlockNeeded()) {
       this.#unblockAppendControl();
     }
 
-    console.log(this.#childComponents)
+    console.log(this.#childComponents);
   }
 
   // -- Getters -- //
@@ -108,34 +112,35 @@ export default class InputItemPresenter {
     let result = null;
 
     for (const item of this.#childComponents.values()) {
+      if (item instanceof ArrayItemView) {
+        result = [];
+      } else if (item instanceof StringItemView) {
+        const itemContent = item._state.value;
 
-        if (item instanceof ArrayItemView) {
-            result = [];
-        } else if (item instanceof StringItemView) {
-            const itemContent = item._state.value;
-
-            if (Array.isArray(result)) {
-                result.push(itemContent);
-            } else {
-                result = itemContent;
-            }
-        } else if (item instanceof ObjectItemView) {
-            const itemContent = {key: item._state.key, value: null};
-
-            if (Array.isArray(result)) {
-                result.push(itemContent);
-            } else {
-                result = itemContent;
-            }
+        if (Array.isArray(result)) {
+          result.push(itemContent);
+        } else {
+          result = itemContent;
         }
+      } else if (item instanceof ObjectItemView) {
+        const itemContent = { key: item._state.key, value: null };
+
+        if (Array.isArray(result)) {
+          result.push(itemContent);
+        } else {
+          result = itemContent;
+        }
+      }
     }
 
-    return {key: this.#parentComponent._state.key, value: result}
+    return { key: this.#parentComponent._state.key, value: result };
   }
 
   getComponentById(id) {
     if (this.#parentComponent.id === id) {
       return this.#parentComponent;
+    } else if (this.#arrayComponent?.id === id) {
+      return this.#arrayComponent;
     }
 
     return this.#childComponents.get(id);
@@ -144,7 +149,7 @@ export default class InputItemPresenter {
   // -- Common -- //
 
   #isBlockNeeded() {
-    if (this.#childComponents.size > 0) {
+    if (this.#childComponents.size > 0 || this.#arrayComponent !== null) {
       return true;
     }
 

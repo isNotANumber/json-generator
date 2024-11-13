@@ -1,5 +1,5 @@
 import { render, remove } from '../../../framework/render.js';
-import { generateRandomId } from '../../../util.js';
+// import { generateRandomId } from '../../../util.js';
 // import ArrayItemView from '../../../view/editor/input/items/array-item-view.js';
 // import StringItemView from '../../../view/editor/input/items/string-item-view.js';
 // import ObjectItemView from '../../../view/editor/input/items/object-item-view.js';
@@ -34,7 +34,7 @@ export default class InputPresenter {
     this.#initialComponent = inputContent;
     render(inputContent, this.#container);
 
-    this.#renderItemsFromModel(this.#inputModel.data)
+    this.#renderItemsFromModel(this.#inputModel.data);
     // this.#initiateItemPresenter(this.#initialComponent.childrenContainer);
   }
 
@@ -55,14 +55,12 @@ export default class InputPresenter {
 
     if (targetElement) {
       if (evt.target.classList.contains('input-item__button_append')) {
-
         if (targetElement.classList.contains('input-item__initial')) {
           this.#initiateItemPresenter(this.#initialComponent.childrenContainer);
           return;
         }
 
         this.#handleAppendClick(targetElement);
-
       } else if (evt.target.classList.contains('input-item__button_remove')) {
         this.#handleRemoveClick(targetElement);
       }
@@ -72,19 +70,19 @@ export default class InputPresenter {
   #handleAppendClick(target) {
     const targetId = target.dataset.id;
     const presenterId = target.dataset.rootObjId;
-
     const targetPresenter = this.#inputItemComponents.get(presenterId);
-
     const targetComponent = targetPresenter.getComponentById(targetId);
-
     const selectedType = targetComponent._state.selectedType;
 
     if (selectedType === 'string') {
-      targetPresenter.appendStringItemPart(targetId);
+      targetPresenter.appendStringItemPart();
     } else if (selectedType === 'array') {
-      targetPresenter.appendArrayItemPart(targetId);
+      targetPresenter.appendArrayItemPart();
     } else {
-      const newItem = this.#initiateItemPresenter(targetComponent.childrenContainer, {id: generateRandomId(), parentId: targetId}).component;
+      const newItem = this.#initiateItemPresenter(
+        targetComponent.childrenContainer,
+        { parentId: targetId }
+      ).component;
       targetPresenter.registerChildObjectItem(newItem);
     }
   }
@@ -126,32 +124,30 @@ export default class InputPresenter {
 
   #renderItemsFromModel(items) {
     for (const [key, value] of Object.entries(items)) {
-      const newPresenter = this.#initiateItemPresenter(this.#initialComponent.childrenContainer, {id: generateRandomId(), key: key});
-      const presenterId = newPresenter.component._state.id;
-      const props = {id: generateRandomId(), parentId: presenterId, value: value};
+      const newPresenter = this.#initiateItemPresenter(
+        this.#initialComponent.childrenContainer,
+        { key: key }
+      );
+      const itemProps = { value: value };
 
       if (Array.isArray(value)) {
-        this.#renderArrayItems(value, newPresenter)
+        this.#renderArrayItems(value, newPresenter);
       } else {
-        newPresenter.appendStringItemPart(presenterId, props)
+        newPresenter.appendStringItemPart(itemProps);
       }
-
-
     }
   }
 
   #renderArrayItems(array, presenter) {
-    const presenterId = presenter.component._state.id;
-
-    const arrayId = presenter.appendArrayItemPart(presenterId)
+    const arrayId = presenter.appendArrayItemPart();
 
     for (const item of array) {
       if (typeof item === 'object') {
-          this.#renderObjectItems(item, presenter, arrayId)
+        this.#renderObjectItems(item, presenter, arrayId);
       } else {
-        const props = {id: generateRandomId(), parentId: presenterId, value: item};
+        const itemProps = { value: item };
 
-        presenter.appendStringItemPart(arrayId, props)
+        presenter.appendStringItemPart(itemProps);
       }
     }
   }
@@ -160,14 +156,16 @@ export default class InputPresenter {
     const targetComponent = presenter.getComponentById(parentId);
 
     for (const [key, value] of Object.entries(object)) {
-      const newPresenter = this.#initiateItemPresenter(targetComponent.childrenContainer, {id: generateRandomId(), key: key});
+      const newPresenter = this.#initiateItemPresenter(
+        targetComponent.childrenContainer,
+        { key: key }
+      );
       presenter.registerChildObjectItem(newPresenter);
 
       const presenterId = newPresenter.component._state.id;
 
-      const props = {id: generateRandomId(), parentId: presenterId, value: value};
-
-      newPresenter.appendStringItemPart(presenterId, props);
+      const itemProps = { value: value };
+      newPresenter.appendStringItemPart(presenterId, itemProps);
     }
   }
 

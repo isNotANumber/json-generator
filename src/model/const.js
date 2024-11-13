@@ -99,26 +99,26 @@ const testListComplex = {
   // balance: '$3,422.85',
   // picture: 'http://placehold.it/32x32',
   // age: 39,
-  // tags: [
-  //   'sunt',
-  //   'labore',
-  //   'nostrud',
-  //   'consequat',
-  // ],
-  friends: [
-    {
-      id: 0,
-      name: 'Hodge Gibson',
-    },
-    {
-      id: 1,
-      name: 'Madden Faulkner',
-    },
-    {
-      id: 2,
-      name: 'Watson Matthews',
-    },
+  tags: [
+    'sunt',
+    'labore',
+    'nostrud',
+    'consequat',
   ],
+  // friends: [
+  //   {
+  //     id: 0,
+  //     name: 'Hodge Gibson',
+  //   },
+  //   {
+  //     id: 1,
+  //     name: 'Madden Faulkner',
+  //   },
+  //   {
+  //     id: 2,
+  //     name: 'Watson Matthews',
+  //   },
+  // ],
   // greeting: 'Hello, Monica Justice! You have 9 unread messages.',
   // favoriteFruit: 'banana',
 };
