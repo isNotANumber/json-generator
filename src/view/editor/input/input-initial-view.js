@@ -7,8 +7,6 @@ function createInputInitialTemplate({selectedType}) {
             <div data-id='0' class="input-item input-item__initial">
                 <div class="input-item__content">
                     <select class="input-item__value_type">
-                        <option value="string" ${selectedType === 'string' ? 'selected' : ''}>String</option>
-                        <option value="array" ${selectedType === 'array' ? 'selected' : ''}>Array</option>
                         <option value="object" ${selectedType === 'object' ? 'selected' : ''}>Object</option>
                     </select>
                     <div class="input-item__controls">

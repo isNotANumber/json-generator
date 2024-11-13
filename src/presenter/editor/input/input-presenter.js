@@ -8,6 +8,7 @@ import InputItemPresenter from './input-item-presenter.js';
 
 export default class InputPresenter {
   #container;
+  #initialComponent = null;
   #inputItemComponents = new Map();
   #inputModel;
 
@@ -18,14 +19,6 @@ export default class InputPresenter {
 
   init() {
     this.#renderInitialInput();
-
-    const test = new InputItemPresenter({
-      container: this.#inputItemComponents.get('root').childrenContainer,
-    });
-    test.init();
-    this.#inputItemComponents.set(test.id, test);
-
-    // this.#renderItemsFromModel(this.#inputModel.data);
   }
 
   // get inputComponents() {
@@ -37,18 +30,38 @@ export default class InputPresenter {
       onControlClick: this.#handleInputItemButtonClick,
       onItemFieldChange: this.#handleItemFieldChange,
     });
-    this.#inputItemComponents.set('root', inputContent);
+
+    this.#initialComponent = inputContent;
     render(inputContent, this.#container);
+
+    this.#initiateItemPresenter(this.#initialComponent.childrenContainer);
+  }
+
+  #initiateItemPresenter(container) {
+    const objectItem = new InputItemPresenter({
+      container: container,
+    });
+
+    objectItem.init();
+
+    this.#inputItemComponents.set(objectItem.id, objectItem);
   }
 
   #handleInputItemButtonClick = (evt) => {
-    const target = evt.target.closest('.input-item');
+    const targetElement = evt.target.closest('.input-item');
 
-    if (target) {
+    if (targetElement) {
       if (evt.target.classList.contains('input-item__button_append')) {
-        this.#handleAppendClick(target);
+
+        if (targetElement.classList.contains('input-item__initial')) {
+          this.#initiateItemPresenter(this.#initialComponent.childrenContainer);
+          return;
+        }
+
+        this.#handleAppendClick(targetElement);
+
       } else if (evt.target.classList.contains('input-item__button_remove')) {
-        this.#handleRemoveClick(target);
+        this.#handleRemoveClick(targetElement);
       }
     }
   };
@@ -78,9 +91,10 @@ export default class InputPresenter {
 
     const targetPresenter = this.#inputItemComponents.get(presenterId);
 
-    if (presenterId === undefined) {
+    if (presenterId === targetId) {
       targetPresenter.destroy();
       this.#inputItemComponents.delete(targetId);
+
       return;
     }
 
