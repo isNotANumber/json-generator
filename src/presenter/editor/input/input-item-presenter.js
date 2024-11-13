@@ -59,6 +59,8 @@ export default class InputItemPresenter {
       this.#blockAppendControl();
     }
 
+    return arrayTypeItem.id;
+
     console.log(this.getItemAsObject());
   }
 

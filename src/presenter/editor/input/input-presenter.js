@@ -10,7 +10,7 @@ export default class InputPresenter {
   #container;
   #initialComponent = null;
   #inputItemComponents = new Map();
-  #inputModel;
+  #inputModel = null;
 
   constructor({ container, inputModel }) {
     this.#container = container;
@@ -34,7 +34,8 @@ export default class InputPresenter {
     this.#initialComponent = inputContent;
     render(inputContent, this.#container);
 
-    this.#initiateItemPresenter(this.#initialComponent.childrenContainer);
+    this.#renderItemsFromModel(this.#inputModel.data)
+    // this.#initiateItemPresenter(this.#initialComponent.childrenContainer);
   }
 
   #initiateItemPresenter(container, props) {
@@ -123,94 +124,52 @@ export default class InputPresenter {
     }
   };
 
-  // #renderItemsFromModel(items) {
-  //   for (const [key, value] of Object.entries(items)) {
-  //     const objectId = this.#renderObjectTypeItem(key, '0');
+  #renderItemsFromModel(items) {
+    for (const [key, value] of Object.entries(items)) {
+      const newPresenter = this.#initiateItemPresenter(this.#initialComponent.childrenContainer, {id: generateRandomId(), key: key});
+      const presenterId = newPresenter.component._state.id;
+      const props = {id: generateRandomId(), parentId: presenterId, value: value};
 
-  //     if (Array.isArray(value)) {
-  //       this.#renderArrayItems(value, objectId);
-  //     } else {
-  //       this.#renderStringTypeItem(value, objectId);
-  //     }
-  //   }
-  // }
+      if (Array.isArray(value)) {
+        this.#renderArrayItems(value, newPresenter)
+      } else {
+        newPresenter.appendStringItemPart(presenterId, props)
+      }
 
-  // #renderArrayItems(array, parentId) {
-  //   const arrayId = this.#renderArrayTypeItem(parentId);
 
-  //   for (const item of array) {
-  //     if (typeof item === 'object') {
-  //       this.#renderObjectItems(item, arrayId);
-  //     } else {
-  //       this.#renderStringTypeItem(item, arrayId);
-  //     }
-  //   }
-  // }
+    }
+  }
 
-  // #renderObjectItems(object, parentId) {
-  //   for (const [key, value] of Object.entries(object)) {
-  //     const objectId = this.#renderObjectTypeItem(key, parentId);
-  //     this.#renderStringTypeItem(value, objectId);
-  //     this.#inputItemComponents.get(parentId)._state.value.push({ key, value });
-  //   }
-  // }
+  #renderArrayItems(array, presenter) {
+    const presenterId = presenter.component._state.id;
 
-  // #renderArrayTypeItem(parentId) {
-  //   const arrayItem = new ArrayItemView({ id: generateRandomId(), parentId });
-  //   this.#inputItemComponents.set(arrayItem.id, arrayItem);
-  //   this.#inputItemComponents.get(parentId)._state.value = arrayItem._state.value;
-  //   render(arrayItem, this.#inputItemComponents.get(parentId).childrenContainer);
-  //   return arrayItem.id;
-  // }
+    const arrayId = presenter.appendArrayItemPart(presenterId)
 
-  // #renderObjectTypeItem(key, parentId) {
-  //   const objectItem = new ObjectItemView({ id: generateRandomId(), parentId, key });
-  //   this.#inputItemComponents.set(objectItem.id, objectItem);
-  //   render(objectItem, this.#inputItemComponents.get(parentId).childrenContainer);
-  //   return objectItem.id;
-  // }
+    for (const item of array) {
+      if (typeof item === 'object') {
+          this.#renderObjectItems(item, presenter, arrayId)
+      } else {
+        const props = {id: generateRandomId(), parentId: presenterId, value: item};
 
-  // #renderStringTypeItem(value, parentId) {
-  //   const stringItem = new StringItemView({ id: generateRandomId(), parentId, value });
-  //   this.#inputItemComponents.set(stringItem.id, stringItem);
-  //   const parentItem = this.#inputItemComponents.get(parentId);
-  //   parentItem._state.value = Array.isArray(parentItem._state.value) ? [...parentItem._state.value, value] : value;
-  //   render(stringItem, parentItem.childrenContainer);
-  //   return stringItem.id;
-  // }
+        presenter.appendStringItemPart(arrayId, props)
+      }
+    }
+  }
 
-  // #handleInputItemButtonClick = (evt) => {
-  //   const target = evt.target.closest('.input-item');
+  #renderObjectItems(object, presenter, parentId) {
+    const targetComponent = presenter.getComponentById(parentId);
 
-  //   if (target) {
-  //     const targetId = target.dataset.id;
-  //     if (evt.target.classList.contains('input-item__button_append')) {
-  //       this.#handleAppendClick(targetId);
-  //     } else if (evt.target.classList.contains('input-item__button_remove')) {
-  //       this.#handleRemoveClick(targetId);
-  //     }
-  //   }
-  // };
+    for (const [key, value] of Object.entries(object)) {
+      const newPresenter = this.#initiateItemPresenter(targetComponent.childrenContainer, {id: generateRandomId(), key: key});
+      presenter.registerChildObjectItem(newPresenter);
 
-  // #handleAppendClick(targetId) {
-  //   const targetComponent = this.#inputItemComponents.get(targetId);
-  //   const selectedType = targetComponent._state.selectedType;
-  //   const targetChildrenContainer = targetComponent.childrenContainer;
+      const presenterId = newPresenter.component._state.id;
 
-  //   if (selectedType === 'string') {
-  //     this.#renderStringTypeItem('', targetId, targetChildrenContainer);
-  //   } else if (selectedType === 'array') {
-  //     this.#renderArrayTypeItem(targetId, targetChildrenContainer);
-  //   } else {
-  //     this.#renderObjectTypeItem('', targetId, targetChildrenContainer);
-  //   }
-  // }
+      const props = {id: generateRandomId(), parentId: presenterId, value: value};
 
-  // #handleRemoveClick(targetId) {
-  //   const targetItem = this.#inputItemComponents.get(targetId);
-  //   remove(targetItem);
-  //   this.#removeItemAndChildren(targetId);
-  // }
+      newPresenter.appendStringItemPart(presenterId, props);
+    }
+  }
 
   // #removeItemAndChildren(id) {
   //   const map = this.#inputItemComponents;
