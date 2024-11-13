@@ -13,8 +13,8 @@ export default class InputItemPresenter {
     this.#container = container;
   }
 
-  init(item) {
-    this.#renderObjectTypeItem(this.#container);
+  init(props) {
+    this.#renderObjectTypeItem(this.#container, props);
   }
 
   // -- Render methods -- //
