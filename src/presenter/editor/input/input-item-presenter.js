@@ -35,6 +35,10 @@ export default class InputItemPresenter {
     targetComponent._setState(value);
   }
 
+  registerChildObjectItem(item) {
+    this.#childComponents.set(item.id, item);
+  }
+
   appendArrayItemPart(targetId) {
     const targetComponent = this.getComponentById(targetId);
 
@@ -133,6 +137,10 @@ export default class InputItemPresenter {
 
   get id() {
     return this.#parentComponent.id;
+  }
+
+  get component() {
+    return this.#parentComponent;
   }
 
   // refactor

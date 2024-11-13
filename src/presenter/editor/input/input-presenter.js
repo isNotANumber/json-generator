@@ -1,5 +1,5 @@
 import { render, remove } from '../../../framework/render.js';
-// import { generateRandomId } from '../../../util.js';
+import { generateRandomId } from '../../../util.js';
 // import ArrayItemView from '../../../view/editor/input/items/array-item-view.js';
 // import StringItemView from '../../../view/editor/input/items/string-item-view.js';
 // import ObjectItemView from '../../../view/editor/input/items/object-item-view.js';
@@ -40,12 +40,13 @@ export default class InputPresenter {
   #initiateItemPresenter(container, props) {
     const objectItem = new InputItemPresenter({
       container: container,
-      props: props
     });
 
-    objectItem.init();
+    objectItem.init(props);
 
     this.#inputItemComponents.set(objectItem.id, objectItem);
+
+    return objectItem;
   }
 
   #handleInputItemButtonClick = (evt) => {
@@ -82,7 +83,8 @@ export default class InputPresenter {
     } else if (selectedType === 'array') {
       targetPresenter.appendArrayItemPart(targetId);
     } else {
-      // this.#renderObjectTypeItem('', targetId, targetChildrenContainer);
+      const newItem = this.#initiateItemPresenter(targetComponent.childrenContainer, {id: generateRandomId(), parentId: targetId}).component;
+      targetPresenter.registerChildObjectItem(newItem);
     }
   }
 
