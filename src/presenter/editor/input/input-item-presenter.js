@@ -92,8 +92,6 @@ export default class InputItemPresenter {
       // this.#removeItemAndChildren(targetId);
     }
 
-    console.log(this.#childComponents)
-
     if (!this.#isBlockNeeded()) {
       this.#unblockAppendControl();
     }
