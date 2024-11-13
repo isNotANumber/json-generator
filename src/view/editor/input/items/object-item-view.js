@@ -10,7 +10,6 @@ function createInputItemObjectTemplate({id, parentId, key, selectedType, blocked
             <select class="input-item__value_type">
                 <option value="string" ${selectedType === 'string' ? 'selected' : ''}>String</option>
                 <option value="array" ${selectedType === 'array' ? 'selected' : ''}>Array</option>
-                <option value="object" ${selectedType === 'object' ? 'selected' : ''}>Object</option>
             </select>
             <div class="input-item__controls">
                 <button class="button button_small input-item__button_append" ${blocked ? 'disabled' : ''}>
