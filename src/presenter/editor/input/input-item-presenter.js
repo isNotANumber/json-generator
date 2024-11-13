@@ -6,8 +6,7 @@ import ObjectItemView from '../../../view/editor/input/items/object-item-view.js
 
 export default class InputItemPresenter {
   #container = null;
-  #parentComponent = null
-  #arrayComponent = null;
+  #parentComponent = null;
   #childComponents = new Map();
 
   constructor({ id, container }) {
@@ -21,9 +20,12 @@ export default class InputItemPresenter {
   // -- Render methods -- //
 
   #renderObjectTypeItem(container, props) {
-    props = props ? props : {id: generateRandomId()};
+    props = props ? props : { id: generateRandomId() };
 
-    this.#parentComponent = new ObjectItemView({...props, onItemFieldChange: this.#handleItemInput});
+    this.#parentComponent = new ObjectItemView({
+      ...props,
+      onItemFieldChange: this.#handleItemInput,
+    });
 
     render(this.#parentComponent, container);
   }
@@ -51,29 +53,17 @@ export default class InputItemPresenter {
   appendArrayItemPart(targetId) {
     const targetComponent = this.getComponentById(targetId);
 
-    if (this.#arrayComponent === null) {
-        this.#arrayComponent = new ArrayItemView({id: generateRandomId(), parentId: this.#parentComponent.id, rootId: this.#parentComponent.id});
-
-        render(this.#arrayComponent, targetComponent.childrenContainer);
-
-        if (this.#isBlockNeeded()) {
-            this.#blockAppendControl();
-        }
-
-        // test
-        console.log(this.getItemAsObject());
-
-        // remove ?
-        return this.#arrayComponent.id;
-    }
-
-    const arrayTypeItem = new ArrayItemView({id: generateRandomId(), parentId: targetId, rootId: this.#parentComponent.id});
+    const arrayTypeItem = new ArrayItemView({
+      id: generateRandomId(),
+      parentId: targetId,
+      rootId: this.#parentComponent.id,
+    });
     this.#childComponents.set(arrayTypeItem.id, arrayTypeItem);
 
     render(arrayTypeItem, targetComponent.childrenContainer);
 
     if (this.#isBlockNeeded()) {
-        this.#blockAppendControl();
+      this.#blockAppendControl();
     }
 
     // test
@@ -86,15 +76,21 @@ export default class InputItemPresenter {
   appendStringItemPart(targetId, props) {
     const targetComponent = this.getComponentById(targetId);
 
-    props = props ? props : {id: generateRandomId(), parentId: targetId, rootId: this.#parentComponent.id};
+    props = props
+      ? props
+      : {
+          id: generateRandomId(),
+          parentId: targetId,
+          rootId: this.#parentComponent.id,
+        };
 
-    const stringTypeItem = new StringItemView({...props});
+    const stringTypeItem = new StringItemView({ ...props });
     this.#childComponents.set(stringTypeItem.id, stringTypeItem);
 
     render(stringTypeItem, targetComponent.childrenContainer);
 
     if (this.#isBlockNeeded()) {
-        this.#blockAppendControl();
+      this.#blockAppendControl();
     }
 
     // test
@@ -104,38 +100,35 @@ export default class InputItemPresenter {
   removeItemPart(targetId) {
     const targetComponent = this.getComponentById(targetId);
 
-    if (this.#arrayComponent?.id === targetId) {
-        remove(this.#arrayComponent);
-        this.#arrayComponent = null;
-    } else {
-        remove(targetComponent);
-        this.#childComponents.delete(targetId);
-    }
+    remove(targetComponent);
+    this.#childComponents.delete(targetId);
 
     if (!this.#isBlockNeeded()) {
-        this.#unblockAppendControl();
+      this.#unblockAppendControl();
     }
   }
 
-  // -- Getters -- // 
-
+  // -- Getters -- //
 
   // rewrite logic
   getItemAsObject() {
-    const result = {key: this.#parentComponent.getStateValueAsObject().value, value: null}
+    const result = {
+      key: this.#parentComponent.getStateValueAsObject().value,
+      value: null,
+    };
 
     if (!this.#childComponents.size) {
-        return result;
+      return result;
     }
 
     for (const item of this.#childComponents.values()) {
-        const itemValue = item.getStateValueAsObject().value;
+      const itemValue = item.getStateValueAsObject().value;
 
-        if (Array.isArray(result.value)) {
-            result.value.push(itemValue);
-        } else {
-            result.value = itemValue;
-        }
+      if (Array.isArray(result.value)) {
+        result.value.push(itemValue);
+      } else {
+        result.value = itemValue;
+      }
     }
 
     return result;
@@ -143,22 +136,17 @@ export default class InputItemPresenter {
 
   getComponentById(id) {
     if (this.#parentComponent.id === id) {
-        return this.#parentComponent;
-    } else if (this.#arrayComponent?.id === id) {
-        return this.#arrayComponent;
+      return this.#parentComponent;
     }
 
     return this.#childComponents.get(id);
   }
 
-  // -- Common -- // 
+  // -- Common -- //
 
   #isBlockNeeded() {
-    console.log(this.#arrayComponent)
-    console.log(this.#childComponents.size)
-
-    if (this.#arrayComponent !== null || this.#childComponents.size > 0) {
-        return true;
+    if (this.#childComponents.size > 0) {
+      return true;
     }
 
     return false;
@@ -170,20 +158,23 @@ export default class InputItemPresenter {
 
   // refactor
   #blockAppendControl() {
-    this.#parentComponent._setState({blocked: true});
-    this.#parentComponent.element.querySelector('.input-item__button_append').disabled = true;
+    this.#parentComponent._setState({ blocked: true });
+    this.#parentComponent.element.querySelector(
+      '.input-item__button_append'
+    ).disabled = true;
   }
 
   // refactor
   #unblockAppendControl() {
-    this.#parentComponent._setState({blocked: false});
-    this.#parentComponent.element.querySelector('.input-item__button_append').disabled = false;
+    this.#parentComponent._setState({ blocked: false });
+    this.#parentComponent.element.querySelector(
+      '.input-item__button_append'
+    ).disabled = false;
   }
 
   destroy() {
-    remove(this.#parentComponent)
-    this.#parentComponent = null
-    this.#arrayComponent = null;
+    remove(this.#parentComponent);
+    this.#parentComponent = null;
     this.#childComponents = new Map();
   }
 }
