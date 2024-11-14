@@ -198,9 +198,9 @@ export default class InputItemPresenter {
     targetComponent._setState(value);
   }
 
-  // refactor
+  // refactor, should rerender without child loss
   /**
-   * Blocks the append control for the parent component.
+   * Blocks the append control and type selector for the parent component.
    * @private
    */
   #blockAppendControl() {
@@ -208,17 +208,23 @@ export default class InputItemPresenter {
     this.#parentComponent.element.querySelector(
       '.input-item__button_append'
     ).disabled = true;
+    this.#parentComponent.element.querySelector(
+      '.input-item__value_type'
+    ).disabled = true;
   }
 
-  // refactor
+  // refactor, should rerender without child loss
   /**
-   * Unblocks the append control for the parent component.
+   * Unblocks the append control and type selector for the parent component.
    * @private
    */
   #unblockAppendControl() {
     this.#parentComponent._setState({ blocked: false });
     this.#parentComponent.element.querySelector(
       '.input-item__button_append'
+    ).disabled = false;
+    this.#parentComponent.element.querySelector(
+      '.input-item__value_type'
     ).disabled = false;
   }
 
