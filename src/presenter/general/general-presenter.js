@@ -73,7 +73,7 @@ export default class GeneralPresenter {
     const mainContentElement =
       this.#mainComponent.element.querySelector('.main-content');
 
-    this.#renderSidebar(this.#mainComponent.element);
+    // this.#renderSidebar(this.#mainComponent.element);
     this.#renderToolbar(mainContentElement);
     this.#renderEditor(mainContentElement);
   }
