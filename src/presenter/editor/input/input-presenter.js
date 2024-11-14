@@ -17,10 +17,18 @@ export default class InputPresenter {
     this.#renderInitialInput();
   }
 
+  /**
+   * Gets the data represented by the input presenters as an object.
+   * @returns {Object} The data as an object.
+   */
   get dataAsObj() {
-    return this.#convertComponentsToObj(this.#inputItemPresenters);
+    return this.#convertPresentersToObj(this.#inputItemPresenters);
   }
 
+  /**
+   * Renders the initial input view component.
+   * @private
+   */
   #renderInitialInput() {
     const inputContent = new InputInitialView({
       onControlClick: this.#handleInputItemButtonClick,
@@ -34,6 +42,13 @@ export default class InputPresenter {
     this.#initiateItemPresenter(this.#initialComponent.childrenContainer);
   }
 
+  /**
+   * Initiates an InputItemPresenter for managing input items.
+   * @param {HTMLElement} container - The container for the item presenter.
+   * @param {Object} [props] - Additional properties for initialization.
+   * @returns {InputItemPresenter} The created InputItemPresenter instance.
+   * @private
+   */
   #initiateItemPresenter(container, props) {
     const objectItem = new InputItemPresenter({
       container: container,
@@ -46,6 +61,11 @@ export default class InputPresenter {
     return objectItem;
   }
 
+  /**
+   * Handles click events on input item buttons.
+   * @param {Event} evt - The click event.
+   * @private
+   */
   #handleInputItemButtonClick = (evt) => {
     const targetElement = evt.target.closest('.input-item');
 
@@ -63,6 +83,11 @@ export default class InputPresenter {
     }
   };
 
+  /**
+   * Handles appending new input items based on the selected type.
+   * @param {HTMLElement} target - The target input item element.
+   * @private
+   */
   #handleAppendClick(target) {
     const targetId = target.dataset.id;
     const presenterId = target.dataset.rootObjId;
@@ -81,6 +106,11 @@ export default class InputPresenter {
     }
   }
 
+  /**
+   * Handles removing input items.
+   * @param {HTMLElement} target - The target input item element to be removed.
+   * @private
+   */
   #handleRemoveClick(target) {
     const targetId = target.dataset.id;
     const presenterId = target.dataset.rootObjId;
@@ -97,6 +127,11 @@ export default class InputPresenter {
     targetPresenter.removeItemPart(targetId);
   }
 
+  /**
+   * Handles changes to input item fields.
+   * @param {Event} evt - The change event.
+   * @private
+   */
   #handleItemFieldChange = (evt) => {
     const target = evt.target.closest('.input-item');
     const targetId = target.dataset.id;
@@ -116,6 +151,11 @@ export default class InputPresenter {
     }
   };
 
+  /**
+   * Renders items from the input model.
+   * @param {Object} items - The items to render.
+   * @private
+   */
   #renderItemsFromModel(items) {
     for (const [key, value] of Object.entries(items)) {
       const newPresenter = this.#initiateItemPresenter(
@@ -132,6 +172,12 @@ export default class InputPresenter {
     }
   }
 
+  /**
+   * Renders an array of items.
+   * @param {Array} array - The array of items to render.
+   * @param {InputItemPresenter} presenter - The presenter for the array items.
+   * @private
+   */
   #renderArrayItems(array, presenter) {
     const arrayId = presenter.appendArrayItemPart();
 
@@ -146,6 +192,13 @@ export default class InputPresenter {
     }
   }
 
+  /**
+   * Renders object items within a parent presenter.
+   * @param {Object} object - The object containing items to render.
+   * @param {InputItemPresenter} presenter - The presenter for the object items.
+   * @param {string} parentId - The ID of the parent item.
+   * @private
+   */
   #renderObjectItems(object, presenter, parentId) {
     const targetComponent = presenter.getComponentById(parentId);
 
@@ -160,9 +213,14 @@ export default class InputPresenter {
     }
   }
 
-  #convertComponentsToObj() {
+  /**
+   * Converts the input item presenters to an object representation.
+   * @returns {Object} The object representation of the input items.
+   * @private
+   */
+  #convertPresentersToObj() {
     const result = {};
-    let arrId = null;;
+    let arrId = null;
     let arrKey = null;
 
     for (const item of this.#inputItemPresenters.values()) {
@@ -177,7 +235,7 @@ export default class InputPresenter {
       }
 
       if (arrId != null && itemObj.parentId === arrId) {
-        result[arrKey].push({[itemObj.key]: itemObj.value})
+        result[arrKey].push({ [itemObj.key]: itemObj.value });
       } else {
         arrId = null;
         arrKey = null;
