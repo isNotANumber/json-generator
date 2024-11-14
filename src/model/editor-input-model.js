@@ -1,4 +1,4 @@
-import { defaultListState, testList1, testList2, testListSimple, testListComplex } from './const';
+import { testListComplex } from './const';
 
 /**
  * Model class for managing editor input data.

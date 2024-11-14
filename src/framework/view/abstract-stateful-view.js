@@ -11,18 +11,13 @@ export default class AbstractStatefulView extends AbstractView {
    * State update and rerender element method
    * @param {Object} update Object with updated state
    */
-  updateElement(update, modifier = 'update') {
+  updateElement(update) {
     if (!update) {
       return;
     }
 
-    if (modifier === 'update') {
-      this._setState(update);
-      this.#rerenderElement();
-    } else if (modifier === 'rewrite') {
-      this._state = update;
-      this.#rerenderElement();
-    }
+    this._setState(update);
+    this.#rerenderElement();
   }
 
   /**
@@ -38,7 +33,7 @@ export default class AbstractStatefulView extends AbstractView {
    * @param {Object} update Object with updated state
    */
   _setState(update) {
-    this._state = structuredClone({...this._state, ...update});
+    this._state = structuredClone({ ...this._state, ...update });
   }
 
   /** Rerender element method */
