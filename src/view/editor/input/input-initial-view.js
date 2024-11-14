@@ -6,9 +6,7 @@ function createInputInitialTemplate({selectedType}) {
         <div class="input-content">
             <div data-id='0' class="input-item input-item__initial">
                 <div class="input-item__content">
-                    <select class="input-item__value_type">
-                        <option value="object" ${selectedType === 'object' ? 'selected' : ''}>Object</option>
-                    </select>
+                    <span class="type-label">Add Object</span>
                     <div class="input-item__controls">
                     <button class="button button_small input-item__button_append">
                         <i class="icon fas fa-plus"></i>
