@@ -45,4 +45,8 @@ export default class StringItemView extends AbstractStatefulView {
     _restoreHandlers() {
         return;
     }
+
+    _restoreChilds() {
+        return;
+    }
 }

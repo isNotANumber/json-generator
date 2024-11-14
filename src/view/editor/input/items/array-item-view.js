@@ -58,4 +58,8 @@ export default class ArrayItemView extends AbstractStatefulView {
     _restoreHandlers() {
         return;
     }
+
+    _restoreChilds() {
+        return;
+    }
 }
