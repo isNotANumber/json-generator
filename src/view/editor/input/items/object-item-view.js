@@ -58,4 +58,11 @@ export default class ObjectItemView extends AbstractStatefulView {
     _restoreHandlers() {
         return;
     }
+
+    _restoreChilds(prevElement, newElement) {
+        const prevElementChilds = prevElement.querySelector('.input-item__chlildren');
+        const newElementChilds = newElement.querySelector('.input-item__chlildren');
+    
+        newElement.replaceChild(prevElementChilds, newElementChilds)
+    }
 }

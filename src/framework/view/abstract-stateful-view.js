@@ -28,6 +28,10 @@ export default class AbstractStatefulView extends AbstractView {
     throw new Error('Abstract method not implemented: restoreHandlers');
   }
 
+  _restoreChilds(prevElement, newElement) {
+    throw new Error('Abstract method not implemented: restoreChilds');
+  }
+
   /**
    * State update method
    * @param {Object} update Object with updated state
@@ -40,12 +44,14 @@ export default class AbstractStatefulView extends AbstractView {
   #rerenderElement() {
     const prevElement = this.element;
     const parent = prevElement.parentElement;
+
     this.removeElement();
 
     const newElement = this.element;
 
     parent.replaceChild(newElement, prevElement);
 
+    this._restoreChilds(prevElement, newElement)
     this._restoreHandlers();
   }
 }
