@@ -155,35 +155,36 @@ export default class InputPresenter {
         { key: key, parentId: parentId }
       );
 
-      const presenterId = newPresenter.component._state.id;
-
       const itemProps = { value: value };
       newPresenter.appendStringItemPart(itemProps);
     }
   }
 
-  // Cannot convert nested objects inside of arr
   #convertComponentsToObj() {
     const result = {};
+    let arrId = null;;
+    let arrKey = null;
 
     for (const item of this.#inputItemPresenters.values()) {
       const itemObj = item.getItemAsObject();
 
-      result[itemObj.key] = itemObj.value;
+      if (itemObj.arrId && itemObj.value.length === 0) {
+        arrId = itemObj.arrId;
+        arrKey = itemObj.key;
+        result[itemObj.key] = [];
+
+        continue;
+      }
+
+      if (arrId != null && itemObj.parentId === arrId) {
+        result[arrKey].push({[itemObj.key]: itemObj.value})
+      } else {
+        arrId = null;
+        arrKey = null;
+        result[itemObj.key] = itemObj.value;
+      }
     }
 
     return result;
   }
-
-  // #test() {
-  //   const result = [];
-
-  //   for (const item of this.#inputItemComponents.values()) {
-  //     const itemObj = item.getItemAsObject();
-
-  //     result.push(itemObj);
-  //   }
-
-  //   console.log(result);
-  // }
 }
