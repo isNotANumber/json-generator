@@ -1,6 +1,6 @@
-import AbstractStatefulView from "../../../framework/view/abstract-stateful-view.js";
+import AbstractView from "../../../framework/view/abstract-view.js";
 
-function createInputInitialTemplate({selectedType}) {
+function createInputInitialTemplate() {
     return (
         `
         <div class="input-content">
@@ -24,14 +24,12 @@ function createInputInitialTemplate({selectedType}) {
 /**
  * Input list view class.
  */
-export default class InputInitialView extends AbstractStatefulView {
+export default class InputInitialView extends AbstractView {
     #handleControlClick = null;
     #handleItemFieldChange = null;
 
-    constructor({selectedType = 'string', onControlClick, onItemFieldChange}) {
+    constructor({onControlClick, onItemFieldChange}) {
         super();
-
-        this._state = {selectedType: selectedType};
 
         this.#handleControlClick = onControlClick;
         this.#handleItemFieldChange = onItemFieldChange;
