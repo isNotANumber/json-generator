@@ -92,13 +92,13 @@ const testListSimple = {
 }
 
 const testListComplex = {
-  // _id: '6730844b186b65c26abc2a82',
-  // index: 0,
-  // guid: '368e49f1-328c-468f-b854-691230547103',
-  // isActive: true,
-  // balance: '$3,422.85',
-  // picture: 'http://placehold.it/32x32',
-  // age: 39,
+  _id: '6730844b186b65c26abc2a82',
+  index: 0,
+  guid: '368e49f1-328c-468f-b854-691230547103',
+  isActive: true,
+  balance: '$3,422.85',
+  picture: 'http://placehold.it/32x32',
+  age: 39,
   tags: [
     'sunt',
     'labore',
@@ -119,8 +119,19 @@ const testListComplex = {
   //     name: 'Watson Matthews',
   //   },
   // ],
-  // greeting: 'Hello, Monica Justice! You have 9 unread messages.',
-  // favoriteFruit: 'banana',
+  test: [
+    {
+      id1: 0,
+    },
+    {
+      id2: 1,
+    },
+    {
+      id3: 3,
+    },
+  ],
+  greeting: 'Hello, Monica Justice! You have 9 unread messages.',
+  favoriteFruit: 'banana',
 };
 
 export { defaultListState, testList1, testList2, testListSimple, testListComplex };
